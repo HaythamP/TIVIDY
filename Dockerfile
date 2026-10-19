@@ -5,7 +5,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY . /app
+COPY Makefile ./
+COPY src/ ./src/
 
 RUN make clean && make
 CMD ["./TIVIDY"]
