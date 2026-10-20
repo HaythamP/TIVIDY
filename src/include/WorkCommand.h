@@ -1,5 +1,5 @@
-#ifndef WORKCOMMAND_H
-#define WORKCOMMAND_H
+#ifndef COMMAND_H
+#define COMMAND_H
 
 #include <vector>
 #include "Command.h"
