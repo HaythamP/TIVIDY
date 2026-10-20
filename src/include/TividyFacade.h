@@ -52,6 +52,6 @@ private:
     WorkflowBuilder<T>* builder;
 };
 
-} 
+} // namespace tividy
 
 #endif
