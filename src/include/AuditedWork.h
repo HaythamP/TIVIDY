@@ -1,5 +1,5 @@
-#ifndef TIVIDY_AUDITEDWORK_H
-#define TIVIDY_AUDITEDWORK_H
+#ifndef AUDITEDWORK_H
+#define AUDITEDWORK_H
 
 #include <string>
 #include <vector>

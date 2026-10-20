@@ -1,5 +1,5 @@
-#ifndef TIVIDY_WORKGROUP_H
-#define TIVIDY_WORKGROUP_H
+#ifndef WORKGROUP_H
+#define WORKGROUP_H
 
 #include <string>
 #include <vector>
@@ -30,7 +30,7 @@ namespace tividy{
         private:
             IdType id;
             std::string name;
-            std::vector<WorkComponent<IdType>*> children;          // OWNED
+            std::vector<WorkComponent<IdType>*> children;      
     };
 }
 
