@@ -1,5 +1,5 @@
-#ifndef TIVIDY_STARTCOMMAND_H
-#define TIVIDY_STARTCOMMAND_H
+#ifndef STARTCOMMAND_H
+#define STARTCOMMAND_H
 
 #include "WorkCommand.h"
 
