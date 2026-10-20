@@ -1,5 +1,5 @@
-#ifndef TIVIDY_ASSIGNEDSTATE_H
-#define TIVIDY_ASSIGNEDSTATE_H
+#ifndef ASSIGNEDSTATE_H
+#define ASSIGNEDSTATE_H
 
 #include "WorkItemState.h"
 

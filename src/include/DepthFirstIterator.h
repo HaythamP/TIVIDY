@@ -1,5 +1,5 @@
-#ifndef TIVIDY_DEPTHFIRSTITERATOR_H
-#define TIVIDY_DEPTHFIRSTITERATOR_H
+#ifndef DEPTHFIRSTITERATOR_H
+#define DEPTHFIRSTITERATOR_H
 
 #include <vector>
 #include "WorkIterator.h"

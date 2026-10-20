@@ -1,5 +1,5 @@
-#ifndef TIVIDY_COMPLETEDSTATE_H
-#define TIVIDY_COMPLETEDSTATE_H
+#ifndef COMPLETEDSTATE_H
+#define COMPLETEDSTATE_H
 
 #include "WorkItemState.h"
 

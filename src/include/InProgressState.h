@@ -1,5 +1,5 @@
-#ifndef TIVIDY_INPROGRESSSTATE_H
-#define TIVIDY_INPROGRESSSTATE_H
+#ifndef INPROGRESSSTATE_H
+#define INPROGRESSSTATE_H
 
 #include "WorkItemState.h"
 

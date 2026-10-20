@@ -1,5 +1,5 @@
-#ifndef TIVIDY_WORKITERATOR_H
-#define TIVIDY_WORKITERATOR_H
+#ifndef WORKITERATOR_H
+#define WORKITERATOR_H
 
 namespace tividy {
     template <typename IdType> class WorkComponent;
