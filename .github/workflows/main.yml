@@ -1,0 +1,27 @@
+name: test
+
+on:
+    pull_request: 
+        branches: [main, dev]
+
+jobs:
+        build:
+            runs-on: ubuntu-latest
+        
+            steps:
+                - name: Checkout repo
+                  uses: actions/checkout@v4
+
+                - name: install required packages
+                  run: |
+                    sudo apt-get update
+                    sudo apt-get intall -y build-essential make valgrind
+
+                - name: Build Tividy
+                  run: make
+
+                - name: Run tests
+                  run: make test
+
+                - name: Run mem check
+                  run: make val-all
