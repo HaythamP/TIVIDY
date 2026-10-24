@@ -24,7 +24,7 @@ COPY Makefile ./
 COPY src/ ./src/
 COPY testing/ ./testing/
 
-CMD ["make"]
+CMD ["make","test"]
 
 
 # docker build -t tividy-ci:latest
