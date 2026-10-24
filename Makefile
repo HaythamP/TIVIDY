@@ -11,34 +11,33 @@ VALGRIND_FLAGS := --leak-check=full --show-leak-kinds=all --track-origins=yes --
 
 TARGET         := $(BIN_DIR)/TIVIDY
 
-# All implementation source files in src/ (exceptions, non-template utilities)
-SRCS           := $(wildcard $(SRC_DIR)/*.cpp)
-LIB_SRCS       := $(filter-out $(SRC_DIR)/main.cpp, $(SRCS))
+# ONLY compile non-templated classes into standalone .o files (exceptions)
+LIB_SRCS       := $(wildcard $(SRC_DIR)/*Exception.cpp)
 LIB_OBJS       := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(LIB_SRCS))
 
-# Test suites
+# Discover all modular test suites in testing/
 TEST_SRCS      := $(wildcard $(TEST_DIR)/test_*.cpp)
 TEST_BINS      := $(patsubst $(TEST_DIR)/test_%.cpp, $(BIN_DIR)/test_%, $(TEST_SRCS))
 
-# Default target runs the tests while main.cpp is not yet implemented
+# Default target builds all tests while main.cpp is not ready
 all: test-build
 
-# Rule for building object files from src/*.cpp
+# Rule to compile non-templated exception objects
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Build each test binary independently, linking compiled non-template src objects
+# Build each test binary independently
 $(BIN_DIR)/test_%: $(TEST_DIR)/test_%.cpp $(LIB_OBJS)
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@ $(TEST_LDFLAGS)
 
 test-build: $(if $(strip $(TEST_BINS)), $(TEST_BINS),)
 
-# Run every test binary produced
+# Run every compiled test binary sequentially
 test: test-build
 	@if [ -z "$(TEST_BINS)" ]; then \
-		echo "No tests found in $(TEST_DIR)/. Skipping test run."; \
+		echo "No tests found in $(TEST_DIR)/. Skipping test execution."; \
 		exit 0; \
 	else \
 		for t in $(TEST_BINS); do \
@@ -47,7 +46,7 @@ test: test-build
 		done; \
 	fi
 
-# Run Valgrind against every test binary produced
+# Run Valgrind against every test binary with strict zero-leak enforcement
 valgrind: test-build
 	@if [ -z "$(TEST_BINS)" ]; then \
 		echo "No tests found in $(TEST_DIR)/. Skipping Valgrind verification."; \
@@ -59,7 +58,7 @@ valgrind: test-build
 		done; \
 	fi
 
-# Main target for when main.cpp is eventually added
+# Optional application target for when main.cpp is created later
 $(TARGET): $(LIB_OBJS) $(BUILD_DIR)/main.o
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $^ -o $@
