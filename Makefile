@@ -1,5 +1,5 @@
 CXX            := g++
-CXXFLAGS       := -std=c++11 -Wall -Wextra -pedantic -g -Isrc -Isrc/includes
+CXXFLAGS       := -std=c++11 -Wall -Wextra -pedantic -g -Isrc -Isrc/include
 TEST_LDFLAGS   := -lgtest -lgtest_main -pthread
 
 SHELL       := /bin/bash
