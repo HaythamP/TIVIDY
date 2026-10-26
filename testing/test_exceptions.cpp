@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "DummyException.h"
 #include "TividyException.h"
 #include "InvalidTransitionException.h"
 #include "ComponentNotFoundException.h"
@@ -47,4 +48,9 @@ TEST(ExceptionsTest, InstantiateAllExceptions) {
 
     UnsupportedOperationException e11("unsupported operation");
     EXPECT_STREQ(e11.what(), "unsupported operation");
+
+    DummyException e12("dummy exception");
+    EXPECT_STREQ(e12.what(), "dummy exception");
+
+    
 }
