@@ -4,12 +4,16 @@
 #include "WorkItemState.h"
 
 namespace tividy {
-    template <typename IdType>
-class CompletedState : public WorkItemState<IdType> {
+
+template <typename T>
+class CompletedState : public WorkItemState<T> {
 public:
     std::string getName() const override;
+    WorkItemState<T>* copy() const override;
     bool isComplete() const override;
-    WorkItemState<IdType>* copy() const override;
+    bool isTerminal() const override;
 };
+
 }
+
 #endif
