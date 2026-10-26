@@ -5,16 +5,22 @@
 #include <vector>
 
 namespace tividy {
-    template <typename T> class WorkItem;
-    template <typename T> class Participant;
-    template <typename T>
+
+template <typename T> class WorkItem;
+template <typename T> class Participant;
+
+template <typename T>
 class WorkItemState {
 public:
     virtual ~WorkItemState();
+
     virtual std::string getName() const = 0;
+    virtual WorkItemState<T>* copy() const = 0;
+
     virtual bool isComplete() const;
     virtual bool isAvailable() const;
-    virtual WorkItemState<T>* copy() const = 0;
+    virtual bool isTerminal() const;
+
     virtual void makeAvailable(WorkItem<T>& item);
     virtual void assign(WorkItem<T>& item, const std::vector<Participant<T>*>& participants);
     virtual void start(WorkItem<T>& item);
@@ -24,5 +30,7 @@ public:
     virtual void escalate(WorkItem<T>& item);
     virtual void approve(WorkItem<T>& item);
 };
+
 }
+
 #endif
