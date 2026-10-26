@@ -1,9 +1,9 @@
+SHELL          := /bin/bash
+.SHELLFLAGS    := -eu -o pipefail -c
+
 CXX            := g++
 CXXFLAGS       := -std=c++11 -Wall -Wextra -pedantic -g -Isrc -Isrc/include
 TEST_LDFLAGS   := -lgtest -lgtest_main -pthread
-
-SHELL       := /bin/bash
-.SHELLFLAGS := -eu -o pipefail -c
 
 SRC_DIR        := src
 TEST_DIR       := testing
@@ -36,6 +36,7 @@ $(BIN_DIR)/test_%: $(TEST_DIR)/test_%.cpp $(LIB_OBJS)
 	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@ $(TEST_LDFLAGS)
 
 test-build: $(if $(strip $(TEST_BINS)), $(TEST_BINS),)
+
 # Run every compiled test binary sequentially
 test: test-build
 	@if [ -z "$(strip $(TEST_BINS))" ]; then \
