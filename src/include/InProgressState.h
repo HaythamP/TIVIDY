@@ -4,12 +4,19 @@
 #include "WorkItemState.h"
 
 namespace tividy {
-    template <typename IdType>
-class InProgressState : public WorkItemState<IdType> {
+
+template <typename T>
+class InProgressState : public WorkItemState<T> {
 public:
     std::string getName() const override;
-    WorkItemState<IdType>* copy() const override;
-    void complete(WorkItem<IdType>& item) override;
+    WorkItemState<T>* copy() const override;
+    void complete(WorkItem<T>& item) override;
+    void reject(WorkItem<T>& item) override;
+    void escalate(WorkItem<T>& item) override;
+    void approve(WorkItem<T>& item) override;
+    void cancel(WorkItem<T>& item) override;
 };
+
 }
+
 #endif
