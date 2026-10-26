@@ -2,6 +2,9 @@ CXX            := g++
 CXXFLAGS       := -std=c++11 -Wall -Wextra -pedantic -g -Isrc -Isrc/includes
 TEST_LDFLAGS   := -lgtest -lgtest_main -pthread
 
+SHELL       := /bin/bash
+.SHELLFLAGS := -eu -o pipefail -c
+
 SRC_DIR        := src
 TEST_DIR       := testing
 BUILD_DIR      := build
@@ -33,28 +36,27 @@ $(BIN_DIR)/test_%: $(TEST_DIR)/test_%.cpp $(LIB_OBJS)
 	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@ $(TEST_LDFLAGS)
 
 test-build: $(if $(strip $(TEST_BINS)), $(TEST_BINS),)
-
 # Run every compiled test binary sequentially
 test: test-build
-	@if [ -z "$(TEST_BINS)" ]; then \
+	@if [ -z "$(strip $(TEST_BINS))" ]; then \
 		echo "No tests found in $(TEST_DIR)/. Skipping test execution."; \
-		exit 0; \
 	else \
+		set -e; \
 		for t in $(TEST_BINS); do \
 			echo "=== Running $$t ==="; \
-			./$$t || exit 1; \
+			./$$t; \
 		done; \
 	fi
 
 # Run Valgrind against every test binary with strict zero-leak enforcement
 valgrind: test-build
-	@if [ -z "$(TEST_BINS)" ]; then \
+	@if [ -z "$(strip $(TEST_BINS))" ]; then \
 		echo "No tests found in $(TEST_DIR)/. Skipping Valgrind verification."; \
-		exit 0; \
 	else \
+		set -e; \
 		for t in $(TEST_BINS); do \
 			echo "=== Valgrind: $$t ==="; \
-			valgrind $(VALGRIND_FLAGS) ./$$t || exit 1; \
+			valgrind $(VALGRIND_FLAGS) ./$$t; \
 		done; \
 	fi
 
