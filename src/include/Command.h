@@ -5,16 +5,20 @@
 
 namespace tividy {
 
-// COMMAND: Command.
-template <typename IdType>
+
+template <typename T>
 class Command {
 public:
+    
     virtual ~Command();
+    
     virtual void execute() = 0;
-    virtual bool undo() = 0;                       // false if the command cannot be undone now
+    
+    virtual bool undo() = 0;
+    
     virtual std::string getDescription() const = 0;
 };
 
-} // namespace tividy
+}
 
 #endif
