@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 namespace tividy {
 
@@ -21,21 +22,20 @@ public:
 
     /** @brief Returns the participant id. */
     const T& getId() const;
+    
     /** @brief Returns the display name (used in console messages). */
     const std::string& getName() const;
 
     /** @brief Returns true if the participant has the given role. */
-    bool hasRole(const std::string& role) const;
-
-template <typename T>
-bool Participant<T>::hasRole(const std::string& role) const {
-    return std::find(roles.begin(), roles.end(), role) != roles.end();
-}
+    bool hasRole(const std::string& role) const {
+        return std::find(roles.begin(), roles.end(), role) != roles.end();
+    }
 
     /**
      * @brief Returns the number of active work items currently held by the participant. Used by LeastLoadedAssignment.
      */
     int getWorkload() const;
+    
     /** @brief Adds delta to the workload (never drops below zero). Normally called only by WorkItem. */
     void adjustWorkload(int delta);
 
