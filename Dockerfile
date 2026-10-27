@@ -2,32 +2,32 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \ 
+# Install compiler, build tools, git, SSL certificates, and debugging utilities
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         g++ \
         make \
-        cmake \ 
-        libgtest-dev \
+        cmake \
+        git \
+        ca-certificates \
         valgrind \
         gdb && \
     rm -rf /var/lib/apt/lists/*
 
-RUN cd /usr/src/googletest && \
-    cmake -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+# Build and install GoogleTest v1.12.1 configured explicitly for C++11
+# Build and install GoogleTest release-1.12.1 configured explicitly for C++11
+RUN git clone --depth=1 --branch release-1.12.1 https://github.com/google/googletest.git /tmp/googletest && \
+    cd /tmp/googletest && \
+    cmake -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=11 && \
     cmake --build build --target install && \
-    ldconfig
-
+    ldconfig && \
+    rm -rf /tmp/googletest
 
 WORKDIR /app
 
+# Copy repository structure
 COPY Makefile ./
 COPY src/ ./src/
 COPY testing/ ./testing/
 
-CMD ["make","test"]
-
-
-# docker build -t tividy-ci:latest
-# docker run --rm tividy-ci:latest make test
-# docker run --rm tividy-ci:latest make valgrind
-# docker run --rm -it -v $(pwd):/app tividy-ci:latest bash
+CMD ["make", "test"]
