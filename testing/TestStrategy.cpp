@@ -1,35 +1,74 @@
 #include <gtest/gtest.h>
-#include "Participant.h"
+#include <vector>
+#include <string>
+
+#include "AssignmentStrategy.h"
 #include "RoleAssignment.h"
 #include "LeastLoadedAssignment.h"
-#include <vector>
+#include "RuleAssignment.h"
+#include "Participant.h"
+#include "InvalidAssignmentArgumentException.h"
 
 using namespace tividy;
 
-TEST(StrategyPatternTest, RoleAssignmentSelectsMatchingRole) {
-    Participant<std::string> dev("p-1", "Alice", "Developer");
-    Participant<std::string> manager("p-2", "Bob", "Manager");
+TEST(StrategyPatternTest, RoleAssignmentFiltersByRole) {
+    EXPECT_THROW(RoleAssignment<int>(""), InvalidAssignmentArgumentException);
 
-    std::vector<Participant<std::string>*> candidates = {&manager, &dev};
-    RoleAssignment<std::string> strategy("Developer");
+    RoleAssignment<int> roleStrategy("dev");
+    EXPECT_FALSE(roleStrategy.overridesSelection());
 
-    Participant<std::string>* assigned = strategy.assign(candidates);
-    ASSERT_NE(assigned, nullptr);
-    EXPECT_EQ(assigned->getId(), "p-1");
-    EXPECT_EQ(assigned->getRole(), "Developer");
+    Participant<int> p1(1, "Alice", {"dev"});
+    Participant<int> p2(2, "Bob", {"ops"});
+
+    std::vector<Participant<int>*> candidates;
+    candidates.push_back(&p1);
+    candidates.push_back(&p2);
+
+    roleStrategy.filter(candidates);
+    ASSERT_EQ(candidates.size(), 1u);
+    EXPECT_EQ(candidates[0]->getId(), 1);
 }
 
-TEST(StrategyPatternTest, LeastLoadedAssignmentPicksLowestWorkload) {
-    Participant<std::string> p1("p-1", "Alice", "Developer");
-    Participant<std::string> p2("p-2", "Bob", "Developer");
+TEST(StrategyPatternTest, LeastLoadedAssignmentSortsByAscendingWorkload) {
+    LeastLoadedAssignment<int> strategy;
+    EXPECT_FALSE(strategy.overridesSelection());
 
-    p1.setWorkload(5);
-    p2.setWorkload(2);
+    Participant<int> p1(1, "Alice", {"dev"});
+    Participant<int> p2(2, "Bob", {"ops"});
+    Participant<int> p3(3, "Carol", {"dev"});
 
-    std::vector<Participant<std::string>*> candidates = {&p1, &p2};
-    LeastLoadedAssignment<std::string> strategy;
+    p1.adjustWorkload(5);
+    p2.adjustWorkload(1);
+    p3.adjustWorkload(3);
 
-    Participant<std::string>* assigned = strategy.assign(candidates);
-    ASSERT_NE(assigned, nullptr);
-    EXPECT_EQ(assigned->getId(), "p-2");
+    std::vector<Participant<int>*> candidates;
+    candidates.push_back(&p1);
+    candidates.push_back(&p2);
+    candidates.push_back(&p3);
+
+    strategy.filter(candidates);
+    ASSERT_EQ(candidates.size(), 3u);
+    EXPECT_EQ(candidates[0]->getId(), 2); // 1
+    EXPECT_EQ(candidates[1]->getId(), 3); // 3
+    EXPECT_EQ(candidates[2]->getId(), 1); // 5
+}
+
+TEST(StrategyPatternTest, RuleAssignmentOverridesSelectionAndTruncates) {
+    RuleAssignment<int> strategy;
+    EXPECT_TRUE(strategy.overridesSelection());
+
+    Participant<int> p1(1, "Alice", {"dev"});
+    Participant<int> p2(2, "Bob", {"ops"});
+    Participant<int> p3(3, "Carol", {"dev"});
+
+    std::vector<Participant<int>*> candidates;
+    candidates.push_back(&p1);
+    candidates.push_back(&p2);
+    candidates.push_back(&p3);
+
+    strategy.filter(candidates);
+    EXPECT_EQ(candidates.size(), 3u);
+
+    strategy.select(candidates, 2);
+    EXPECT_EQ(candidates.size(), 2u);
 }
