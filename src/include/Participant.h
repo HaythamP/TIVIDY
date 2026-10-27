@@ -27,9 +27,7 @@ public:
     const std::string& getName() const;
 
     /** @brief Returns true if the participant has the given role. */
-    bool hasRole(const std::string& role) const {
-        return std::find(roles.begin(), roles.end(), role) != roles.end();
-    }
+    bool hasRole(const std::string& role) const;
 
     /**
      * @brief Returns the number of active work items currently held by the participant. Used by LeastLoadedAssignment.
