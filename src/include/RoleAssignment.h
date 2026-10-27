@@ -6,17 +6,17 @@
 
 namespace tividy {
 
-// STRATEGY: ConcreteStrategy. Keeps only participants that hold the required role.
-template <typename IdType>
-class RoleAssignment : public AssignmentStrategy<IdType> {
+template <typename T>
+class RoleAssignment : public AssignmentStrategy<T> {
 public:
     explicit RoleAssignment(const std::string& role);
-    void filter(std::vector<Participant<IdType>*>& candidates) const override;
-    AssignmentStrategy<IdType>* copy() const override;
+
+    void filter(std::vector<Participant<T>*>& candidates) const override;
+
 private:
     std::string role;
 };
 
-} // namespace tividy
+}
 
 #endif
