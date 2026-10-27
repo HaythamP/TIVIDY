@@ -2,23 +2,20 @@
 #define FALLBACKHANDLER_H
 
 #include "Handler.h"
-#include "Participant.h"
 
 namespace tividy {
 
 template <typename T>
 class FallbackHandler : public Handler<T> {
 public:
-    explicit FallbackHandler(Participant<T>* participant);
+    FallbackHandler();
 
 protected:
-    bool canHandle(const WorkComponent<T>& work) const override;
-    bool process(WorkComponent<T>& work) override;
-
-private:
-    Participant<T>* participant;
+    bool canHandle(const WorkComponent<T>& work, int position) const override;
+    void process(WorkComponent<T>& work) override;
+    Handler<T>* cloneSelf() const override;
 };
 
-} // namespace tividy
+}
 
 #endif

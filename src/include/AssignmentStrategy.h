@@ -10,10 +10,12 @@ template <typename T>
 class AssignmentStrategy {
 public:
     virtual ~AssignmentStrategy();
-    virtual void filter(std::vector<Participant<T>*>& candidates, int numAssignees) const = 0;
-    virtual AssignmentStrategy<T>* copy() const = 0;
+
+    virtual void filter(std::vector<Participant<T>*>& candidates) const = 0;
+    virtual bool overridesSelection() const;
+    virtual void select(std::vector<Participant<T>*>& candidates, int numAssignees) const;
 };
 
-} // namespace tividy
+}
 
 #endif

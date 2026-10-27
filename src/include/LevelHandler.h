@@ -9,16 +9,21 @@ namespace tividy {
 template <typename T>
 class LevelHandler : public Handler<T> {
 public:
-    explicit LevelHandler(Participant<T>* participant);
+    LevelHandler(Participant<T>* participant, int level);
+
+    Participant<T>* getParticipant() const override;
+    int getLevel() const;
 
 protected:
-    bool canHandle(const WorkComponent<T>& work) const override;
-    bool process(WorkComponent<T>& work) override;
+    bool canHandle(const WorkComponent<T>& work, int position) const override;
+    void process(WorkComponent<T>& work) override;
+    Handler<T>* cloneSelf() const override;
 
 private:
     Participant<T>* participant;
+    int level;
 };
 
-} // namespace tividy
+}
 
 #endif

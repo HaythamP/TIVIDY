@@ -5,14 +5,12 @@
 
 namespace tividy {
 
-// STRATEGY: ConcreteStrategy. Keeps only the participants with the lowest workload.
-template <typename IdType>
-class LeastLoadedAssignment : public AssignmentStrategy<IdType> {
+template <typename T>
+class LeastLoadedAssignment : public AssignmentStrategy<T> {
 public:
-    void filter(std::vector<Participant<IdType>*>& candidates) const override;
-    AssignmentStrategy<IdType>* copy() const override;
+    void filter(std::vector<Participant<T>*>& candidates) const override;
 };
 
-} // namespace tividy
+}
 
 #endif

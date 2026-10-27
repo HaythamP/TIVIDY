@@ -4,7 +4,7 @@
 namespace tividy {
 
 template <typename T> class WorkComponent;
-
+template <typename T> class Participant;
 
 template <typename T>
 class Handler {
@@ -14,11 +14,16 @@ public:
 
     void setNext(Handler<T>* next);
     Handler<T>* getNext() const;
-    Handler<T>* handle(WorkComponent<T>& work);
+
+    Handler<T>* handle(WorkComponent<T>& work, int position);
+    Handler<T>* copy() const;
+
+    virtual Participant<T>* getParticipant() const;
 
 protected:
-    virtual bool canHandle(const WorkComponent<T>& work) const = 0;
-    virtual bool process(WorkComponent<T>& work) = 0;
+    virtual bool canHandle(const WorkComponent<T>& work, int position) const = 0;
+    virtual void process(WorkComponent<T>& work) = 0;
+    virtual Handler<T>* cloneSelf() const = 0;
 
 private:
     Handler(const Handler&) = delete;
@@ -27,6 +32,6 @@ private:
     Handler<T>* next;
 };
 
-} // namespace tividy
+}
 
 #endif
