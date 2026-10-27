@@ -16,7 +16,9 @@ VALGRIND_FLAGS  := --leak-check=full --show-leak-kinds=all --track-origins=yes -
 .SECONDARY:
 
 # Gather all .cpp files in src except main.cpp
-LIB_SRCS := $(filter-out $(SRC_DIR)/main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
+# Temporarily exclude state implementations until WorkItem.cpp and RejectedState.cpp are added
+STATE_SRCS      := $(wildcard $(SRC_DIR)/*State.cpp)
+LIB_SRCS        := $(filter-out $(SRC_DIR)/main.cpp $(STATE_SRCS), $(wildcard $(SRC_DIR)/*.cpp))
 LIB_OBJS        := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(LIB_SRCS))
 
 # Discovers whatever tests exist in testing/ (TestExceptions, TestSanity, etc.)
