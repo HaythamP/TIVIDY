@@ -48,9 +48,9 @@ TEST(StrategyPatternTest, LeastLoadedAssignmentSortsByAscendingWorkload) {
 
     strategy.filter(candidates);
     ASSERT_EQ(candidates.size(), 3u);
-    EXPECT_EQ(candidates[0]->getId(), 2); // 1
-    EXPECT_EQ(candidates[1]->getId(), 3); // 3
-    EXPECT_EQ(candidates[2]->getId(), 1); // 5
+    EXPECT_EQ(candidates[0]->getId(), 2);
+    EXPECT_EQ(candidates[1]->getId(), 3);
+    EXPECT_EQ(candidates[2]->getId(), 1);
 }
 
 TEST(StrategyPatternTest, RuleAssignmentOverridesSelectionAndTruncates) {
