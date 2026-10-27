@@ -27,6 +27,11 @@ public:
     /** @brief Returns true if the participant has the given role. */
     bool hasRole(const std::string& role) const;
 
+template <typename T>
+bool Participant<T>::hasRole(const std::string& role) const {
+    return std::find(roles.begin(), roles.end(), role) != roles.end();
+}
+
     /**
      * @brief Returns the number of active work items currently held by the participant. Used by LeastLoadedAssignment.
      */
