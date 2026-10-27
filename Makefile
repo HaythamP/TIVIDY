@@ -19,8 +19,8 @@ LIB_SRCS       := $(wildcard $(SRC_DIR)/*Exception.cpp)
 LIB_OBJS       := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(LIB_SRCS))
 
 # Discover all modular test suites in testing/
-TEST_SRCS      := $(wildcard $(TEST_DIR)/test*.cpp)
-TEST_BINS      := $(patsubst $(TEST_DIR)/test%.cpp, $(BIN_DIR)/test%, $(TEST_SRCS))
+TEST_SRCS      := $(wildcard $(TEST_DIR)/Test*.cpp)
+TEST_BINS      := $(patsubst $(TEST_DIR)/Test%.cpp, $(BIN_DIR)/Test%, $(TEST_SRCS))
 
 # Default target builds all tests while main.cpp is not ready
 all: test-build
@@ -31,7 +31,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Build each test binary independently
-$(BIN_DIR)/test_%: $(TEST_DIR)/test_%.cpp $(LIB_OBJS)
+$(BIN_DIR)/Test%: $(TEST_DIR)/Test%.cpp $(LIB_OBJS)
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@ $(TEST_LDFLAGS)
 
