@@ -17,17 +17,13 @@ template <typename T>
 class Participant {
 public:
     /** @brief Creates a participant with an id, a display name, no roles and zero workload. */
-    Participant(const T& id, const std::string& name);
+    Participant(const T& id, const std::string& name, std::vector<std::string> roles);
 
     /** @brief Returns the participant id. */
     const T& getId() const;
     /** @brief Returns the display name (used in console messages). */
     const std::string& getName() const;
 
-    /**
-     * @brief Adds a role such as "engineer" (duplicates are ignored). Roles are matched by RoleAssignment.
-     */
-    void addRole(const std::string& role);
     /** @brief Returns true if the participant has the given role. */
     bool hasRole(const std::string& role) const;
 
