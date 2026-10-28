@@ -5,6 +5,7 @@
 
 namespace tividy {
 
+/** @brief ConcreteState: Participants chosen. Allowed: start to InProgress, cancel to Cancelled. */
 template <typename T>
 class AssignedState : public WorkItemState<T> {
 public:
