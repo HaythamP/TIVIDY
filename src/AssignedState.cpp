@@ -16,4 +16,17 @@ WorkItemState<T>* AssignedState<T>::copy() const {
     return new AssignedState<T>();
 }
 
+template <typename T>
+void AssignedState<T>::start(WorkItem<T>& item) {
+    item.setState(new InProgressState<T>());
+}
+
+template <typename T>
+void AssignedState<T>::cancel(WorkItem<T>& item) {
+    item.setState(new CancelledState<T>());
+}
+
+template class AssignedState<int>;
+template class AssignedState<std::string>;
+
 }
