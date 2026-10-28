@@ -5,6 +5,9 @@
 
 namespace tividy {
 
+/**
+ * @brief ConcreteState: An approval chain is running. Allowed: complete to Completed, reject to a restartable Rejected, cancel to Cancelled, approve (stays in Approval while the chain advances).
+ */
 template <typename T>
 class ApprovalState : public WorkItemState<T> {
 public:
