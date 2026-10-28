@@ -23,4 +23,20 @@ template <typename T>
 void InProgressState<T>::complete(WorkItem<T>& item) {
     item.setState(new CompletedState<T>());
 }
+
+template <typename T>
+void InProgressState<T>::reject(WorkItem<T>& item) {
+    item.setState(new RejectedState<T>());
+}
+
+template <typename T>
+void InProgressState<T>::escalate(WorkItem<T>& item) {
+    item.setState(new EscalatedState<T>());
+}
+
+template <typename T>
+void InProgressState<T>::approve(WorkItem<T>& item) {
+    item.setState(new ApprovalState<T>());
+}
+
 }
