@@ -1,3 +1,5 @@
+#include "CreatedState.h"
+#include "AvailableState.h"
 #include "CancelledState.h"
 #include "WorkItem.h"
 #include <string>
@@ -12,6 +14,11 @@ std::string CreatedState<T>::getName() const {
 template <typename T>
 WorkItemState<T>* CreatedState<T>::copy() const {
     return new CreatedState<T>();
+}
+
+template <typename T>
+void CreatedState<T>::makeAvailable(WorkItem<T>& item) {
+    item.setState(new AvailableState<T>());
 }
 
 }
