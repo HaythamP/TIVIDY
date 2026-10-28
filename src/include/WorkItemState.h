@@ -1,36 +1,65 @@
-#ifndef WORKITEMSTATE_H
-#define WORKITEMSTATE_H
-
-#include <string>
-#include <vector>
+#include "WorkItemState.h"
+#include "InvalidTransitionException.h"
 
 namespace tividy {
 
-template <typename T> class WorkItem;
-template <typename T> class Participant;
+template <typename T>
+WorkItemState<T>::~WorkItemState() {}
 
 template <typename T>
-class WorkItemState {
-public:
-    virtual ~WorkItemState();
-
-    virtual std::string getName() const = 0;
-    virtual WorkItemState<T>* copy() const = 0;
-
-    virtual bool isComplete() const;
-    virtual bool isAvailable() const;
-    virtual bool isTerminal() const;
-
-    virtual void makeAvailable(WorkItem<T>& item);
-    virtual void assign(WorkItem<T>& item, const std::vector<Participant<T>*>& participants);
-    virtual void start(WorkItem<T>& item);
-    virtual void complete(WorkItem<T>& item);
-    virtual void reject(WorkItem<T>& item);
-    virtual void cancel(WorkItem<T>& item);
-    virtual void escalate(WorkItem<T>& item);
-    virtual void approve(WorkItem<T>& item);
-};
-
+bool WorkItemState<T>::isComplete() const {
+    return false;
 }
 
-#endif
+template <typename T>
+bool WorkItemState<T>::isAvailable() const {
+    return false;
+}
+
+template <typename T>
+bool WorkItemState<T>::isTerminal() const {
+    return false;
+}
+
+template <typename T>
+void WorkItemState<T>::makeAvailable(WorkItem<T>& item) {}
+
+template <typename T>
+void WorkItemState<T>::assign(WorkItem<T>& item, const std::vector<Participant<T>*>& participants) {
+    throw InvalidTransitionException(getName(), "assign");
+}
+
+template <typename T>
+void WorkItemState<T>::start(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "start");
+}
+
+template <typename T>
+void WorkItemState<T>::complete(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "complete");
+}
+
+template <typename T>
+void WorkItemState<T>::reject(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "reject");
+}
+
+template <typename T>
+void WorkItemState<T>::cancel(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "cancel");
+}
+
+template <typename T>
+void WorkItemState<T>::escalate(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "escalate");
+}
+
+template <typename T>
+void WorkItemState<T>::approve(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "approve");
+}
+
+template class WorkItemState<int>;
+template class WorkItemState<std::string>;
+
+}
