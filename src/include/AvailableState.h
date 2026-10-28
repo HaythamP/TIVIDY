@@ -5,6 +5,9 @@
 
 namespace tividy {
 
+/**
+ * @brief ConcreteState: Ready to be assigned. Allowed: assign to Assigned (stores the assignees), cancel to Cancelled.
+ */
 template <typename T>
 class AvailableState : public WorkItemState<T> {
 public:
@@ -18,3 +21,4 @@ public:
 }
 
 #endif
+

@@ -5,6 +5,9 @@
 
 namespace tividy {
 
+/**
+ * @brief ConcreteState: terminal state. The workflow halts because nothing after a cancelled item is released.
+ */
 template <typename T>
 class CancelledState : public WorkItemState<T> {
 public:
