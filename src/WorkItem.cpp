@@ -56,3 +56,55 @@ template <typename T>
 bool WorkItem<T>::isComplete() const {
     return state->isComplete();
 }
+
+template <typename T>
+bool WorkItem<T>::isAvailable() const {
+    return state->isAvailable();
+}
+
+template <typename T>
+std::vector<Participant<T>*> WorkItem<T>::assignWork(const std::vector<Participant<T>*>& pool, const std::vector<AssignmentStrategy<T>*>& strategies, int numAssignees) const {
+    if (numAssignees == 0 || numAssignees < -1) {
+        throw InvalidAssignmentArgumentException("numAssignees must be -1 (everyone) or a positive number");
+    }
+    if (pool.empty()) {
+        throw InvalidAssignmentArgumentException("The assignment pool is empty");
+    }
+    for (std::size_t i = 0; i < pool.size(); ++i) {
+        if (pool[i] == nullptr) {
+            throw InvalidAssignmentArgumentException("The assignment pool contains a null participant");
+        }
+        for (std::size_t j = 0; j < i; ++j) {
+            if (pool[j] == pool[i] || pool[j]->getId() == pool[i]->getId()) {
+                throw InvalidAssignmentArgumentException("The assignment pool contains a duplicate participant");
+            }
+        }
+    }
+    for (std::size_t i = 0; i < strategies.size(); ++i) {
+        if (strategies[i] == nullptr) {
+            throw InvalidAssignmentArgumentException("A null assignment strategy was supplied");
+        }
+    }
+
+    std::vector<Participant<T>*> candidates(pool);
+    const AssignmentStrategy<T>* selector = nullptr;
+    for (std::size_t i = 0; i < strategies.size(); ++i) {
+        strategies[i]->filter(candidates);
+        if (selector == nullptr && strategies[i]->overridesSelection()) {
+            selector = strategies[i];
+        }
+    }
+
+    int required = numAssignees == -1 ? static_cast<int>(candidates.size()) : numAssignees;
+    if (candidates.empty() || static_cast<int>(candidates.size()) < required) {
+        throw InsufficientParticipantsException("Not enough eligible participants for " + name);
+    }
+
+    if (selector != nullptr) {
+        selector->select(candidates, required);
+    } else {
+        candidates.resize(static_cast<std::size_t>(required));
+    }
+    return candidates;
+}
+
