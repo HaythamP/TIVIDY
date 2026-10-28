@@ -44,4 +44,22 @@ void WorkItemState<T>::reject(WorkItem<T>& item) {
     throw InvalidTransitionException(getName(), "reject");
 }
 
+template <typename T>
+void WorkItemState<T>::cancel(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "cancel");
+}
+
+template <typename T>
+void WorkItemState<T>::escalate(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "escalate");
+}
+
+template <typename T>
+void WorkItemState<T>::approve(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "approve");
+}
+
+template class WorkItemState<int>;
+template class WorkItemState<std::string>;
+
 }
