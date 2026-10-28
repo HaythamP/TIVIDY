@@ -37,4 +37,12 @@ template <typename T>
 void EscalatedState<T>::escalate(WorkItem<T>& item) {
 }
 
+template <typename T>
+void EscalatedState<T>::approve(WorkItem<T>& item) {
+    item.setState(new ApprovalState<T>());
+}
+
+template class EscalatedState<int>;
+template class EscalatedState<std::string>;
+
 }
