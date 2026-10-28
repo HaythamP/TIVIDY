@@ -223,3 +223,25 @@ void WorkItem<T>::setState(WorkItemState<T>* newState) {
         adjustWorkloads(1);
     }
 }
+
+
+template <typename T>
+void WorkItem<T>::setAssignees(const std::vector<Participant<T>*>& participants) {
+    if (holdsWorkload()) {
+        adjustWorkloads(-1);
+    }
+    assignees = participants;
+    if (holdsWorkload()) {
+        adjustWorkloads(1);
+    }
+    std::cout << "  [" << name << "] assigned to ";
+    for (std::size_t i = 0; i < assignees.size(); ++i) {
+        std::cout << (i > 0 ? ", " : "") << assignees[i]->getName() << " (workload " << assignees[i]->getWorkload() << ")";
+    }
+    std::cout << std::endl;
+}
+
+template class WorkItem<int>;
+template class WorkItem<std::string>;
+
+}
