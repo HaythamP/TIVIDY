@@ -14,4 +14,17 @@ WorkItemState<T>* CompletedState<T>::copy() const {
     return new CompletedState<T>();
 }
 
+template <typename T>
+bool CompletedState<T>::isComplete() const {
+    return true;
+}
+
+template <typename T>
+bool CompletedState<T>::isTerminal() const {
+    return true;
+}
+
+template class CompletedState<int>;
+template class CompletedState<std::string>;
+
 }
