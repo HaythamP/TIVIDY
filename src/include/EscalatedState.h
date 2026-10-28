@@ -5,6 +5,9 @@
 
 namespace tividy {
 
+/**
+ * @brief ConcreteState: An escalation chain is running. Allowed: complete to Completed, reject to Rejected, cancel to Cancelled, escalate (stays Escalated while the chain advances), approve to Approval (hand-over when the item also needs approval).
+ */
 template <typename T>
 class EscalatedState : public WorkItemState<T> {
 public:
@@ -20,3 +23,4 @@ public:
 }
 
 #endif
+
