@@ -21,5 +21,12 @@ bool WorkItemState<T>::isTerminal() const {
     return false;
 }
 
+template <typename T>
+void WorkItemState<T>::makeAvailable(WorkItem<T>& item) {}
+
+template <typename T>
+void WorkItemState<T>::assign(WorkItem<T>& item, const std::vector<Participant<T>*>& participants) {
+    throw InvalidTransitionException(getName(), "assign");
+}
 
 }
