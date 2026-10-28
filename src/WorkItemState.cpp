@@ -29,4 +29,19 @@ void WorkItemState<T>::assign(WorkItem<T>& item, const std::vector<Participant<T
     throw InvalidTransitionException(getName(), "assign");
 }
 
+template <typename T>
+void WorkItemState<T>::start(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "start");
+}
+
+template <typename T>
+void WorkItemState<T>::complete(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "complete");
+}
+
+template <typename T>
+void WorkItemState<T>::reject(WorkItem<T>& item) {
+    throw InvalidTransitionException(getName(), "reject");
+}
+
 }
