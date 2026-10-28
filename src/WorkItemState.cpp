@@ -11,4 +11,15 @@ bool WorkItemState<T>::isComplete() const {
     return false;
 }
 
+template <typename T>
+bool WorkItemState<T>::isAvailable() const {
+    return false;
+}
+
+template <typename T>
+bool WorkItemState<T>::isTerminal() const {
+    return false;
+}
+
+
 }
