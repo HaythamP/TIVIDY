@@ -27,4 +27,12 @@ void AvailableState<T>::assign(WorkItem<T>& item, const std::vector<Participant<
     item.setState(new AssignedState<T>());
 }
 
+template <typename T>
+void AvailableState<T>::cancel(WorkItem<T>& item) {
+    item.setState(new CancelledState<T>());
+}
+
+template class AvailableState<int>;
+template class AvailableState<std::string>;
+
 }
