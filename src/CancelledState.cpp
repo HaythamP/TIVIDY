@@ -14,4 +14,12 @@ WorkItemState<T>* CancelledState<T>::copy() const {
     return new CancelledState<T>();
 }
 
+template <typename T>
+bool CancelledState<T>::isTerminal() const {
+    return true;
+}
+
+template class CancelledState<int>;
+template class CancelledState<std::string>;
+
 }
