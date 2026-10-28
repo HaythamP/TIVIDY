@@ -108,3 +108,59 @@ std::vector<Participant<T>*> WorkItem<T>::assignWork(const std::vector<Participa
     return candidates;
 }
 
+template <typename T>
+void WorkItem<T>::assignTo(const std::vector<Participant<T>*>& participants) {
+    if (participants.empty()) {
+        throw InvalidAssignmentArgumentException("Cannot assign an empty list of participants");
+    }
+    for (std::size_t i = 0; i < participants.size(); ++i) {
+        if (participants[i] == nullptr) {
+            throw InvalidAssignmentArgumentException("Cannot assign a null participant");
+        }
+    }
+    state->assign(*this, participants);
+}
+
+template <typename T>
+void WorkItem<T>::start() {
+    state->start(*this);
+}
+
+template <typename T>
+void WorkItem<T>::complete() {
+    state->complete(*this);
+    if (state->isComplete() && this->mediator != nullptr) {
+        this->mediator->notify(this);
+    }
+}
+
+template <typename T>
+void WorkItem<T>::reject() {
+    state->reject(*this);
+}
+
+template <typename T>
+void WorkItem<T>::cancel() {
+    state->cancel(*this);
+}
+
+template <typename T>
+void WorkItem<T>::escalate() {
+    state->escalate(*this);
+}
+
+template <typename T>
+void WorkItem<T>::approve() {
+    state->approve(*this);
+}
+
+template <typename T>
+WorkMemento<T>* WorkItem<T>::createMemento() const {
+    WorkItemState<T>* snapshot = state->copy();
+    try {
+        return new WorkMemento<T>(snapshot, assignees);
+    } catch (...) {
+        delete snapshot;
+        throw;
+    }
+}
