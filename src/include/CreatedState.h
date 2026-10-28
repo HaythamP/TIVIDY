@@ -5,6 +5,7 @@
 
 namespace tividy {
 
+/** @brief ConcreteState: Initial state. Allowed: makeAvailable to Available, cancel to Cancelled. */
 template <typename T>
 class CreatedState : public WorkItemState<T> {
 public:
