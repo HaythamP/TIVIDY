@@ -39,4 +39,12 @@ void InProgressState<T>::approve(WorkItem<T>& item) {
     item.setState(new ApprovalState<T>());
 }
 
+template <typename T>
+void InProgressState<T>::cancel(WorkItem<T>& item) {
+    item.setState(new CancelledState<T>());
+}
+
+template class InProgressState<int>;
+template class InProgressState<std::string>;
+
 }
