@@ -19,4 +19,25 @@ WorkItemState<T>* RejectedState<T>::copy() const {
     return new RejectedState<T>(restartable);
 }
 
+template <typename T>
+bool RejectedState<T>::isTerminal() const {
+    return true;
+}
+
+template <typename T>
+bool RejectedState<T>::isRestartable() const {
+    return restartable;
+}
+
+template <typename T>
+void RejectedState<T>::start(WorkItem<T>& item) {
+    if (!restartable) {
+        throw InvalidTransitionException(getName(), "start");
+    }
+    item.setState(new InProgressState<T>());
+}
+
+template class RejectedState<int>;
+template class RejectedState<std::string>;
+
 }
