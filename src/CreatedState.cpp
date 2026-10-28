@@ -21,4 +21,12 @@ void CreatedState<T>::makeAvailable(WorkItem<T>& item) {
     item.setState(new AvailableState<T>());
 }
 
+template <typename T>
+void CreatedState<T>::cancel(WorkItem<T>& item) {
+    item.setState(new CancelledState<T>());
+}
+
+template class CreatedState<int>;
+template class CreatedState<std::string>;
+
 }
