@@ -5,6 +5,7 @@
 
 namespace tividy {
 
+/** @brief ConcreteState: terminal state. The item is finished and the Mediator releases the next step. */
 template <typename T>
 class CompletedState : public WorkItemState<T> {
 public:
