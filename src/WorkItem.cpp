@@ -164,3 +164,62 @@ WorkMemento<T>* WorkItem<T>::createMemento() const {
         throw;
     }
 }
+
+
+template <typename T>
+void WorkItem<T>::restore(const WorkMemento<T>& memento) {
+    if (holdsWorkload()) {
+        adjustWorkloads(-1);
+    }
+    WorkItemState<T>* restored = memento.getState()->copy();
+    delete state;
+    state = restored;
+    assignees = memento.getAssignees();
+    if (holdsWorkload()) {
+        adjustWorkloads(1);
+    }
+    std::cout << "  [" << name << "] restored to " << state->getName() << std::endl;
+}
+
+template <typename T>
+WorkComponent<T>* WorkItem<T>::copy() const {
+    return new WorkItem<T>(id, name);
+}
+
+template <typename T>
+void WorkItem<T>::accept(WorkVisitor<T>& visitor) {
+    visitor.visit(*this);
+}
+
+template <typename T>
+WorkIterator<T>* WorkItem<T>::createIterator() {
+    std::vector<WorkComponent<T>*> roots(1, this);
+    return new DepthFirstIterator<T>(roots);
+}
+
+template <typename T>
+bool WorkItem<T>::holdsWorkload() const {
+    return !assignees.empty() && !state->isTerminal();
+}
+
+template <typename T>
+void WorkItem<T>::adjustWorkloads(int delta) {
+    for (std::size_t i = 0; i < assignees.size(); ++i) {
+        assignees[i]->adjustWorkload(delta);
+    }
+}
+
+template <typename T>
+void WorkItem<T>::setState(WorkItemState<T>* newState) {
+    bool before = holdsWorkload();
+    WorkItemState<T>* old = state;
+    std::cout << "  [" << name << "] " << old->getName() << " -> " << newState->getName() << std::endl;
+    state = newState;
+    delete old;
+    bool after = holdsWorkload();
+    if (before && !after) {
+        adjustWorkloads(-1);
+    } else if (!before && after) {
+        adjustWorkloads(1);
+    }
+}
