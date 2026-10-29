@@ -1,0 +1,20 @@
+01, Zainab Al-Fassi, Driver
+02, Lucas Meyer, Dispatcher
+03, Palesa Mocumi, Warehouse Worker
+04, Dmitri Volkov, Forklift Operator
+05, Imani Juma, Loader
+06, Wesley Snipes, Courier
+07, Thandi Modise, Supervisor
+08, Arjun Rampal, Customer Service Agent
+09, Freya Lindqvist, Planner
+10, Sibusiso Vilakazi, Clerk
+11, Leila Brahimi, Mechanic
+12, Connor MacLeod, Security Guard
+13, Mpho Phalatse, Administrator
+14, Ines de Castro, Accountant
+15, Vusi Pikoli, Inspector
+16, Nadia Comaneci, Team Leader
+17, Felix Hoffmann, Fleet Manager
+18, Refilwe Ledwaba, Operations Manager
+19, Omar Khan, Director
+20, Rayhaan Ahmed, CEO
