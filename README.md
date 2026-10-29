@@ -23,9 +23,15 @@ The dependencies required to build and verify TIVIDY mirror the packages install
 
 ---
 
-## 2. Docker Instructions (Highly Recommended)
+## 2. Instructions (Docker Highly Recommended)
 
 ```bash
+# Clone the repository onto your machine
+git clone https://github.com/HaythamP/TIVIDY.git
+
+# Ensure you are in the main branch by running
+git checkout main
+
 # Build the Docker Image
 docker build -t tividy-ci:latest .
 
@@ -46,6 +52,7 @@ docker stop <tividy-ci:latest>
 ```
 
 ## Quick Links !remember to put links as the URL!
+View the [Demo Slides]()  
 View the Final [Report]()  
 View the Final [Activity Diagram 1]()  
 View the Final [Activity Diagram 2]()  
@@ -56,16 +63,8 @@ View the Final [Sequence Diagram 2]()
 View the Final [UML Class Diagram]()  
 View the [src](src) folder  
 View the [testing](testing) folder  
-View the [demo slides]() 
 
-
-
-
-
-## Team Contributions
-
-**Team: Power Rangers**
-
+---
 | Profile | Key Contributions |
 |:---:|---|
 | <img src="assets/rayhaan_object_diagram.jpg" width="450" height="150%" alt="Rayhaan Ahmed"> | Activity Diagram 3, GUI, Implementation: Command, Memento |
