@@ -1,25 +1,30 @@
 #ifndef APPROVECOMMAND_H
 #define APPROVECOMMAND_H
 
-#include <vector>
 #include "WorkCommand.h"
-#include "Participant.h"
 
 namespace tividy {
 
+/**
+ * @brief ConcreteCommand: starts or advances the approval chain of the target; the last approver completes it.
+ *
+ * @throws UnsupportedOperationException when the target has no ApprovedWork.
+ */
 template <typename T>
 class ApproveCommand : public WorkCommand<T> {
 public:
-    ApproveCommand(WorkComponent<T>* target, const std::vector<Participant<T>*>& participants);
+    /** @brief Creates the command for the target. */
+    explicit ApproveCommand(WorkComponent<T>* target);
+    /** @brief Returns the description, for example the verb and the item name. */
     std::string getDescription() const override;
 
 protected:
+    /** @brief Calls the matching operation on the target. */
     void perform() override;
-
-private:
-    std::vector<Participant<T>*> participants;
+    /** @brief Target plus successor items. */
+    std::vector<WorkComponent<T>*> getAffected() const override;
 };
 
-} // namespace tividy
+}
 
 #endif

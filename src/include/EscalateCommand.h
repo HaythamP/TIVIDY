@@ -1,25 +1,30 @@
 #ifndef ESCALATECOMMAND_H
 #define ESCALATECOMMAND_H
 
-#include <vector>
 #include "WorkCommand.h"
-#include "Participant.h"
 
 namespace tividy {
 
+/**
+ * @brief ConcreteCommand: starts or advances the escalation chain of the target.
+ *
+ * @throws UnsupportedOperationException when the target has no EscalatedWork.
+ */
 template <typename T>
 class EscalateCommand : public WorkCommand<T> {
 public:
-    EscalateCommand(WorkComponent<T>* target, const std::vector<Participant<T>*>& participants);
+    /** @brief Creates the command for the target. */
+    explicit EscalateCommand(WorkComponent<T>* target);
+    /** @brief Returns the description, for example the verb and the item name. */
     std::string getDescription() const override;
 
 protected:
+    /** @brief Calls the matching operation on the target. */
     void perform() override;
-
-private:
-    std::vector<Participant<T>*> participants;
+    /** @brief Target plus successor items. */
+    std::vector<WorkComponent<T>*> getAffected() const override;
 };
 
-} // namespace tividy
+}
 
 #endif
