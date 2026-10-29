@@ -55,3 +55,17 @@ void AuditedWork<T>::cancel() {
     this->inner->cancel();
     record("cancel", before);
 }
+
+template <typename T>
+void AuditedWork<T>::escalate() {
+    std::string before = this->inner->getStateName();
+    this->inner->escalate();
+    record("escalate", before);
+}
+
+template <typename T>
+void AuditedWork<T>::approve() {
+    std::string before = this->inner->getStateName();
+    this->inner->approve();
+    record("approve", before);
+}
