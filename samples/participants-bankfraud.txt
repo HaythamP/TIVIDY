@@ -1,0 +1,20 @@
+01, Anouk van der Merwe, Bank Teller
+02, Reuben Coetzee, Bank Manager
+03, Siya Kolisi, Loan Officer
+04, Hana Al-Mansoor, Accountant
+05, Wouter Basson, Auditor
+06, Nandi Mthembu, Investigator
+07, Jamal Malik, Security Guard
+08, Ilse Schneider, Customer Service Agent
+09, Lungile Dlamini, Receptionist
+10, Ezra Miller, Analyst
+11, Mariam Khan, Lawyer
+12, Tyrone Hendricks, Administrator
+13, Zola Mokoena, Supervisor
+14, Katya Petrova, Team Leader
+15, Ruan Pretorius, Branch Manager
+16, Asanda Khumalo, Relationship Manager
+17, Basil Joseph, Clerk
+18, Joanna Smit, Director
+19, Kyle Naicker, CEO
+20, Thato Maseko, Secretary
