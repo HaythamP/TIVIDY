@@ -31,19 +31,17 @@ The dependencies required to build and verify TIVIDY mirror the packages install
 ```bash
 docker build -t tividy-ci:latest .
 
-### Run Unit Tests
-```bash
+# Run Unit Tests
 docker run --rm tividy-ci:latest make test
 
-### Run Valgrind
-```bash
+# Run Valgrind
 docker run --rm tividy-ci:latest make valgrind
 
-### Stop Container
-```bash
+# Stop Container
 docker stop <tividy-ci:latest>
 
 
+```
 
 ## Team Contributions
 
@@ -66,3 +64,9 @@ docker stop <tividy-ci:latest>
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 ![GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25?style=for-the-badge&logo=GNU%20Bash&logoColor=white)
 ![Makefile](https://img.shields.io/badge/Makefile-064F8C?style=for-the-badge&logo=gnu&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
