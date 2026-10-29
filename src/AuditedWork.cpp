@@ -69,3 +69,20 @@ void AuditedWork<T>::approve() {
     this->inner->approve();
     record("approve", before);
 }
+
+template <typename T>
+void AuditedWork<T>::restore(const WorkMemento<T>& memento) {
+    std::string before = this->inner->getStateName();
+    this->inner->restore(memento);
+    record("undone", before);
+}
+
+template <typename T>
+std::vector<std::string> AuditedWork<T>::getAuditLog() const {
+    return auditLog;
+}
+
+template <typename T>
+void AuditedWork<T>::addAuditEntry(const std::string& entry) {
+    auditLog.push_back(entry);
+}
