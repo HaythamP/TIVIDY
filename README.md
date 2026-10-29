@@ -25,22 +25,42 @@ The dependencies required to build and verify TIVIDY mirror the packages install
 
 ## 2. Docker Instructions (Highly Recommended)
 
-
-
-### Build the Docker Image
 ```bash
+# Build the Docker Image
 docker build -t tividy-ci:latest .
 
 # Run Unit Tests
-docker run --rm tividy-ci:latest make test
+docker run --rm tividy-ci:latest make test-unit
+
+# Run Integration Tests
+docker run --rm tividy-ci:latest make test-integration
+
+# Run End to End Tests
+docker run --rm tividy-ci:latest make test-e2e
 
 # Run Valgrind
 docker run --rm tividy-ci:latest make valgrind
 
 # Stop Container
 docker stop <tividy-ci:latest>
-
 ```
+
+## Quick Links !remember to put links as the URL!
+View the Final [Report]()  
+View the Final [Activity Diagram 1]()  
+View the Final [Activity Diagram 2]()  
+View the Final [Activity Diagram 3]()  
+View the Final [State Diagram]()  
+View the Final [Sequence Diagram 1]()  
+View the Final [Sequence Diagram 2]()  
+View the Final [UML Class Diagram]()  
+View the [src](src) folder  
+View the [testing](testing) folder  
+View the [demo slides]() 
+
+
+
+
 
 ## Team Contributions
 
