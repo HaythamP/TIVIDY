@@ -48,11 +48,11 @@ docker stop <tividy-ci:latest>
 
 | Profile | Key Contributions |
 |:---:|---|
-| <img src="assets/rayhaan_object_diagram.jpg" width="270" height="150%" alt="Rayhaan Ahmed"> | Activity Diagram 3, GUI, Implementation: Command, Memento |
-| <img src="assets/tashil_object_diagram.jpg" width="270" height="150%" alt="Tashil Haripersad"> |Report, Demo slides, Class Diagram, Implementation: Strategy, Chain of Responsibility, Façade, main |
-| <img src="assets/kyle_object_diagram.jpg" width="270" height="150%" alt="Kyle Naicker"> |Activity Diagram 1, State Diagram, Additional diagrams: 2 Object Diagrams and 1 Communication Diagram, Docker, Implementation: State, Iterator, Visitor|
-| <img src="assets/haytham_object_diagram.jpg" width="270" height="150%" alt="Haytham Phillips"> |Activity Diagram 2, Sequence Diagram 2, CI/CD pipeline, Integration tests and end-to-end tests, Implementation: Builder, Mediator, exception classes|
-| <img src="assets/oratile_object_diagram.jpg" width="270" height="150%" alt="Oratile Lesedi Rabotapi"> |Sequence Diagram 1, GUI, Implementation: Composite, Decorator, Prototype |
+| <img src="assets/rayhaan_object_diagram.jpg" width="450" height="150%" alt="Rayhaan Ahmed"> | Activity Diagram 3, GUI, Implementation: Command, Memento |
+| <img src="assets/tashil_object_diagram.jpg" width="450" height="150%" alt="Tashil Haripersad"> |Report, Demo slides, Class Diagram, Implementation: Strategy, Chain of Responsibility, Façade, main |
+| <img src="assets/kyle_object_diagram.jpg" width="450" height="150%" alt="Kyle Naicker"> |Activity Diagram 1, State Diagram, Additional diagrams: 2 Object Diagrams and 1 Communication Diagram, Docker, Implementation: State, Iterator, Visitor|
+| <img src="assets/haytham_object_diagram.jpg" width="450" height="150%" alt="Haytham Phillips"> |Activity Diagram 2, Sequence Diagram 2, CI/CD pipeline, Integration tests and end-to-end tests, Implementation: Builder, Mediator, exception classes|
+| <img src="assets/oratile_object_diagram.jpg" width="450" height="150%" alt="Oratile Lesedi Rabotapi"> |Sequence Diagram 1, GUI, Implementation: Composite, Decorator, Prototype |
 
 All members contributed the header and source files of their own patterns, including the Doxygen comments and unit tests.
 ### Built With
