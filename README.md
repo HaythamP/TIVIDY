@@ -48,11 +48,13 @@ docker stop <tividy-ci:latest>
 
 | Profile | Key Contributions |
 |:---:|---|
-| <img src="assets/Ray.png" width="160" alt="Rayhaan Ahmed"> | UML Activity Diagram 3 (Detailed Scenario Execution) |
-| <img src="assets/Tash.png" width="160" alt="Tashil Haripersad"> | Documentation Compilation & Structuring |
-| <img src="assets/Kyle.png" width="160" alt="Kyle Naicker"> | UML Activity Diagram 1 (Engine Lifecycle) & WorkItem State Diagram |
-| <img src="assets/HP.png" width="160" alt="Haytham Phillips"> | UML Activity Diagram 2 (Approval/Assignment) & Sequence Diagram 2 |
-| <img src="assets/Ora.png" width="160" alt="Oratile Lesedi Rabotapi"> | UML Sequence Diagram 1 (Instantiation & Execution) |
+| <img src="assets/rayhaan_object_diagram.jpg" width="160" alt="Rayhaan Ahmed"> | Activity Diagram 3, GUI, Implementation: Command, Memento |
+| <img src="assets/tashil_object_diagram.jpg" width="160" alt="Tashil Haripersad"> |Report, Demo slides, Class Diagram, Implementation: Strategy, Chain of Responsibility, Façade, main |
+| <img src="assets/kyle_object_diagram.jpg" width="160" alt="Kyle Naicker"> |Activity Diagram 1, State Diagram, Additional diagrams: 2 Object Diagrams and 1 Communication Diagram, Docker, Implementation: State, Iterator, Visitor|
+| <img src="assets/haytham_object_diagram.jpg" width="160" alt="Haytham Phillips"> |Activity Diagram 2, Sequence Diagram 2, CI/CD pipeline, Integration tests and end-to-end tests, Implementation: Builder, Mediator, exception classes|
+| <img src="assets/oratile_object_diagram.jpg" width="160" alt="Oratile Lesedi Rabotapi"> |Sequence Diagram 1, GUI, Implementation: Composite, Decorator, Prototype |
+
+All members contributed the header and source files of their own patterns, including the Doxygen comments and unit tests.
 ### Built With
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
