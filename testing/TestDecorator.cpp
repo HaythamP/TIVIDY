@@ -31,4 +31,14 @@ TEST(DecoratorPatternTest, AuditedWorkLogOperations){
     ASSERT_EQ(audited.getAuditLog().size(), 2u);
     EXPECT_EQ(audited.getAuditLog()[0], "Entry 0");
 
+    audited.editAuditEntry(0, "Edited 0");
+    EXPECT_EQ(audited.getAuditLog()[0], "Edited 0");
+
+    audited.deleteAuditEntry(0);
+    ASSERT_EQ(audited.getAuditLog().size(), 1u);
+    EXPECT_EQ(audited.getAuditLog()[0], "Entry 1");
+
+    EXPECT_THROW(audited.editAuditEntry(10, "Out of bounds"), AuditEntryNotFoundException);
+    EXPECT_THROW(audited.deleteAuditEntry(10), AuditEntryNotFoundException);
+
 }
