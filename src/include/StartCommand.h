@@ -5,16 +5,22 @@
 
 namespace tividy {
 
-// COMMAND: ConcreteCommand. Assigned -> InProgress. Undo restores the memento.
-template <typename IdType>
-class StartCommand : public WorkCommand<IdType> {
+/**
+ * @brief ConcreteCommand: starts the target (Assigned to InProgress). It also restarts an item rejected from Approval.
+ */
+template <typename T>
+class StartCommand : public WorkCommand<T> {
 public:
-    explicit StartCommand(WorkComponent<IdType>* target);
+    /** @brief Creates the command for the target. */
+    explicit StartCommand(WorkComponent<T>* target);
+    /** @brief Returns the description, for example the verb and the item name. */
     std::string getDescription() const override;
+
 protected:
+    /** @brief Calls the matching operation on the target. */
     void perform() override;
 };
 
-} // namespace tividy
+}
 
 #endif
