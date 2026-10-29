@@ -5,19 +5,32 @@
 namespace tividy {
 
 template <typename T>
-AuditedWork<T>::AuditedWork(WorkComponent<T>* inner) : WorkItemDecorator<T>(inner) {}
+AuditedWork<T>::AuditedWork(WorkComponent<T>* inner) : WorkItemDecorator<T>(inner){}
 
 template <typename T>
-void AuditedWork<T>::record(const std::string& operation, const std::string& before) {
+void AuditedWork<T>::record(const std::string& operation, const std::string& before){
     auditLog.push_back(operation + ": " + before + " -> " + this->inner->getStateName());
 }
 
 template <typename T>
-void AuditedWork<T>::release() {
+void AuditedWork<T>::release(){
     std::string before = this->inner->getStateName();
     this->inner->release();
-    if (this->inner->getStateName() != before) {
+    if (this->inner->getStateName() != before){
         record("release", before);
     }
 }
 
+template <typename T>
+void AuditedWork<T>::assignTo(const std::vector<Participant<T>*>& participants){
+    std::string before = this->inner->getStateName();
+    this->inner->assignTo(participants);
+    record("assign", before);
+}
+
+template <typename T>
+void AuditedWork<T>::start(){
+    std::string before = this->inner->getStateName();
+    this->inner->start();
+    record("start", before);
+}
