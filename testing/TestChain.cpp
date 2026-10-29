@@ -11,8 +11,8 @@
 using namespace tividy;
 
 TEST(ChainOfResponsibilityTest, HandlerLinkingAndTraversal) {
-    Participant<int> p1(1, "Alice");
-    Participant<int> p2(2, "Bob");
+    Participant<int> p1(1, "Alice", {"Engineer"});
+    Participant<int> p2(2, "Bob", {"Manager"});
 
     EXPECT_THROW(LevelHandler<int>(nullptr, 0), InvalidHandlerChainException);
     EXPECT_THROW(LevelHandler<int>(&p1, -1), InvalidHandlerChainException);
@@ -49,7 +49,7 @@ TEST(ChainOfResponsibilityTest, HandlerLinkingAndTraversal) {
 }
 
 TEST(ChainOfResponsibilityTest, HandlerDeepCopy) {
-    Participant<int> p(1, "Lead");
+    Participant<int> p(1, "Tom", {"Lead"});
     Handler<int>* head = new LevelHandler<int>(&p, 0);
     head->setNext(new FallbackHandler<int>());
 
