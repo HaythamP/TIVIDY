@@ -1,0 +1,20 @@
+01, Lerato Chabangu, Storeman
+02, Caleb Swartz, Cashier
+03, Yasmin Suryapranata, Stock Clerk
+04, Themba Ntuli, Packer
+05, Astrid Lindgren, Forklift Operator
+06, Kofi Annan, Driver
+07, Carla Bruni, Security Guard
+08, Neo Moroka, Buyer
+09, Maya Angelou, Supervisor
+10, Jabulani Maseko, Team Leader
+11, Sasha Dlamini, Store Manager
+12, Rian Malan, Sales Assistant
+13, Zodwa Wabantu, Cleaner
+14, Dante Alighieri, Merchandiser
+15, Kagiso Rabada, Clerk
+16, Esther Mahlangu, Accountant
+17, Bongani Zungu, Administrator
+18, Alicia Keys, Warehouse Manager
+19, Khaya Zondo, Director
+20, Isaac Newton, CEO
