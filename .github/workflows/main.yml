@@ -1,27 +1,28 @@
-name: test
+name: CI Checks
 
 on:
-    pull_request: 
-        branches: [main, dev]
+  pull_request:
+    branches: [main]
 
 jobs:
-        build:
-            runs-on: ubuntu-latest
-        
-            steps:
-                - name: Checkout repo
-                  uses: actions/checkout@v4
+  build-and-test:
+    runs-on: ubuntu-latest
 
-                - name: install required packages
-                  run: |
-                    sudo apt-get update
-                    sudo apt-get intall -y build-essential make valgrind
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-                - name: Build Tividy
-                  run: make
+      - name: Build Docker CI image
+        run: docker build -t tividy-ci:latest .
 
-                - name: Run tests
-                  run: make test
+      - name: Run unit tests
+        run: docker run --rm tividy-ci:latest make test-unit
 
-                - name: Run mem check
-                  run: make val-all
+      - name: Run integration tests
+        run: docker run --rm tividy-ci:latest make test-integration
+
+      - name: Run end-to-end tests
+        run: docker run --rm tividy-ci:latest make test-e2e
+
+      - name: Run Valgrind memory check
+        run: docker run --rm tividy-ci:latest make valgrind
