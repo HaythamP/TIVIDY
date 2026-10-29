@@ -5,6 +5,9 @@
 
 namespace tividy {
 
+/**
+ * @brief ConcreteState: Work is being done. Allowed: complete to Completed, reject to Rejected, escalate to Escalated, approve to Approval, cancel to Cancelled.
+ */
 template <typename T>
 class InProgressState : public WorkItemState<T> {
 public:
