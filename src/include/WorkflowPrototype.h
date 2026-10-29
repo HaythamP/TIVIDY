@@ -6,7 +6,7 @@ namespace tividy {
 template <typename T>
 class WorkflowPrototype {
 public:
-    virtual ~WorkflowPrototype();
+    virtual ~WorkflowPrototype() = default;
     virtual WorkflowPrototype<T>* clone() const = 0;
 };
 

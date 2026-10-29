@@ -61,6 +61,8 @@ private:
     std::vector<std::string> auditLog;  ///< Chronological, user-editable log entries.
 };
 
+template class AuditedWork<int>;
+template class AuditedWork<std::string>;
 }
 
 #endif
