@@ -17,9 +17,7 @@ jobs:
             run: docker build -t tividy-ci:latest .
 
           - name: Run unit tests
-            continue-on-error: true
             run: docker run --rm tividy-ci:latest make test
 
           - name: Run Valgrind memory check
-            continue-on-error: true
             run: docker run --rm tividy-ci:latest make valgrind
