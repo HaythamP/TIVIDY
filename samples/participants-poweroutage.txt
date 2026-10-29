@@ -1,0 +1,50 @@
+01, Rayhaan Ahmed, Incident Coordinator
+02, Haytham Phillips, Incident Manager
+03, Oratile Rabotapi, Field Operations Lead
+04, Kyle Naicker, Electrical Engineer
+05, Tashil Haripersad, Safety and Maintenance Lead
+06, Mark Botros, Incident Sponsor / CEO
+07, Inge Odendaal, Compliance Approver / CIO
+08, Gilles Teuwen, Technical Incident Lead / CTO
+09, Michael Horwitz, Data Engineering Lead
+10, Vincent Feistel, Systems Automation Lead
+11, Avery Chen, Dispatch Coordinator
+12, Jordan Patel, Maintenance Supervisor
+13, Morgan Lewis, Electrical Technician
+14, Riley Okafor, Safety Officer
+15, Casey Williams, Communications Lead
+16, Taylor Singh, Logistics Coordinator
+17, Jamie Nkosi, Field Technician
+18, Cameron Reed, Operations Analyst
+19, Quinn Jacobs, Incident Recorder
+20, Drew Mokoena, Risk Manager
+21, Skyler Adams, Approver
+22, Rowan Brown, Auditor
+23, Emerson Davis, Escalation Lead
+24, Finley Garcia, Restoration Lead
+25, Parker Johnson, Customer Communications
+26, Hayden Kim, Data Engineer
+27, Reese Martin, Systems Engineer
+28, Dakota Nelson, Compliance Officer
+29, Sage Ortiz, Safety Inspector
+30, Kendall Price, Shift Supervisor
+31, Alex Rivera, Repair Crew Lead
+32, Robin Smith, Equipment Specialist
+33, Charlie Taylor, Site Coordinator
+34, Elliot Usman, Control Systems Engineer
+35, Remy Van der Merwe, Power Systems Analyst
+36, Blake Wilson, Incident Sponsor
+37, Cory Xu, Technical Approver
+38, Shiloh Young, Operations Manager
+39, Ari Zulu, Escalation Contact
+40, Micah Brown, Final Approver
+41, Noah Carter, Incident Coordinator
+42, Sasha Dlamini, Incident Manager
+43, Lee Edwards, Field Operations Lead
+44, Milan Fischer, Electrical Engineer
+45, Nico Green, Safety and Maintenance Lead
+46, Harper Hall, Incident Sponsor / CEO
+47, River Ibrahim, Compliance Approver / CIO
+48, Ellis Jones, Technical Incident Lead / CTO
+49, Kai Khan, Data Engineering Lead
+50, Remi Lopez, Systems Automation Lead

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Workflow Co.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfdfd; /* Very subtle off-white for a premium feel */
+            color: #111111;
+        }
+        
+        /* Smooth fade-in for page transitions */
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Minimalist nav active state */
+        .nav-link {
+            position: relative;
+            text-decoration: none;
+            padding-bottom: 2px;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #111111;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-black selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="w-full px-6 py-8 md:px-12 lg:px-24 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <!-- Logo / Company Name -->
+            <div class="flex flex-col items-center md:items-start cursor-pointer group shrink-0" onclick="navigate('home')">
+                <div class="border-[3px] border-[#08086b] px-4 py-1 md:py-2 transform -rotate-[3deg] transition-transform duration-500 group-hover:-rotate-1 origin-bottom-left">
+                    <span class="text-[#08086b] font-black text-4xl sm:text-5xl tracking-tighter leading-none m-0 lowercase font-sans">no name&trade;</span>
+                </div>
+                <div class="mt-4 text-black font-extrabold text-xs sm:text-sm tracking-wider uppercase font-sans text-center md:text-left">
+                    Generic Workflow Management System
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <nav class="flex flex-wrap justify-center gap-6 md:gap-10 text-sm tracking-wide uppercase text-gray-500 mt-4 md:mt-0">
+                <a href="#" onclick="navigate('home')" id="nav-home" class="nav-link active text-black">Home</a>
+                <a href="#" onclick="navigate('templates')" id="nav-templates" class="nav-link">Templates</a>
+                <a href="#" onclick="navigate('build')" id="nav-build" class="nav-link">Build your own workflow</a>
+                <a href="#" onclick="navigate('my-workflow')" id="nav-my-workflow" class="nav-link">My workflow</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-6 py-12 md:px-12 lg:px-24">
+        
+        <!-- Home Page -->
+        <section id="page-home" class="page-section fade-in flex flex-col md:flex-row gap-12 items-center min-h-[60vh]">
+            <!-- Left Side: Mirrored Minimalist Typography / Description -->
+            <div class="w-full md:w-1/2 flex flex-col gap-6">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight">
+                    Systems <br/> refined. <br/> Execution <br/> simplified.
+                </h1>
+                <div class="w-12 h-[1px] bg-black my-4"></div> <!-- Minimalist divider -->
+                <p class="text-gray-600 text-lg leading-relaxed font-light max-w-md">
+                    Our workflow system is designed with extreme intentionality. 
+                    Strip away the noise and focus on what matters: seamlessly connecting your engine's logic to real-world execution. 
+                    No clutter, no unnecessary steps—just pure, unadulterated efficiency.
+                </p>
+                <div class="pt-4">
+                    <button onclick="navigate('build')" class="border border-black px-8 py-3 text-sm uppercase tracking-widest hover:bg-black hover:text-white transition-colors duration-300">
+                        Begin Building
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Side: Minimalist aesthetic empty space / structural balance -->
+            <div class="w-full md:w-1/2 h-full flex justify-center items-center p-12 bg-gray-50 aspect-square md:aspect-auto md:h-[600px]">
+                <!-- Placeholder for future conceptual art or structural representation, kept minimal for now -->
+                <div class="text-xs tracking-[0.2em] text-gray-400 uppercase transform -rotate-90">
+                    Engine Architecture V1.0
+                </div>
+            </div>
+        </section>
+
+        <!-- Templates Page (Placeholder) -->
+        <section id="page-templates" class="page-section hidden fade-in py-12">
+            <h2 class="text-3xl font-light mb-4">Templates</h2>
+            <div class="w-12 h-[1px] bg-black mb-12"></div>
+            <p class="text-gray-500 font-light">Pre-configured operational structures. Coming soon as engine integration completes.</p>
+        </section>
+
+        <!-- Build Your Own Workflow Page (Placeholder) -->
+        <section id="page-build" class="page-section hidden fade-in py-12">
+            <h2 class="text-3xl font-light mb-4">Build Your Own Workflow</h2>
+            <div class="w-12 h-[1px] bg-black mb-12"></div>
+            <p class="text-gray-500 font-light">Drag, drop, and connect node structures backed by the C++ engine. Interface pending connection.</p>
+        </section>
+
+        <!-- My Workflow Page (Placeholder) -->
+        <section id="page-my-workflow" class="page-section hidden fade-in py-12">
+            <h2 class="text-3xl font-light mb-4">My Workflow</h2>
+            <div class="w-12 h-[1px] bg-black mb-12"></div>
+            <p class="text-gray-500 font-light">View and manage your active, compiled engine states. No active workflows found.</p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full px-6 py-8 border-t border-gray-100 text-center text-xs text-gray-400 tracking-widest uppercase mt-auto">
+        &copy; <script>document.write(new Date().getFullYear())</script> The Workflow Co.
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        // Simple Single Page Application Routing Logic
+        function navigate(pageId) {
+            // 1. Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => {
+                page.classList.add('hidden');
+                page.classList.remove('fade-in'); // Reset animation
+            });
+
+            // 2. Remove active state from all nav links
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                link.classList.remove('active', 'text-black');
+                link.classList.add('text-gray-500');
+            });
+
+            // 3. Show the selected page and trigger animation
+            const targetPage = document.getElementById('page-' + pageId);
+            if(targetPage) {
+                targetPage.classList.remove('hidden');
+                // Small timeout to allow display:block to apply before animation
+                setTimeout(() => targetPage.classList.add('fade-in'), 10);
+            }
+
+            // 4. Set active state on the clicked nav link
+            const activeLink = document.getElementById('nav-' + pageId);
+            if(activeLink) {
+                activeLink.classList.add('active', 'text-black');
+                activeLink.classList.remove('text-gray-500');
+            }
+        }
+
+        // C++ API Integration Placeholder functions for future development
+        const EngineAPI = {
+            // Example method to fetch workflows from Crow backend
+            fetchWorkflows: async () => {
+                try {
+                    const response = await fetch('/api/workflows');
+                    const data = await response.json();
+                    console.log("Workflows loaded from engine:", data);
+                    return data;
+                } catch (error) {
+                    console.error("Failed to connect to C++ Engine:", error);
+                }
+            },
+            
+            // Example method to send a new workflow to the C++ Engine
+            saveWorkflow: async (workflowData) => {
+                try {
+                    const response = await fetch('/api/workflows/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(workflowData)
+                    });
+                    return await response.json();
+                } catch (error) {
+                    console.error("Engine failed to process workflow:", error);
+                }
+            }
+        };
+    </script>
+</body>
+</html>
