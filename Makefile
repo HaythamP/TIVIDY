@@ -24,6 +24,11 @@ LIB_OBJS        := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(LIB_SRCS))
 TEST_SRCS       := $(wildcard $(TEST_DIR)/Test*.cpp)
 TEST_BINS       := $(patsubst $(TEST_DIR)/Test%.cpp, $(BIN_DIR)/Test%, $(TEST_SRCS))
 
+# Subsets filtered directly from TEST_BINS without altering discovery
+INTEGRATION_BINS := $(filter $(BIN_DIR)/TestIntegration%, $(TEST_BINS))
+E2E_BINS         := $(filter $(BIN_DIR)/TestE2E% $(BIN_DIR)/TestScenario%, $(TEST_BINS))
+UNIT_BINS        := $(filter-out $(INTEGRATION_BINS) $(E2E_BINS), $(TEST_BINS))
+
 all: test-build
 
 $(BUILD_DIR) $(BIN_DIR):
@@ -37,7 +42,48 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(wildcard $(INC_DIR)/*.h) | $(BUILD_DIR)
 $(BIN_DIR)/Test%: $(TEST_DIR)/Test%.cpp $(LIB_OBJS) | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@ $(TEST_LDFLAGS)
 
+# Original target kept completely unchanged
 test-build: $(if $(strip $(TEST_BINS)), $(TEST_BINS),)
+
+# Categorized run targets (all rely directly on your unchanged test-build)
+test-unit: test-build
+	@echo "=== Running Unit Tests ==="
+	@if [ -z "$(strip $(UNIT_BINS))" ]; then \
+		echo "No unit tests found."; \
+	else \
+		set -e; \
+		for t in $(UNIT_BINS); do \
+			echo "=== Running $$t ==="; \
+			./$$t; \
+		done; \
+		echo "=== UNIT TESTS PASSED ==="; \
+	fi
+
+test-integration: test-build
+	@echo "=== Running Integration Tests ==="
+	@if [ -z "$(strip $(INTEGRATION_BINS))" ]; then \
+		echo "No integration tests found (skipping)."; \
+	else \
+		set -e; \
+		for t in $(INTEGRATION_BINS); do \
+			echo "=== Running $$t ==="; \
+			./$$t; \
+		done; \
+		echo "=== INTEGRATION TESTS PASSED ==="; \
+	fi
+
+test-e2e: test-build
+	@echo "=== Running End-to-End Tests ==="
+	@if [ -z "$(strip $(E2E_BINS))" ]; then \
+		echo "No E2E tests found (skipping)."; \
+	else \
+		set -e; \
+		for t in $(E2E_BINS); do \
+			echo "=== Running $$t ==="; \
+			./$$t; \
+		done; \
+		echo "=== E2E TESTS PASSED ==="; \
+	fi
 
 # Run test executables sequentially; stop immediately on the first failure
 test: test-build
@@ -70,4 +116,4 @@ clean:
 
 re: clean all
 
-.PHONY: all test-build test valgrind clean re
+.PHONY: all test-build test-unit test-integration test-e2e test valgrind clean re
