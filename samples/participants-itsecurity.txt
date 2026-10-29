@@ -1,0 +1,20 @@
+01, Palo Mokwena, IT Technician
+02, Winnie Madikizela, Network Engineer
+03, Cedric Roux, Software Developer
+04, Dineo Moeketsi, System Administrator
+05, Hugo Weaving, Security Analyst
+06, Rutendo Chiwenga, Help Desk Agent
+07, Haytham Phillips, Manager
+08, Soraya Qureshi, Lawyer
+09, Lwazi Tshabalala, HR Manager
+10, Gabriela Silva, Receptionist
+11, Ethan Hunt, Analyst
+12, Mbali Gwala, Engineer
+13, Anton Kruger, Team Leader
+14, Tumelo Makhanya, Project Manager
+15, Farah Khan, Administrator
+16, Brandon Lee, Auditor
+17, Ntombi Zuma, Accountant
+18, Stefan Steyn, Public Relations Officer
+19, Amina Diallo, Director
+20, Khanya Mkhize, CEO
