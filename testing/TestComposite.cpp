@@ -24,4 +24,15 @@ TEST(CompositePatternTest, TreeHierarchyAndItemAggregation){
     EXPECT_EQ(subGroup->getParent(), &root);
     EXPECT_EQ(leaf2->getParent(), &root);
 
+    EXPECT_EQ(root.find(10), leaf1);
+    EXPECT_EQ(root.find(20), leaf2);
+    EXPECT_EQ(root.find(2), subGroup);
+    EXPECT_EQ(root.find(999), nullptr);
+
+    std::vector<WorkComponent<int>*> items = root.getItems();
+    EXPECT_EQ(items.size(), 2u);
+
+    std::vector<WorkComponent<int>*> children = root.getChildren();
+    EXPECT_EQ(children.size(), 2u);
 }
+
