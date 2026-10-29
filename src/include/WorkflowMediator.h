@@ -1,46 +1,38 @@
-#ifndef TIVIDY_WORKFLOWMEDIATOR_H
-#define TIVIDY_WORKFLOWMEDIATOR_H
+#ifndef WORKFLOWMEDIATOR_H
+#define WORKFLOWMEDIATOR_H
 
+#include <vector>
 #include "Mediator.h"
 
 namespace tividy {
 
-// MEDIATOR: ConcreteMediator. Coordinates one workflow.
-// OWNED by the WorkflowDefinition; components hold non-owning pointers to it.
-//
-// notify(sender):  (sender = the WorkItem that just completed)
-//   1. group = sender's parent
-//   2. if group exists (sender is inside a WorkGroup):
-//        if !group->isComplete()  -> do nothing (the check is only done on groups)
-//        else treat the group as the component that completed and repeat from step 1
-//   3. if there is no parent (top-level step): next = its next step;
-//        if next exists -> next->release()  (WorkItem: Created -> Available;
-//                                            WorkGroup: releases all its children)
-// Example: WG1{WI1,WI2}, WI3, WI4
-//   WI2 completes -> WG1 not complete -> nothing
-//   WI1 completes -> WG1 complete -> WI3 released
-//   WI3 completes -> WI4 released
-//
-// canRevertNext / revertNext use the same lookup to find the component that was released
-// because of 'sender': it may only be reverted to Created if every WorkItem in it is
-// Created, Available or Assigned (never InProgress or Complete).
-template <typename IdType>
-class WorkflowMediator : public Mediator<IdType> {
+/**
+ * @brief ConcreteMediator: sequences the top-level steps of one workflow.
+ *
+ * When an item completes it climbs to the item's top-level step; if that step (an item or a group) is complete it releases the next step, otherwise it does nothing (a parallel sibling is still running). Rejected and Cancelled items never complete, so progression halts. Colleagues are non-owning.
+ */
+template <typename T>
+class WorkflowMediator : public Mediator<T> {
 public:
-    explicit WorkflowMediator(const std::vector<Participant<IdType>*>* participants);   // non-owning
+    WorkflowMediator();
 
-    void notify(WorkComponent<IdType>* sender) override;
-    bool canRevertNext(WorkComponent<IdType>* sender) const override;
-    void revertNext(WorkComponent<IdType>* sender) override;
-    const std::vector<Participant<IdType>*>& getParticipants() const override;
+    /** @brief Releases the next step when the sender's step is complete and prints what happened. */
+    void notify(WorkComponent<T>* sender) override;
+    /** @brief Returns the step after the sender's step. */
+    WorkComponent<T>* findNext(WorkComponent<T>* sender) const override;
+    /** @brief Registers a top-level step in order. */
+    void addColleague(WorkComponent<T>* colleague) override;
 
 private:
-    // The component that was (or would be) released because 'sender' is complete, or null.
-    WorkComponent<IdType>* findNext(WorkComponent<IdType>* sender) const;
+    WorkflowMediator(const WorkflowMediator&) = delete;
+    WorkflowMediator& operator=(const WorkflowMediator&) = delete;
 
-    const std::vector<Participant<IdType>*>* participants;     // non-owning (owned by the definition)
+    /** @brief Index of the top-level step containing the sender, or -1. */
+    int indexOfStep(WorkComponent<T>* sender) const;
+
+    std::vector<WorkComponent<T>*> colleagues;  ///< Ordered top-level steps (non-owning).
 };
 
-} // namespace tividy
+}
 
 #endif
