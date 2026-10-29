@@ -42,3 +42,17 @@ TEST(DecoratorPatternTest, AuditedWorkLogOperations){
     EXPECT_THROW(audited.deleteAuditEntry(10), AuditEntryNotFoundException);
 
 }
+
+TEST(DecoratorPatternTest, EscalatedAndApprovedWorkFlags){
+    WorkItem<int>* leaf1 = new WorkItem<int>(1, "Item1");
+    EscalatedWork<int> esc(leaf1);
+    EXPECT_TRUE(esc.hasEscalation());
+    EXPECT_FALSE(esc.hasApproval());
+    EXPECT_EQ(esc.getEscalationContact(), nullptr);
+
+    WorkItem<int>* leaf2 = new WorkItem<int>(2, "Item2");
+    ApprovedWork<int> app(leaf2);
+    EXPECT_TRUE(app.hasApproval());
+    EXPECT_FALSE(app.hasEscalation());
+    EXPECT_EQ(app.getApprovalContact(), nullptr);
+}
