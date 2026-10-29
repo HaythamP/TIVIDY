@@ -86,3 +86,24 @@ template <typename T>
 void AuditedWork<T>::addAuditEntry(const std::string& entry) {
     auditLog.push_back(entry);
 }
+
+template <typename T>
+void AuditedWork<T>::editAuditEntry(std::size_t index, const std::string& entry) {
+    if (index >= auditLog.size()) {
+        throw AuditEntryNotFoundException("Audit entry " + std::to_string(index) + " does not exist");
+    }
+    auditLog[index] = entry;
+}
+
+template <typename T>
+void AuditedWork<T>::deleteAuditEntry(std::size_t index) {
+    if (index >= auditLog.size()) {
+        throw AuditEntryNotFoundException("Audit entry " + std::to_string(index) + " does not exist");
+    }
+    auditLog.erase(auditLog.begin() + static_cast<std::ptrdiff_t>(index));
+}
+
+template <typename T>
+WorkComponent<T>* AuditedWork<T>::copy() const {
+    return new AuditedWork<T>(this->inner->copy());
+}
