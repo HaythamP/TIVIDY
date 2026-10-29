@@ -34,3 +34,24 @@ void AuditedWork<T>::start(){
     this->inner->start();
     record("start", before);
 }
+
+template <typename T>
+void AuditedWork<T>::complete() {
+    std::string before = this->inner->getStateName();
+    this->inner->complete();
+    record("complete", before);
+}
+
+template <typename T>
+void AuditedWork<T>::reject() {
+    std::string before = this->inner->getStateName();
+    this->inner->reject();
+    record("reject", before);
+}
+
+template <typename T>
+void AuditedWork<T>::cancel() {
+    std::string before = this->inner->getStateName();
+    this->inner->cancel();
+    record("cancel", before);
+}
