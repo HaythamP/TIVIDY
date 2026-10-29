@@ -36,3 +36,10 @@ TEST(CompositePatternTest, TreeHierarchyAndItemAggregation){
     EXPECT_EQ(children.size(), 2u);
 }
 
+TEST(CompositePatternTest, GroupDisallowsLeafOperations) {
+    WorkGroup<int> group(1, "Group");
+    EXPECT_THROW(group.start(), UnsupportedOperationException);
+    EXPECT_THROW(group.complete(), UnsupportedOperationException);
+    EXPECT_THROW(group.cancel(), UnsupportedOperationException);
+    EXPECT_THROW(group.add(nullptr), InvalidWorkflowException);
+}
