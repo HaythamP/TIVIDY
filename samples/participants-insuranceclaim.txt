@@ -1,0 +1,20 @@
+01, Kabelo Motaung, Insurance Agent
+02, Thabo Mbeki, Claims Clerk
+03, Lindiwe Sisulu, Claims Adjuster
+04, Marcus Aurelius, Claims Manager
+05, Priya Naidoo, Underwriter
+06, Sipho Mahlangu, Investigator
+07, Elena Rostova, Assessor
+08, Yusuf Haripersad, Accountant
+09, Amara Okonkwo, Lawyer
+10, Jonas Smit, Customer Service Agent
+11, Naledi Pandor, Receptionist
+12, Hiroshi Tanaka, Administrator
+13, Fatima Ahmed, Supervisor
+14, Liam Neeson, Team Leader
+15, Zanele Muholi, Analyst
+16, Mateo Fernandez, Auditor
+17, Aisha Bader, Secretary
+18, Pieter Groenewald, Branch Manager
+19, Chloe Bennett, Director
+20, Tashil Haripersad, CEO
