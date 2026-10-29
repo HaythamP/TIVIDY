@@ -38,7 +38,7 @@ TEST(CommandPatternTest, CommandHistoryExecutionAndUndo) {
     item.release();
 
     std::vector<Participant<int>*> assignees;
-    Participant<int> p(10, "Dev");
+    Participant<int> p(10, "Dev",{"developer"});
     assignees.push_back(&p);
     item.assignTo(assignees);
 
