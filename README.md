@@ -12,7 +12,7 @@ The engine natively demonstrates two distinct industry pipelines:
 
 The dependencies required to build and verify TIVIDY mirror the packages installed in the project `Dockerfile`:
 
-### Core Toolchain & Packages
+### Requirements:
 * **Operating System**: Linux (Ubuntu 20.04 recommended), macOS or Windows via WSL2 / Docker.
 * **C++ Compiler**: `g++` with strict support for `-std=c++11`, `-Wall` and `-Werror`.
 * **Build System**: GNU Make 4.0+ (`make`), CMake 3.10+.
@@ -39,7 +39,6 @@ docker run --rm tividy-ci:latest make valgrind
 
 # Stop Container
 docker stop <tividy-ci:latest>
-
 
 ```
 
