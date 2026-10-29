@@ -28,7 +28,10 @@ TEST(ChainOfResponsibilityTest, HandlerLinkingAndTraversal) {
     EXPECT_EQ(h1->getNext(), fb);
     EXPECT_EQ(fb->getNext(), nullptr);
 
-    WorkItem<int> item(10, "Task");
+   WorkItem<int> item(10, "Task");
+    item.release();              // Created -> Available
+    item.assignTo({&p1});        // Available -> Assigned
+    item.start();                // Assigned -> InProgress
 
     // Level 0 matched
     Handler<int>* res0 = h0->handle(item, 0);
@@ -40,10 +43,11 @@ TEST(ChainOfResponsibilityTest, HandlerLinkingAndTraversal) {
     ASSERT_NE(res1, nullptr);
     EXPECT_EQ(res1->getParticipant(), &p2);
 
-    // Unmatched index forwards to FallbackHandler
+    // Unmatched index forwards to FallbackHandler (which calls item.complete())
     Handler<int>* resFallback = h0->handle(item, 99);
     ASSERT_NE(resFallback, nullptr);
     EXPECT_EQ(resFallback->getParticipant(), nullptr);
+    EXPECT_EQ(item.getStateName(), "Completed");
 
     delete h0;
 }
