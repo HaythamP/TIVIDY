@@ -107,3 +107,14 @@ template <typename T>
 WorkComponent<T>* AuditedWork<T>::copy() const {
     return new AuditedWork<T>(this->inner->copy());
 }
+
+template <typename T>
+void AuditedWork<T>::accept(WorkVisitor<T>& visitor) {
+    visitor.visit(*this);
+    this->inner->accept(visitor);
+}
+
+template class AuditedWork<int>;
+template class AuditedWork<std::string>;
+
+}
