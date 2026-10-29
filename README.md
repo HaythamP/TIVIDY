@@ -1,15 +1,61 @@
+# TIVIDY - Generic Workflow Management System
+
+TIVIDY is a C++11 workflow management system built using standard Gang of Four (GoF) design patterns. It coordinates task lifecycles, assignment strategies, escalation/approval handler chains, and multi-level undo operations across diverse domain models.
+
+The engine natively demonstrates two distinct industry pipelines:
+1. **Incident Response (Power Outage)**
+2. **Job Application (Tech Company)**
+
+---
+
+## 1. System Requirements & Dependencies
+
+The dependencies required to build and verify TIVIDY mirror the packages installed in the project `Dockerfile`:
+
+### Core Toolchain & Packages
+* **Operating System**: Linux (Ubuntu 20.04 recommended), macOS or Windows via WSL2 / Docker.
+* **C++ Compiler**: `g++` with strict support for `-std=c++11`, `-Wall` and `-Werror`.
+* **Build System**: GNU Make 4.0+ (`make`), CMake 3.10+.
+* **Testing Framework**: GoogleTest `release-1.12.1` built with C++11 constraints. (The latest version of GoogleTest requires C++14 or later so we use an older verson of GoogleTest).
+* **Memory Checking**: `valgrind`
+* **Documentation Engine (Optional)**: `doxygen`
+* **System Utilities**: `git`, `ca-certificates`, `pthread` support.
+
+---
+
+## 2. Docker Instructions (Highly Recommended)
+
+
+
+### Build the Docker Image
+```bash
+docker build -t tividy-ci:latest .
+
+### Run Unit Tests
+```bash
+docker run --rm tividy-ci:latest make test
+
+### Run Valgrind
+```bash
+docker run --rm tividy-ci:latest make valgrind
+
+### Stop Container
+```bash
+docker stop <tividy-ci:latest>
+
+
+
 ## Team Contributions
 
 **Team: Power Rangers**
 
-| Profile | Student Name | Student Number | Key Contributions |
-|:---:|---|---|---|
-| <img src="assets/Ray.png" width="160" alt="Rayhaan Ahmed"> | **Rayhaan Ahmed** | `u25047762` | UML Activity Diagram 3 (Detailed Scenario Execution) |
-| <img src="assets/Tash.png" width="160" alt="Tashil Haripersad"> | **Tashil Haripersad** | `u25466004` | Documentation Compilation & Structuring |
-| <img src="assets/Kyle.png" width="160" alt="Kyle Naicker"> | **Kyle Naicker** | `u25040040` | UML Activity Diagram 1 (Engine Lifecycle) & WorkItem State Diagram |
-| <img src="assets/HP.png" width="160" alt="Haytham Phillips"> | **Haytham Phillips** | `u25030907` | UML Activity Diagram 2 (Approval/Assignment) & Sequence Diagram 2 |
-| <img src="assets/Ora.png" width="160" alt="Oratile Lesedi Rabotapi"> | **Oratile Lesedi Rabotapi** | `u25243269` | UML Sequence Diagram 1 (Instantiation & Execution) |
-
+| Profile | Key Contributions |
+|:---:|---|
+| <img src="assets/Ray.png" width="160" alt="Rayhaan Ahmed"> | UML Activity Diagram 3 (Detailed Scenario Execution) |
+| <img src="assets/Tash.png" width="160" alt="Tashil Haripersad"> | Documentation Compilation & Structuring |
+| <img src="assets/Kyle.png" width="160" alt="Kyle Naicker"> | UML Activity Diagram 1 (Engine Lifecycle) & WorkItem State Diagram |
+| <img src="assets/HP.png" width="160" alt="Haytham Phillips"> | UML Activity Diagram 2 (Approval/Assignment) & Sequence Diagram 2 |
+| <img src="assets/Ora.png" width="160" alt="Oratile Lesedi Rabotapi"> | UML Sequence Diagram 1 (Instantiation & Execution) |
 ### Built With
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
