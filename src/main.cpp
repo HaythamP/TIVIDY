@@ -156,9 +156,107 @@ static void incidentResponse() {
     delete prototype;
 }
 
+static void jobApplication() {
+    banner("SCENARIO 2: Job Application (Tech Company)  -  string ids");
+
+    TividyFacade<std::string> facade;
+    Participant<std::string> rita("P1", "Rita", {"recruiter"});
+    Participant<std::string> tom("P2", "Tom", {"technical"});
+    Participant<std::string> bea("P3", "Bea", {"behavioural"});
+    Participant<std::string> max("P4", "Max", {"hiring-manager"});
+    Participant<std::string> dee("P5", "Dee", {"director"});
+
+    std::vector<std::string> ids;
+    for (int i = 1; i <= 7; ++i) {
+        ids.push_back("JA-" + std::to_string(i));
+    }
+
+    section("Build the template and clone it");
+    WorkflowDefinition<std::string>* prototype = facade.constructJobApplicationWorkflow(ids);
+    std::cout << facade.printWorkflow(prototype);
+    WorkflowDefinition<std::string>* run = facade.cloneWorkflow(prototype);
+    run->addParticipant(&rita);
+    run->addParticipant(&tom);
+    run->addParticipant(&bea);
+    run->addParticipant(&max);
+    run->addParticipant(&dee);
+    showTraversal(run);
+    facade.startWorkflow(run);
+
+    RoleAssignment<std::string> recruiterRole("recruiter");
+    RoleAssignment<std::string> technicalRole("technical");
+    RoleAssignment<std::string> behaviouralRole("behavioural");
+    std::vector<AssignmentStrategy<std::string>*> recruiters(1, &recruiterRole);
+    std::vector<AssignmentStrategy<std::string>*> technical(1, &technicalRole);
+    std::vector<AssignmentStrategy<std::string>*> behavioural(1, &behaviouralRole);
+
+    section("Initial Screening: two parallel steps (the group completes when both are done)");
+    facade.assignWithStrategies(run, "JA-2", recruiters, 1);
+    facade.assignWithStrategies(run, "JA-3", recruiters, 1);
+    facade.startWork(run, "JA-2");
+    facade.startWork(run, "JA-3");
+    facade.completeWork(run, "JA-3");
+    std::cout << "  (Interview is still waiting because Application Review is not complete.)" << std::endl;
+    facade.completeWork(run, "JA-2");
+
+    section("Interview: two parallel steps");
+    facade.assignWithStrategies(run, "JA-5", technical, 1);
+    facade.assignWithStrategies(run, "JA-6", behavioural, 1);
+    facade.startWork(run, "JA-5");
+    facade.startWork(run, "JA-6");
+    facade.addAuditEntry(run, "JA-5", "Candidate passed the coding exercise");
+    facade.completeWork(run, "JA-5");
+    facade.completeWork(run, "JA-6");
+    showAudit(facade, run, std::string("JA-5"));
+
+    section("Final Decision (approval): Max then Dee");
+    std::vector<Participant<std::string>*> decisionMaker(1, &max);
+    std::vector<Participant<std::string>*> approvers;
+    approvers.push_back(&max);
+    approvers.push_back(&dee);
+    facade.assignToParticipants(run, "JA-7", decisionMaker, 1, std::vector<Participant<std::string>*>(), approvers);
+    facade.startWork(run, "JA-7");
+    facade.approveWork(run, "JA-7");
+
+    section("Rejected from Approval: the workflow halts, but the step can be restarted");
+    facade.rejectWork(run, "JA-7");
+    show(facade, run);
+    std::cout << "  Workflow complete: " << (facade.isComplete(run) ? "yes" : "no") << std::endl;
+
+    section("Start again: Rejected -> InProgress, then run the approval chain again");
+    facade.startWork(run, "JA-7");
+    facade.approveWork(run, "JA-7");
+    facade.approveWork(run, "JA-7");
+    show(facade, run);
+    std::cout << "  Workflow complete: " << (facade.isComplete(run) ? "yes" : "no") << std::endl;
+
+    banner("SCENARIO 2b: a candidate who fails the first screening step");
+    WorkflowDefinition<std::string>* failed = facade.cloneWorkflow(prototype);
+    failed->addParticipant(&rita);
+    facade.startWorkflow(failed);
+    facade.assignWithStrategies(failed, "JA-2", recruiters, 1);
+    facade.startWork(failed, "JA-2");
+    facade.rejectWork(failed, "JA-2");
+    attempt("restarting a step rejected outside Approval", [&]() { facade.startWork(failed, "JA-2"); });
+    facade.assignWithStrategies(failed, "JA-3", recruiters, 1);
+    facade.startWork(failed, "JA-3");
+    facade.completeWork(failed, "JA-3");
+    show(facade, failed);
+    std::cout << "  Workflow complete: " << (facade.isComplete(failed) ? "yes" : "no")
+              << " (the Interview stage was never released)" << std::endl;
+
+    std::cout << "\n  Workloads - Rita: " << rita.getWorkload() << ", Tom: " << tom.getWorkload() << ", Bea: " << bea.getWorkload()
+              << ", Max: " << max.getWorkload() << ", Dee: " << dee.getWorkload() << std::endl;
+
+    delete failed;
+    delete run;
+    delete prototype;
+}
+
 int main() {
     try {
         incidentResponse();
+        jobApplication();
     } catch (const TividyException& error) {
         std::cout << "Unexpected error: " << error.getMessage() << std::endl;
         return 1;
