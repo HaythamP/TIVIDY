@@ -111,6 +111,9 @@ valgrind: test-build
 		echo "=== NO MEMORY LEAKS DETECTED ==="; \
 	fi
 
+docs:
+	doxygen Doxyfile
+
 clean:
 	rm -rf $(BUILD_DIR) $(BIN_DIR)
 
