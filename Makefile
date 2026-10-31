@@ -47,3 +47,24 @@ $(MAIN_BIN): $(SRC_DIR)/main.cpp $(LIB_OBJS) | $(BIN_DIR)
 # Run the main program
 run: $(MAIN_BIN)
 	./$(MAIN_BIN)
+
+# Compile each test executable by linking with library objects
+$(BIN_DIR)/Test%: $(TEST_DIR)/Test%.cpp $(LIB_OBJS) | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@ $(TEST_LDFLAGS)
+
+# Original target kept completely unchanged
+test-build: $(if $(strip $(TEST_BINS)), $(TEST_BINS),)
+
+# Categorized run targets (all rely directly on your unchanged test-build)
+test-unit: test-build
+	@echo "=== Running Unit Tests ==="
+	@if [ -z "$(strip $(UNIT_BINS))" ]; then \
+		echo "No unit tests found."; \
+	else \
+		set -e; \
+		for t in $(UNIT_BINS); do \
+			echo "=== Running $$t ==="; \
+			./$$t; \
+		done; \
+		echo "=== UNIT TESTS PASSED ==="; \
+	fi
