@@ -68,3 +68,29 @@ test-unit: test-build
 		done; \
 		echo "=== UNIT TESTS PASSED ==="; \
 	fi
+
+test-integration: test-build
+	@echo "=== Running Integration Tests ==="
+	@if [ -z "$(strip $(INTEGRATION_BINS))" ]; then \
+		echo "No integration tests found (skipping)."; \
+	else \
+		set -e; \
+		for t in $(INTEGRATION_BINS); do \
+			echo "=== Running $$t ==="; \
+			./$$t; \
+		done; \
+		echo "=== INTEGRATION TESTS PASSED ==="; \
+	fi
+
+test-e2e: test-build
+	@echo "=== Running End-to-End Tests ==="
+	@if [ -z "$(strip $(E2E_BINS))" ]; then \
+		echo "No E2E tests found (skipping)."; \
+	else \
+		set -e; \
+		for t in $(E2E_BINS); do \
+			echo "=== Running $$t ==="; \
+			./$$t; \
+		done; \
+		echo "=== E2E TESTS PASSED ==="; \
+	fi
