@@ -84,6 +84,9 @@ docker run --rm tividy-ci:latest make test-e2e
 # Run Valgrind
 docker run --rm tividy-ci:latest make valgrind
 
+# Run main.cpp
+docker run --rm tividy-ci:latest make run
+
 # (Optional) rmi tividy-ci:latest
 docker rmi tividy-ci:latest
 ```
