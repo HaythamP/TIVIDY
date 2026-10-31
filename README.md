@@ -100,5 +100,11 @@ docker run --rm tividy-ci:latest make run
 docker rmi tividy-ci:latest
 ```
 
+## Alternatively inside any terminal 
+```bash
+docker run --rm -p 8080:8080 ghcr.io/haythamp/tividy-ci:latest
+
+# Any commands from before still apply
+```
 
 ---
