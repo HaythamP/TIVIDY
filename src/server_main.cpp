@@ -12,6 +12,19 @@
 
 using namespace tividy;
 
+struct LocalCors {
+    struct context {};
+    void before_handle(crow::request&, crow::response&, context&) {}
+    void after_handle(crow::request& req, crow::response& res, context&) {
+        // Directly opened file:// pages send Origin: null. Keep the exception
+        // limited to that case; normal HTTP pages use the same-origin API.
+        if (req.get_header_value("Origin") == "null") res.add_header("Access-Control-Allow-Origin", "null");
+        res.add_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.add_header("Access-Control-Allow-Headers", "Content-Type");
+        res.add_header("Access-Control-Max-Age", "600");
+    }
+};
+
 namespace {
 struct AppState {
     TividyFacade<std::string> facade;
