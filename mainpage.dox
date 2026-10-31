@@ -1,0 +1,88 @@
+/**
+ * @mainpage TIVIDY - generic workflow management
+ *
+ * TIVIDY models the structure, state and progression of a workflow, not the business logic of
+ * its steps. The same building blocks serve any industry; the two concrete scenarios are an
+ * Incident Response workflow (Power Outage) and a Job Application workflow (Tech Company).
+ * Component ids are templated (`int` or `std::string`); there are no other template parameters.
+ *
+ * @section overview How the pieces fit together
+ * 1. A **Builder** (driven by the WorkflowDirector for the two scenarios, or by the user for a
+ *    custom workflow) assembles a WorkflowDefinition: a **Composite** tree of WorkGroup and
+ *    WorkItem objects, wrapped in **Decorators** (AuditedWork, EscalatedWork, ApprovedWork).
+ * 2. The definition is a **Prototype**: clone() it to get a running instance. Only an untouched
+ *    definition can be cloned.
+ * 3. Participants are added to the running workflow's pool. They are owned by the application.
+ * 4. start() releases the first step. All work is done by **Commands** (assign, start, complete,
+ *    reject, cancel, escalate, approve) executed through the workflow's command history.
+ *    Each command takes **Mementos** first, so the newest command can be undone when nothing
+ *    after it has moved on.
+ * 5. Every WorkItem is the context of a **State** machine. When an item completes it notifies
+ *    the **Mediator**, which releases the next step once the current step (an item, or a whole
+ *    group of parallel children) is complete.
+ * 6. Assignment uses **Strategy** objects that filter the workflow's whole participant pool;
+ *    without strategies the participants are listed explicitly. Escalation and approval walk a
+ *    **Chain of Responsibility**, one handler per Escalate or Approve command.
+ * 7. **Visitors** (TreePrinter, ProgressReport) and an **Iterator** (DepthFirstIterator) read
+ *    the tree. The TividyFacade is an optional single entry point to all of this.
+ *
+ * @section patterns Design pattern map
+ * | Pattern | Classes |
+ * |---|---|
+ * | Prototype | WorkflowPrototype, WorkflowDefinition |
+ * | Builder | Builder, WorkflowBuilder, WorkflowDirector (product: WorkflowDefinition) |
+ * | Composite | WorkComponent, WorkGroup, WorkItem |
+ * | Decorator | WorkItemDecorator, AuditedWork, EscalatedWork, ApprovedWork |
+ * | State | WorkItemState and its concrete states (context: WorkItem) |
+ * | Strategy | AssignmentStrategy, RoleAssignment, LeastLoadedAssignment, RuleAssignment |
+ * | Chain of Responsibility | Handler, LevelHandler, FallbackHandler |
+ * | Mediator | Mediator, WorkflowMediator |
+ * | Command | Command, WorkCommand and the concrete commands, CommandHistory (invoker) |
+ * | Memento | WorkMemento (originators: WorkItem, EscalatedWork, ApprovedWork; caretaker: WorkCommand) |
+ * | Iterator | WorkIterator, DepthFirstIterator |
+ * | Visitor | WorkVisitor, TreePrinter, ProgressReport |
+ * | Template Method | WorkCommand::execute/undo, Handler::handle/copy |
+ * | Facade | TividyFacade |
+ *
+ * @section lifecycle Work item lifecycle
+ * | State | Allowed operations |
+ * |---|---|
+ * | Created | release (Available), cancel |
+ * | Available | assign (Assigned), cancel |
+ * | Assigned | start (InProgress), cancel |
+ * | InProgress | complete, reject, escalate (Escalated), approve (Approval), cancel |
+ * | Escalated | complete, reject, cancel, escalate (next handler), approve (hand-over) |
+ * | Approval | complete, reject, cancel, approve (next approver) |
+ *
+ * Completed, Rejected and Cancelled are end states. Rejected, Cancelled and unfinished steps
+ * halt the workflow because the Mediator releases the next step only after a completion. An item
+ * rejected from Approval is the one exception: the Start command moves it back to InProgress.
+ *
+ * @section escalation Escalation and approval
+ * - **Escalate**: the first command moves InProgress to Escalated and passes the request to the
+ *   first handler; each further command hands it to the next handler; when the next handler is
+ *   the FallbackHandler the item completes immediately. A Complete command (a handler resolved
+ *   it) also ends the escalation.
+ * - **Approve**: the first command moves InProgress to Approval and passes the request to the
+ *   first approver; each further command means the previous approver signed off; reaching the
+ *   last approver completes the item.
+ * - An item with both decorators flows **Escalate, then Approve, then Completed**: resolving the
+ *   escalation hands the item straight to the approval chain.
+ *
+ * @section usage Example
+ * @code
+ * TividyFacade<int> facade;
+ * WorkflowDefinition<int>* prototype = facade.constructIncidentResponseWorkflow({1, 2, 3, 4, 5});
+ * WorkflowDefinition<int>* run = facade.cloneWorkflow(prototype);
+ * run->addParticipant(&dana);
+ * facade.startWorkflow(run);
+ * RoleAssignment<int> role("dispatcher");
+ * facade.assignWithStrategies(run, 1, std::vector<AssignmentStrategy<int>*>(1, &role), 1);
+ * facade.startWork(run, 1);
+ * facade.completeWork(run, 1);
+ * @endcode
+ *
+ * @section build Building and running
+ * `make` builds the `tividy` demo, `make run` runs both scenarios, `make test` runs the
+ * regression test with AddressSanitizer, `make docs` generates this documentation.
+ */
