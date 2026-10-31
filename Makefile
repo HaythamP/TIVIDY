@@ -94,3 +94,16 @@ test-e2e: test-build
 		done; \
 		echo "=== E2E TESTS PASSED ==="; \
 	fi
+
+# Run test executables sequentially; stop immediately on the first failure
+test: test-build
+	@if [ -z "$(strip $(TEST_BINS))" ]; then \
+		echo "No tests found in $(TEST_DIR)/Test*.cpp"; \
+	else \
+		set -e; \
+		for t in $(TEST_BINS); do \
+			echo "=== Running $$t ==="; \
+			./$$t; \
+		done; \
+		echo "=== ALL TESTS PASSED ==="; \
+	fi
