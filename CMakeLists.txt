@@ -31,9 +31,10 @@ add_executable(workflow_server ${ENGINE_SOURCES})
 # Link Crow
 target_link_libraries(workflow_server PRIVATE Crow::Crow "-framework CoreFoundation" "-framework Security")
 
-# Copy public directory to build directory
-add_custom_command(TARGET workflow_server POST_BUILD
+# Copy the UI on every normal build so HTML-only changes reach the server.
+add_custom_target(copy_public ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_SOURCE_DIR}/public
     ${CMAKE_CURRENT_BINARY_DIR}/public
 )
+add_dependencies(workflow_server copy_public)
