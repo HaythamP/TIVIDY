@@ -107,3 +107,26 @@ test: test-build
 		done; \
 		echo "=== ALL TESTS PASSED ==="; \
 	fi
+
+# Run Valgrind leak check across all test executables
+valgrind: test-build
+	@if [ -z "$(strip $(TEST_BINS))" ]; then \
+		echo "No tests found in $(TEST_DIR)/Test*.cpp"; \
+	else \
+		set -e; \
+		for t in $(TEST_BINS); do \
+			echo "=== Valgrind: $$t ==="; \
+			valgrind $(VALGRIND_FLAGS) ./$$t; \
+		done; \
+		echo "=== NO MEMORY LEAKS DETECTED ==="; \
+	fi
+
+docs:
+	doxygen Doxyfile
+
+clean:
+	rm -rf $(BUILD_DIR) $(BIN_DIR)
+
+re: clean all
+
+.PHONY: all test-build test-unit test-integration test-e2e test valgrind docs clean re run
