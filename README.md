@@ -7,7 +7,7 @@ The engine natively demonstrates two distinct industry pipelines:
 2. **Job Application (Tech Company)**
 
 ---
-## Quick Links !remember to put links as the URL!
+## Quick Links 
  
 View the Final [UML Class Diagram]()  
 View [All Diagrams](diagrams)  

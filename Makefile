@@ -11,6 +11,7 @@ TEST_DIR        := testing
 BUILD_DIR       := build
 BIN_DIR         := bin
 
+MAIN_BIN        := $(BIN_DIR)/tividy
 VALGRIND_FLAGS  := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1
 
 .SECONDARY:
@@ -29,7 +30,8 @@ INTEGRATION_BINS := $(filter $(BIN_DIR)/TestIntegration%, $(TEST_BINS))
 E2E_BINS         := $(filter $(BIN_DIR)/TestE2E% $(BIN_DIR)/TestScenario%, $(TEST_BINS))
 UNIT_BINS        := $(filter-out $(INTEGRATION_BINS) $(E2E_BINS), $(TEST_BINS))
 
-all: test-build
+# Default target: builds main binary and test suite
+all: $(MAIN_BIN) test-build
 
 $(BUILD_DIR) $(BIN_DIR):
 	@mkdir -p $@
@@ -37,6 +39,14 @@ $(BUILD_DIR) $(BIN_DIR):
 # Compile rule for individual source objects
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(wildcard $(INC_DIR)/*.h) | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Rule to compile and link the main application (LIB_OBJS is now properly expanded)
+$(MAIN_BIN): $(SRC_DIR)/main.cpp $(LIB_OBJS) | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@
+
+# Run the main program
+run: $(MAIN_BIN)
+	./$(MAIN_BIN)
 
 # Compile each test executable by linking with library objects
 $(BIN_DIR)/Test%: $(TEST_DIR)/Test%.cpp $(LIB_OBJS) | $(BIN_DIR)
@@ -119,4 +129,4 @@ clean:
 
 re: clean all
 
-.PHONY: all test-build test-unit test-integration test-e2e test valgrind clean re
+.PHONY: all test-build test-unit test-integration test-e2e test valgrind docs clean re run
