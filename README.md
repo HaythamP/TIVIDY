@@ -75,12 +75,11 @@ docker build -t tividy-ci:latest .
 
 # Launch the GUI
 docker run --rm -p 8080:8080 --name tividy-gui tividy-ci:latest
----------------------------------------------------------------------
 
 Open  http://localhost:8080 in a browser
 Press Ctrl + C in the terminal to stop the server
 
-# Commands for the Test Suites and Main
+# Commands for the Test Suites and Main:
 
 # Run Unit Tests
 docker run --rm tividy-ci:latest make test-unit
