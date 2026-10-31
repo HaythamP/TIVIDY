@@ -9,7 +9,7 @@ The engine natively demonstrates two distinct industry pipelines:
 ---
 ## Quick Links 
  
-View the Final [UML Class Diagram]()  
+View the Final [UML Class Diagram](diagrams/class_diagram_v2)  
 View [All Diagrams](diagrams)  
 View the [src](src) Folder  
 View the [testing](testing) Folder  
@@ -40,13 +40,14 @@ All members contributed the header and source files of their own patterns, inclu
 ![GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25?style=for-the-badge&logo=GNU%20Bash&logoColor=white)
 ![Makefile](https://img.shields.io/badge/Makefile-064F8C?style=for-the-badge&logo=gnu&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)
-
+![Boost.Asio](https://img.shields.io/badge/Boost.Asio-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
+![Crow](https://img.shields.io/badge/Crow-333333?style=for-the-badge&logo=cplusplus&logoColor=white)
 ## 1. System Requirements & Dependencies
 
-The dependencies required to build and verify TIVIDY mirror the packages installed in the project `Dockerfile`:
+The dependencies required to build and verify TIVIDY mirror the packages installed in the project [Dockerfile](Dockerfile):
 
 ### Requirements:
 * **Operating System**: Linux (Ubuntu 20.04 recommended), macOS or Windows via WSL2 / Docker.
@@ -71,6 +72,14 @@ git checkout main
 
 # Build the Docker Image
 docker build -t tividy-ci:latest .
+
+# Launch the GUI
+docker run --rm -p 8080:8080 --name tividy-gui tividy-ci:latest
+
+# Open http://localhost:8080 in a browser
+# Press Ctrl + C in the terminal to stop the server
+
+# Commands to the Test Suites and Main
 
 # Run Unit Tests
 docker run --rm tividy-ci:latest make test-unit
