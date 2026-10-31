@@ -56,7 +56,7 @@ The dependencies required to build and verify TIVIDY mirror the packages install
 * **Testing Framework**: GoogleTest `release-1.12.1` built with C++11 constraints. (The latest version of GoogleTest requires C++14 or later so we use an older verson of GoogleTest)
 * **Memory Checking**: `valgrind`
 * **Documentation Engine**: `doxygen`
-* **System Utilities**: `git`, `ca-certificates` and `pthread` 
+* **System Utilities**: `git`, `ca-certificates`, `pthread`, `curl` and  `libasio-dev`
 
 ---
 
@@ -75,11 +75,12 @@ docker build -t tividy-ci:latest .
 
 # Launch the GUI
 docker run --rm -p 8080:8080 --name tividy-gui tividy-ci:latest
+---------------------------------------------------------------------
 
-# Open http://localhost:8080 in a browser
-# Press Ctrl + C in the terminal to stop the server
+Open  http://localhost:8080 in a browser
+Press Ctrl + C in the terminal to stop the server
 
-# Commands to the Test Suites and Main
+# Commands for the Test Suites and Main
 
 # Run Unit Tests
 docker run --rm tividy-ci:latest make test-unit
