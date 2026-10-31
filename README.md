@@ -101,8 +101,14 @@ docker rmi tividy-ci:latest
 ```
 
 ## Alternatively inside any terminal 
+
 ```bash
+# Docker must be installed and running
+
 docker run --rm -p 8080:8080 ghcr.io/haythamp/tividy-ci:latest
+
+Open  http://localhost:8080 in a browser
+Press Ctrl + C in the terminal to stop the server
 
 # Any commands from before still apply
 ```
