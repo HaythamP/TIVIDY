@@ -7,52 +7,28 @@ The engine natively demonstrates two distinct industry pipelines:
 2. **Job Application (Tech Company)**
 
 ---
+## Quick Links 
+ 
+View the Final [UML Class Diagram]()  
+View [All Diagrams](diagrams)  
+View the [src](src) Folder  
+View the [testing](testing) Folder  
+View the [Demo Slides]() 
 
-## 1. System Requirements & Dependencies
-
-The dependencies required to build and verify TIVIDY mirror the packages installed in the project `Dockerfile`:
-
-### Requirements:
-* **Operating System**: Linux (Ubuntu 20.04 recommended), macOS or Windows via WSL2 / Docker.
-* **C++ Compiler**: `g++` with support for `-std=c++11`, `-Wall` and `-Werror`.
-* **Build System**: GNU Make 4.0+ (`make`), CMake 3.10+.
-* **Testing Framework**: GoogleTest `release-1.12.1` built with C++11 constraints. (The latest version of GoogleTest requires C++14 or later so we use an older verson of GoogleTest)
-* **Memory Checking**: `valgrind`
-* **Documentation Engine (Optional)**: `doxygen`
-* **System Utilities**: `git`, `ca-certificates` and `pthread` 
 
 ---
 
-## 2. Docker Instructions (Highly Recommended)
-
-
-
-### Build the Docker Image
-```bash
-docker build -t tividy-ci:latest .
-
-# Run Unit Tests
-docker run --rm tividy-ci:latest make test
-
-# Run Valgrind
-docker run --rm tividy-ci:latest make valgrind
-
-# Stop Container
-docker stop <tividy-ci:latest>
-
-```
-
-## Team Contributions
-
-**Team: Power Rangers**
-
 | Profile | Key Contributions |
 |:---:|---|
-| <img src="assets/Ray.png" width="160" alt="Rayhaan Ahmed"> | UML Activity Diagram 3 (Detailed Scenario Execution) |
-| <img src="assets/Tash.png" width="160" alt="Tashil Haripersad"> | Documentation Compilation & Structuring |
-| <img src="assets/Kyle.png" width="160" alt="Kyle Naicker"> | UML Activity Diagram 1 (Engine Lifecycle) & WorkItem State Diagram |
-| <img src="assets/HP.png" width="160" alt="Haytham Phillips"> | UML Activity Diagram 2 (Approval/Assignment) & Sequence Diagram 2 |
-| <img src="assets/Ora.png" width="160" alt="Oratile Lesedi Rabotapi"> | UML Sequence Diagram 1 (Instantiation & Execution) |
+| <img src="assets/rayhaan_object_diagram.jpg" width="450" height="150%" alt="Rayhaan Ahmed"> | Activity Diagram 3, GUI, Implementation: Command, Memento |
+| <img src="assets/tashil_object_diagram.jpg" width="450" height="150%" alt="Tashil Haripersad"> |Report, Demo slides, Class Diagram, Implementation: Strategy, Chain of Responsibility, Façade, main |
+| <img src="assets/kyle_object_diagram.jpg" width="450" height="150%" alt="Kyle Naicker"> |Activity Diagram 1, State Diagram, Additional diagrams: 2 Object Diagrams and 1 Communication Diagram, Docker, Implementation: State, Iterator, Visitor|
+| <img src="assets/haytham_object_diagram.jpg" width="450" height="150%" alt="Haytham Phillips"> |Activity Diagram 2, Sequence Diagram 2, CI/CD pipeline, Integration tests and end-to-end tests, Implementation: Builder, Mediator, exception classes|
+| <img src="assets/oratile_object_diagram.jpg" width="450" height="150%" alt="Oratile Lesedi Rabotapi"> |Sequence Diagram 1, GUI, Implementation: Composite, Decorator, Prototype |
+
+All members contributed the header and source files of their own patterns, including the Doxygen comments and unit tests.
+
+---
 ### Built With
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
@@ -67,3 +43,50 @@ docker stop <tividy-ci:latest>
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)
+
+## 1. System Requirements & Dependencies
+
+The dependencies required to build and verify TIVIDY mirror the packages installed in the project `Dockerfile`:
+
+### Requirements:
+* **Operating System**: Linux (Ubuntu 20.04 recommended), macOS or Windows via WSL2 / Docker.
+* **C++ Compiler**: `g++` with support for `-std=c++11`, `-Wall` and `-Werror`.
+* **Build System**: GNU Make 4.0+ (`make`), CMake 3.10+.
+* **Testing Framework**: GoogleTest `release-1.12.1` built with C++11 constraints. (The latest version of GoogleTest requires C++14 or later so we use an older verson of GoogleTest)
+* **Memory Checking**: `valgrind`
+* **Documentation Engine**: `doxygen`
+* **System Utilities**: `git`, `ca-certificates` and `pthread` 
+
+---
+
+## 2. Instructions To Run Inside Docker
+
+```bash
+# Clone the repository onto your machine
+git clone https://github.com/HaythamP/TIVIDY.git
+cd TIVIDY
+
+# Ensure you are in the main branch
+git checkout main
+
+# Build the Docker Image
+docker build -t tividy-ci:latest .
+
+# Run Unit Tests
+docker run --rm tividy-ci:latest make test-unit
+
+# Run Integration Tests
+docker run --rm tividy-ci:latest make test-integration
+
+# Run End to End Tests
+docker run --rm tividy-ci:latest make test-e2e
+
+# Run Valgrind
+docker run --rm tividy-ci:latest make valgrind
+
+# (Optional) rmi tividy-ci:latest
+docker rmi tividy-ci:latest
+```
+
+
+---
