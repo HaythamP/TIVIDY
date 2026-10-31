@@ -1,20 +1,50 @@
-01, Lerato Chabangu, Storeman
-02, Caleb Swartz, Cashier
-03, Yasmin Suryapranata, Stock Clerk
-04, Themba Ntuli, Packer
-05, Astrid Lindgren, Forklift Operator
-06, Kofi Annan, Driver
-07, Carla Bruni, Security Guard
-08, Neo Moroka, Buyer
-09, Maya Angelou, Supervisor
-10, Jabulani Maseko, Team Leader
-11, Sasha Dlamini, Store Manager
-12, Rian Malan, Sales Assistant
-13, Zodwa Wabantu, Cleaner
-14, Dante Alighieri, Merchandiser
-15, Kagiso Rabada, Clerk
-16, Esther Mahlangu, Accountant
-17, Bongani Zungu, Administrator
-18, Alicia Keys, Warehouse Manager
-19, Khaya Zondo, Director
-20, Isaac Newton, CEO
+01, Rayhaan Ahmed, Receiving Team Lead
+02, Avery Chen, Receiving Team Lead
+03, Jordan Patel, Receiving Team Lead
+04, Morgan Lewis, Receiving Team Lead
+05, Riley Okafor, Receiving Team Lead
+06, Casey Williams, Receiving Team Lead
+07, Taylor Singh, Receiving Team Lead
+08, Jamie Nkosi, Receiving Team Lead
+09, Cameron Reed, Receiving Team Lead
+10, Quinn Jacobs, Receiving Team Lead
+11, Haytham Phillips, Stockroom Associate
+12, Drew Mokoena, Stockroom Associate
+13, Skyler Adams, Stockroom Associate
+14, Rowan Brown, Stockroom Associate
+15, Emerson Davis, Stockroom Associate
+16, Finley Garcia, Stockroom Associate
+17, Parker Johnson, Stockroom Associate
+18, Hayden Kim, Stockroom Associate
+19, Reese Martin, Stockroom Associate
+20, Dakota Nelson, Stockroom Associate
+21, Oratile Rabotapi, Inventory Controller
+22, Sage Ortiz, Inventory Controller
+23, Kendall Price, Inventory Controller
+24, Alex Rivera, Inventory Controller
+25, Robin Smith, Inventory Controller
+26, Charlie Taylor, Inventory Controller
+27, Elliot Usman, Inventory Controller
+28, Remy Van der Merwe, Inventory Controller
+29, Blake Wilson, Inventory Controller
+30, Cory Xu, Inventory Controller
+31, Kyle Naicker, Quality / Damage Inspector
+32, Shiloh Young, Quality / Damage Inspector
+33, Ari Zulu, Quality / Damage Inspector
+34, Micah Brown, Quality / Damage Inspector
+35, Noah Carter, Quality / Damage Inspector
+36, Sasha Dlamini, Quality / Damage Inspector
+37, Lee Edwards, Quality / Damage Inspector
+38, Milan Fischer, Quality / Damage Inspector
+39, Nico Green, Quality / Damage Inspector
+40, Harper Hall, Quality / Damage Inspector
+41, Tashil Haripersad, Merchandising / Stock Approver
+42, River Ibrahim, Merchandising / Stock Approver
+43, Ellis Jones, Merchandising / Stock Approver
+44, Kai Khan, Merchandising / Stock Approver
+45, Remi Lopez, Merchandising / Stock Approver
+46, Mark Botros, Merchandising / Stock Approver
+47, Inge Odendaal, Merchandising / Stock Approver
+48, Gilles Teuwen, Merchandising / Stock Approver
+49, Michael Horwitz, Merchandising / Stock Approver
+50, Vincent Feistel, Merchandising / Stock Approver
