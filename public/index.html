@@ -1,56 +1,942 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>No Name™ Workflow</title>
-<script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>body{font-family:Inter,sans-serif;background:#fdfdfd;color:#111}.nav-link{position:relative;padding-bottom:4px}.nav-link.active{color:#08086b;font-weight:600}.nav-link.active:after{content:'';height:2px;position:absolute;bottom:0;left:0;right:0;background:#08086b}.blue{color:#08086b}.primary{background:#08086b;color:white}.danger{background:#a60000;color:white}.card{border:1px solid #ddd;background:white}.state{font-size:.68rem;letter-spacing:.04em;font-weight:700;color:#fff;background:#08086b;padding:.25rem .5rem}.hidden{display:none!important}input,select,textarea{border:1px solid #ccc;padding:.65rem .75rem;width:100%;background:#fff}button{transition:.15s}button:hover{filter:brightness(.88)}.workflow-tree{font:13px ui-monospace,monospace;white-space:pre-wrap;line-height:1.65}.logo-mark{animation:logo-rock 3.2s ease-in-out infinite;transform-origin:15% 80%}@keyframes logo-rock{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(-1deg) translateY(-3px)}}.modal{position:fixed;inset:0;background:#0008;display:grid;place-items:center;z-index:20}.modal>div{max-height:90vh;overflow:auto}</style></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>No Name™ Workflow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: Inter, sans-serif; background: #fdfdfd; color: #111 }
+    .nav-link { position: relative; padding-bottom: 4px }
+    .nav-link.active { color: #08086b; font-weight: 600 }
+    .nav-link.active:after { content: ''; height: 2px; position: absolute; bottom: 0; left: 0; right: 0; background: #08086b }
+    .blue { color: #08086b }
+    .primary { background: #08086b; color: white }
+    .danger { background: #a60000; color: white }
+    .card { border: 1px solid #ddd; background: white }
+    .state { font-size: .68rem; letter-spacing: .04em; font-weight: 700; color: #fff; background: #08086b; padding: .25rem .5rem }
+    .hidden { display: none!important }
+    input, select, textarea { border: 1px solid #ccc; padding: .65rem .75rem; width: 100%; background: #fff }
+    button { transition: .15s }
+    button:hover { filter: brightness(.88) }
+    .workflow-tree { font: 13px ui-monospace, monospace; white-space: pre-wrap; line-height: 1.65 }
+    .logo-mark { transform: rotate(-3deg); transform-origin: bottom left; transition: transform .5s ease }
+    .logo-mark:hover { transform: rotate(-1deg) }
+    .ordinary-workflow .card { border-color: #d8d8d5; border-radius: 0; box-shadow: none }
+    .ordinary-workflow .state { background: #171717; color: #fff; border-radius: 0; letter-spacing: .08em }
+    .ordinary-workflow .primary { background: #171717; color: #fff }
+    .ordinary-workflow .danger { background: #555; color: #fff }
+    .ordinary-workflow h1, .ordinary-workflow h2 { letter-spacing: .02em }
+    .ordinary-help { border-top: 1px solid #d8d8d5; border-bottom: 1px solid #d8d8d5 }
+    .ordinary-help summary { cursor: pointer; letter-spacing: .08em; text-transform: uppercase; font-size: .75rem; font-weight: 600; padding: 1rem 0 }
+    .template-card { transition: border-color .2s, box-shadow .2s }
+    .template-card.selected { border: 2px solid #08086b; box-shadow: 0 0 0 3px #08086b18 }
+    .chat-dog { position: fixed; left: 1.25rem; bottom: 1.25rem; z-index: 30 }
+    .chat-panel { position: absolute; left: 0; bottom: 4.5rem; width: min(21rem, calc(100vw - 2.5rem)); background: white; border: 1px solid #ddd; box-shadow: 0 12px 40px #0002 }
+    .page { padding-top: 1rem; padding-bottom: 2rem }
+    .chat-question { display: block; width: 100%; text-align: left; padding: .65rem .75rem; border: 1px solid #e5e5e5; margin-top: .5rem; font-size: .8rem }
+    .modal { position: fixed; inset: 0; background: #0008; display: grid; place-items: center; z-index: 20 }
+    .modal>div { max-height: 90vh; overflow: auto }
+    .engine-roadmap { background: #fdfdfd; border: 0; padding: 2rem 1.75rem; min-height: 22rem; color: #191919 }
+    .engine-roadmap h2 { font-size: clamp(1.2rem, 2vw, 1.7rem); font-weight: 650; line-height: 1.2; margin-top: .65rem }
+    .roadmap-kicker, .stage-label { font: 10px ui-monospace, monospace; letter-spacing: .12em; color: #777 }
+    .roadmap-track { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 2.2rem }
+    .roadmap-stage { position: relative; text-align: center; min-width: 0; padding: 0 .25rem; outline: none }
+    .roadmap-stage:not(:last-child):after { content: ""; position: absolute; left: calc(50% + 1.6rem); right: calc(-50% + 1.6rem); top: 1.6rem; border-top: 1px solid #777 }
+    .roadmap-stage:not(:last-child):before { content: ""; position: absolute; z-index: 1; right: calc(-50% + 1.6rem); top: 1.35rem; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #555 }
+    .stage-label { display: none; margin-bottom: 1.55rem }
+    .stage-node { position: relative; z-index: 2; display: grid; place-items: center; width: 3.2rem; height: 3.2rem; border: 1.5px solid #262626; border-radius: 50%; background: white; margin: 0 auto; font-size: .95rem; font-weight: 650; transition: background .18s, color .18s, transform .18s }
+    .roadmap-stage h3 { font-weight: 650; margin-top: 1rem }
+    .stage-description { font-size: .72rem; line-height: 1.5; color: #686868; opacity: 0; max-height: 0; overflow: hidden; transition: opacity .18s, max-height .18s, margin .18s; margin-top: 0 }
+    .roadmap-stage:hover .stage-description, .roadmap-stage:focus .stage-description, .roadmap-stage:focus-within .stage-description { opacity: 1; max-height: 7rem; margin-top: .45rem }
+    .roadmap-stage:hover .stage-node, .roadmap-stage:focus .stage-node { background: #08086b; color: #fff; transform: translateY(-2px) }
+    .roadmap-note { display: none }
+    @media(max-width:700px) {
+      .engine-roadmap { padding: 1.5rem 1rem }
+      .roadmap-track { grid-template-columns: 1fr; margin-top: 1.5rem; gap: .8rem }
+      .roadmap-stage { display: grid; grid-template-columns: 4.5rem 3.2rem 1fr; align-items: center; text-align: left; column-gap: .5rem; min-height: 3.6rem }
+      .stage-label { margin: 0 }
+      .stage-node { margin: 0 }
+      .roadmap-stage h3 { margin: 0 }
+      .roadmap-stage:not(:last-child):after { left: 4.5rem; right: auto; top: 3.5rem; height: 1.1rem; border-top: 0; border-left: 1px solid #777 }
+      .roadmap-stage:not(:last-child):before { display: none }
+      .stage-description { grid-column: 3; opacity: 1; max-height: 4rem; margin: .2rem 0 0 }
+    }
+  </style>
+</head>
 <body class="min-h-screen flex flex-col antialiased">
-<header class="w-full px-6 py-7 md:px-12 border-b border-gray-200"><div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-7"><div onclick="navigate('home')" class="cursor-pointer"><div class="logo-mark border-[3px] border-[#08086b] px-4 py-2 -rotate-2"><b class="text-[#08086b] text-4xl tracking-tighter lowercase">no name™</b></div><div class="mt-3 text-xs font-extrabold tracking-wider uppercase">Generic Workflow Management System</div></div><nav class="flex flex-wrap justify-center gap-7 text-sm tracking-wide uppercase text-gray-500"><a href="#" onclick="navigate('home')" id="nav-home" class="nav-link active">Home</a><a href="#" onclick="navigate('templates')" id="nav-templates" class="nav-link">Templates</a><a href="#" onclick="navigate('build')" id="nav-build" class="nav-link">Build your own workflow</a><a href="#" onclick="navigate('my-workflow')" id="nav-my-workflow" class="nav-link">My workflow</a></nav></div></header>
-<main class="flex-grow w-full max-w-7xl mx-auto px-5 py-10 md:px-10">
-<section id="page-home" class="page"><div class="grid md:grid-cols-2 gap-12 items-center min-h-[55vh]"><div><h1 class="text-5xl font-light leading-tight">Systems refined.<br>Execution simplified.</h1><div class="w-12 h-px bg-black my-7"></div><p class="text-gray-600 text-lg leading-relaxed max-w-lg">Build practical workflows and run them through the C++ engine. Import your team, choose a template or design a workflow, and track every state.</p><button onclick="navigate('templates')" class="mt-8 border border-black px-8 py-3 text-sm uppercase tracking-widest">Explore templates</button></div><div class="bg-gray-50 p-10 min-h-72 flex items-center justify-center"><div class="text-xs tracking-[.2em] text-gray-400 uppercase">Engine architecture · C++</div></div></div></section>
-<section id="page-templates" class="page hidden py-5"><h1 class="text-3xl font-light">Templates</h1><div class="w-12 h-px bg-black my-5"></div><p class="text-gray-500 mb-8">Choose a predefined workflow, then add your participants.</p><div class="grid md:grid-cols-2 gap-5"><article class="card p-6"><h2 class="text-xl font-semibold">Incident Response</h2><p class="text-gray-500 mt-2">Dispatch, investigation, containment, repair, and restore.</p><button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('incident')">Use template</button></article><article class="card p-6"><h2 class="text-xl font-semibold">Job Application</h2><p class="text-gray-500 mt-2">Screening group, interview group, and final decision.</p><button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('hiring')">Use template</button></article></div><div id="template-people" class="card p-6 mt-7 hidden"><h2 class="text-lg font-semibold">Participants</h2><div class="grid md:grid-cols-2 gap-6 mt-4"><div><p class="text-sm text-gray-600 mb-2">Import .txt (one per line: <code>id, name, role</code>)</p><input type="file" id="participantFile" accept=".txt,text/plain"><button onclick="importFile()" class="primary px-4 py-2 mt-3 text-xs uppercase tracking-widest">Import file</button></div><div><p class="text-sm text-gray-600 mb-2">Or enter participants</p><div id="participantRows" class="space-y-2"></div><button onclick="addParticipantRow()" class="border border-gray-400 px-4 py-2 mt-2 text-xs uppercase">+ Add participant</button><button onclick="saveManualParticipants()" class="primary px-4 py-2 mt-2 ml-2 text-xs uppercase tracking-widest">Save participants</button></div></div><div id="participantStatus" class="text-sm mt-4 text-gray-600"></div><div id="loadedPeople" class="mt-3"></div><button id="launchTemplate" onclick="launchSelectedTemplate()" class="primary px-5 py-3 mt-5 text-xs uppercase tracking-widest hidden">Continue to my workflow</button></div></section>
-<section id="page-build" class="page hidden py-5"><h1 class="text-3xl font-light">Build your own workflow</h1><div class="w-12 h-px bg-black my-5"></div><div class="card p-6"><label class="text-xs uppercase tracking-wider">Workflow name</label><input id="workflowName" placeholder="e.g. Equipment approval" class="mt-2 max-w-xl"><div class="mt-6 flex gap-3"><button onclick="beginGroup()" class="primary px-5 py-3 text-xs uppercase tracking-widest">Add group</button><button onclick="beginStandalone()" class="border border-[#08086b] text-[#08086b] px-5 py-3 text-xs uppercase tracking-widest">Add item</button></div><div id="builderPanel" class="mt-6 hidden border-t pt-5"></div><div id="draftPreview" class="mt-5 space-y-3"></div><div class="mt-7 border-t pt-5"><h2 class="font-semibold">Add participants</h2><p class="text-sm text-gray-600 mt-1">After defining your groups and items, add participants here or import the same id, name, role text file.</p><div class="grid md:grid-cols-2 gap-6 mt-4"><div><input type="file" id="builderParticipantFile" accept=".txt,text/plain"><button onclick="importBuilderFile()" class="primary px-4 py-2 mt-3 text-xs uppercase tracking-widest">Import file</button></div><div><div id="builderParticipantRows" class="space-y-2"></div><button onclick="addBuilderParticipantRow()" class="border px-3 py-2 mt-2 text-xs uppercase">+ Add participant</button><button onclick="saveBuilderParticipants()" class="primary px-4 py-2 mt-2 ml-2 text-xs uppercase tracking-widest">Save participants</button></div></div><div id="builderPeopleStatus" class="text-sm mt-3"></div><div id="builderPeopleList" class="mt-2"></div><button onclick="finishCustomWorkflow()" class="primary px-5 py-3 mt-5 text-xs uppercase tracking-widest">Done · go to my workflow</button></div></div></section>
-<section id="page-my-workflow" class="page hidden py-5"><div class="flex justify-between items-start gap-5 flex-wrap"><div><h1 id="workflowTitle" class="text-3xl font-light">My workflow</h1><p id="workflowSummary" class="text-gray-500 mt-2"></p></div><div class="flex gap-2"><button onclick="saveCurrent()" class="border border-[#08086b] text-[#08086b] px-4 py-2 text-xs uppercase tracking-widest">Save workflow</button><button onclick="openSaved()" class="primary px-4 py-2 text-xs uppercase tracking-widest">Open saved workflow</button></div></div><div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-5 mt-7"><section class="card p-5"><div class="flex justify-between items-center border-b-2 border-[#08086b] pb-3 mb-4"><h2 class="font-extrabold text-[#08086b] tracking-wide">MY ASSIGNED TASK QUEUE</h2><span class="state">LIVE ENGINE</span></div><button id="assignButton" onclick="openAssignment()" class="primary w-full py-3 mb-4 text-sm font-bold tracking-widest uppercase">Assign selected work</button><div id="taskList" class="space-y-3"></div></section><section class="card p-5"><div class="flex justify-between items-center border-b-2 border-[#08086b] pb-3 mb-4"><h2 class="font-extrabold text-[#08086b] tracking-wide">WORKFLOW STRUCTURE INSPECTOR</h2><span class="state">COMPOSITE VIEW</span></div><div id="workflowTree" class="workflow-tree"></div></section></div><section class="card p-5 mt-5"><h2 class="font-extrabold text-[#08086b] border-b pb-3">WORKFLOW SUMMARY</h2><div id="summaryDetails" class="mt-4 text-sm text-gray-700"></div></section></section>
-</main><footer class="w-full px-6 py-7 border-t border-gray-100 text-center text-xs text-gray-400 tracking-widest uppercase mt-auto">© <span id="year"></span> The Workflow Co.</footer>
-<div id="assignmentModal" class="modal hidden"><div class="bg-white w-full max-w-2xl p-6 shadow-xl"><div class="flex justify-between"><h2 class="text-xl font-semibold">Assign work item</h2><button onclick="closeAssignment()" aria-label="Close">✕</button></div><p id="assignItemName" class="text-gray-500 mt-1"></p><label class="block text-xs uppercase mt-5">Assignment method</label><select id="assignMethod" onchange="toggleAssignmentMethod()" class="mt-2"><option value="manual">Manual assignment</option><option value="strategy">Following assignment strategy</option></select><div id="manualFields" class="mt-4"><label class="text-xs uppercase">Choose participants</label><select id="manualParticipants" multiple size="4" class="mt-2"></select><p class="text-xs text-gray-500 mt-1">Use Command/Ctrl to select more than one.</p></div><div id="strategyFields" class="hidden mt-4 space-y-3"><label class="flex gap-2"><input type="checkbox" id="leastLoaded" class="w-4">Least loaded</label><label class="flex gap-2"><input type="checkbox" id="roleStrategy" class="w-4">Role filter</label><input id="roleFilter" placeholder="Required role (for example: CEO)"><label class="flex gap-2"><input type="checkbox" id="ruleStrategy" class="w-4">Rule (random final selection; applied last)</label></div><div id="chainFields" class="mt-5 space-y-4"></div><button onclick="submitAssignment()" class="primary px-6 py-3 mt-6 text-xs uppercase tracking-widest">Done</button><p id="assignError" class="text-red-700 text-sm mt-3"></p></div></div><div id="auditModal" class="modal hidden"><div class="bg-white w-full max-w-lg p-6"><div class="flex justify-between"><h2 class="text-xl font-semibold">Audit history</h2><button onclick="document.getElementById('auditModal').classList.add('hidden')">✕</button></div><div id="auditEntries" class="mt-4 space-y-2 text-sm"></div></div></div>
+  <header class="w-full px-6 py-7 md:px-12 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-7">
+      <div onclick="navigate('home')" class="cursor-pointer group">
+        <div class="logo-mark border-[3px] border-[#08086b] px-4 py-2 group-hover:rotate-[-1deg]">
+          <b class="text-[#08086b] text-4xl tracking-tighter lowercase">no name™</b>
+        </div>
+        <div class="mt-3 text-xs font-extrabold tracking-wider uppercase">Generic Workflow Management System</div>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-7 text-sm tracking-wide uppercase text-gray-500">
+        <a href="#" onclick="navigate('home')" id="nav-home" class="nav-link active">Home</a>
+        <a href="#" onclick="navigate('templates')" id="nav-templates" class="nav-link">Templates</a>
+        <a href="#" onclick="navigate('build')" id="nav-build" class="nav-link">Build your own workflow</a>
+        <a href="#" onclick="navigate('my-workflow')" id="nav-my-workflow" class="nav-link">My workflow</a>
+      </nav>
+    </div>
+  </header>
 
-<script>
-const API=window.location.protocol==='file:'?'http://localhost:8080/api':'/api';let selectedTemplate='',loadedParticipants=[],current=null,draft=[],groupDraft=null,activeItem=null;
-document.getElementById('year').textContent=new Date().getFullYear();
-function navigate(id){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById('page-'+id).classList.remove('hidden');document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));let link=document.getElementById('nav-'+id);if(link)link.classList.add('active');if(['my-workflow','build','templates'].includes(id))refreshState().then(()=>{if(id==='build')renderBuilderPeople();if(id==='templates')renderPeople(loadedParticipants)})}
-async function api(path,body,method='POST'){let r;try{r=await fetch(API+path,{method,headers:body&&typeof body==='object'?{'Content-Type':'application/json'}:{},body:body?(typeof body==='string'?body:JSON.stringify(body)):undefined})}catch(e){throw Error('Cannot reach Crow at '+API+'. Start/rebuild the C++ server, then reload this page.')}let d=await r.json().catch(()=>({error:'Server returned an invalid response'}));if(!r.ok)throw Error(d.error||d.message||'Engine request failed');return d}
-function selectTemplate(t){selectedTemplate=t;document.getElementById('template-people').classList.remove('hidden');document.getElementById('launchTemplate').classList.toggle('hidden',!loadedParticipants.length);if(!document.querySelector('#participantRows input'))addParticipantRow()}
-function addParticipantRow(p={},target='participantRows'){const row=document.createElement('div');row.className='grid grid-cols-[.7fr_1.3fr_1fr_auto] gap-2';row.innerHTML=`<input placeholder="ID" value="${esc(p.id||'')}"><input placeholder="Name" value="${esc(p.name||'')}"><input placeholder="Role" value="${esc(p.role||'')}"><button class="text-red-700 px-2" onclick="this.parentElement.remove()">×</button>`;document.getElementById(target).append(row)}
-async function importFile(){const file=document.getElementById('participantFile').files[0];if(!file)return status('Choose a text file first');try{const d=await api('/participants/import',await file.text());loadedParticipants=[];document.getElementById('participantStatus').textContent=`Imported ${d.count} participants through the C++ engine.`;await refreshState();renderPeople(loadedParticipants);document.getElementById('launchTemplate').classList.remove('hidden')}catch(e){status(e.message)}}
-async function saveManualParticipants(){const rows=[...document.querySelectorAll('#participantRows>div')].map(r=>{const x=r.querySelectorAll('input');return{id:x[0].value.trim(),name:x[1].value.trim(),role:x[2].value.trim()}});try{const d=await api('/participants',{participants:rows});loadedParticipants=rows;document.getElementById('participantStatus').textContent=`${d.count} participants saved in the C++ engine.`;renderPeople(rows);document.getElementById('launchTemplate').classList.remove('hidden')}catch(e){status(e.message)}}
-function addBuilderParticipantRow(p={}){addParticipantRow(p,'builderParticipantRows')}
-function participantRowsFrom(id){return [...document.querySelectorAll('#'+id+'>div')].map(r=>{const x=r.querySelectorAll('input');return{id:x[0].value.trim(),name:x[1].value.trim(),role:x[2].value.trim()}})}
-function renderBuilderPeople(){document.getElementById('builderPeopleList').innerHTML=loadedParticipants.map(p=>`<span class=\"inline-block bg-gray-100 px-2 py-1 text-xs mr-2 mt-2\">${esc(p.id)} · ${esc(p.name)} · ${esc(p.role)}</span>`).join('')}
-async function importBuilderFile(){const f=document.getElementById('builderParticipantFile').files[0];if(!f)return document.getElementById('builderPeopleStatus').textContent='Choose a .txt file first.';try{const d=await api('/participants/import',await f.text());await refreshState();document.getElementById('builderPeopleStatus').textContent=`Imported ${d.count} participants through the C++ engine.`;renderBuilderPeople()}catch(e){document.getElementById('builderPeopleStatus').textContent=e.message}}
-async function saveBuilderParticipants(){try{const rows=participantRowsFrom('builderParticipantRows');const d=await api('/participants',{participants:rows});loadedParticipants=rows;document.getElementById('builderPeopleStatus').textContent=`${d.count} participants saved in the C++ engine.`;renderBuilderPeople()}catch(e){document.getElementById('builderPeopleStatus').textContent=e.message}}
-function status(s){document.getElementById('participantStatus').textContent=s}function renderPeople(ps){document.getElementById('loadedPeople').innerHTML=ps.map(p=>`<span class="inline-block bg-gray-100 px-2 py-1 text-xs mr-2 mt-2">${esc(p.id)} · ${esc(p.name)} · ${esc(p.role)}</span>`).join('')}
-async function launchSelectedTemplate(){try{await api('/workflow/init',{type:selectedTemplate});navigate('my-workflow')}catch(e){status(e.message)}}
-function beginGroup(){groupDraft={id:'G'+Date.now().toString().slice(-6),name:'',items:[]};document.getElementById('builderPanel').classList.remove('hidden');renderGroupEditor()}
-function renderGroupEditor(){const p=document.getElementById('builderPanel');p.innerHTML=`<h3 class="font-semibold">New group</h3><div class="grid md:grid-cols-2 gap-2 mt-3"><input id="groupId" value="${esc(groupDraft.id)}" placeholder="Group ID"><input id="groupName" placeholder="Group name" value="${esc(groupDraft.name)}"></div><div id="groupItems" class="mt-4 space-y-2">${groupDraft.items.map(itemEditor).join('')}</div><button onclick="addGroupItem()" class="border px-3 py-2 mt-3 text-xs uppercase">+ Add item to group</button><button onclick="finishGroup()" class="primary px-4 py-2 mt-3 ml-2 text-xs uppercase">Done with this group</button>`}
-function itemEditor(x={},i=-1){return `<div class="grid md:grid-cols-[.6fr_1fr_1.5fr] gap-2 border p-3"><input data-key="id" placeholder="Item ID" value="${esc(x.id||'')}" id="${i<0?'new':''}"><input data-key="name" placeholder="Work item name" value="${esc(x.name||'')}"><div class="flex flex-wrap gap-x-3 text-xs items-center"><label><input data-key="audit" type="checkbox" class="w-4" ${x.audit?'checked':''}> Audit</label><label><input data-key="approval" type="checkbox" class="w-4" ${x.approval?'checked':''}> Approval</label><label><input data-key="escalation" type="checkbox" class="w-4" ${x.escalation?'checked':''}> Escalation</label></div></div>`}
-function addGroupItem(){collectGroup();groupDraft.items.push({id:'W'+Date.now().toString().slice(-6),name:'',audit:false,approval:false,escalation:false});renderGroupEditor()}
-function collectGroup(){groupDraft.id=document.getElementById('groupId').value.trim();groupDraft.name=document.getElementById('groupName').value.trim();groupDraft.items=[...document.querySelectorAll('#groupItems>div')].map(r=>{const v=r.querySelectorAll('[data-key]');return{id:v[0].value.trim(),name:v[1].value.trim(),audit:v[2].checked,approval:v[3].checked,escalation:v[4].checked}})}
-function finishGroup(){collectGroup();if(!groupDraft.name||!groupDraft.items.length||groupDraft.items.some(x=>!x.id||!x.name))return alert('Give the group and each item an ID and name, and add at least one item.');draft.push({type:'group',...groupDraft});groupDraft=null;document.getElementById('builderPanel').classList.add('hidden');renderDraft()}
-function beginStandalone(){const id='W'+Date.now().toString().slice(-6);document.getElementById('builderPanel').classList.remove('hidden');document.getElementById('builderPanel').innerHTML=`<h3 class="font-semibold mb-3">New standalone item</h3>${itemEditor({id,name:'',audit:false,approval:false,escalation:false})}<button onclick="finishStandalone()" class="primary px-4 py-2 mt-3 text-xs uppercase">Add item</button>`}
-function finishStandalone(){const v=[...document.querySelectorAll('#builderPanel [data-key]')],x={type:'item',id:v[0].value.trim(),name:v[1].value.trim(),audit:v[2].checked,approval:v[3].checked,escalation:v[4].checked};if(!x.id||!x.name)return alert('Enter an item ID and name.');draft.push(x);document.getElementById('builderPanel').classList.add('hidden');renderDraft()}
-function renderDraft(){document.getElementById('draftPreview').innerHTML=draft.map(x=>`<div class="card p-3"><b>${esc(x.type==='group'?'Group':'Item')}: ${esc(x.name)}</b>${x.items?`<div class="pl-5 mt-2">${x.items.map(i=>`<div>• ${esc(i.name)} ${decor(i)}</div>`).join('')}</div>`:` <span class="text-gray-500">${decor(x)}</span>`}</div>`).join('')}
-async function finishCustomWorkflow(){if(groupDraft){collectGroup();if(!groupDraft.name||!groupDraft.items.length||groupDraft.items.some(x=>!x.id||!x.name))return alert('Finish the open group and give each item an ID and name.');draft.push({type:'group',...groupDraft});groupDraft=null}if(!draft.length)return alert('Add at least one group or item.');if(!loadedParticipants.length)return alert('Import or save participants in this section first.');try{await api('/workflow/init',{type:'custom',name:document.getElementById('workflowName').value,steps:draft});navigate('my-workflow')}catch(e){alert(e.message)}}
-function decor(x){return [x.audit?'· audited':'',x.approval?'· approval':'',x.escalation?'· escalation':''].filter(Boolean).join(' ')}function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function allItems(nodes){return nodes.flatMap(n=>n.children&&n.children.length?allItems(n.children):[n])}
-function engineStateName(s){return ({Created:'CreatedState',Available:'AvailableState',Assigned:'AssignedState',InProgress:'InProgressState',Escalated:'EscalatedState',Approval:'ApprovalState',Completed:'CompletedState',Rejected:'RejectedState',Cancelled:'CancelledState'})[s]||s}
-function inspectorText(d){let out=`[WorkflowInstance: ${d.name}]`;function walk(nodes,prefix){nodes.forEach((n,i)=>{const last=i===nodes.length-1,branch=last?'└── ':'├── ';if(n.group){out+='\n'+prefix+branch+'[WorkGroup: '+n.name+']';walk(n.children||[],prefix+(last?'    ':'│   '))}else{out+='\n'+prefix+branch+'[WorkItem: '+n.name+' - State: '+engineStateName(n.state)+']'}})}walk(d.steps||[],'');return out}
-function actionButtons(i){const b=[];if(i.state==='Available')b.push(`<button onclick="chooseItem('${esc(i.id)}')" class="border border-[#08086b] text-[#08086b] px-3 py-2 text-xs">Assign</button>`);if(i.state==='Assigned')b.push(commandButton(i,'start','Start'),commandButton(i,'cancel','Cancel','danger'));if(i.state==='InProgress'){if(i.escalation)b.push(commandButton(i,'escalate','Start escalation'));else if(i.approval)b.push(commandButton(i,'approve','Begin approval'));else b.push(commandButton(i,'complete','Complete'));b.push(commandButton(i,'reject','Reject','danger'),commandButton(i,'cancel','Cancel','danger'))}if(i.state==='Escalated')b.push(commandButton(i,'escalate','Next escalation level'),commandButton(i,'complete','Resolve escalation'),commandButton(i,'reject','Reject','danger'),commandButton(i,'cancel','Cancel','danger'));if(i.state==='Approval')b.push(commandButton(i,'approve','Approve / next approver'),commandButton(i,'reject','Reject','danger'),commandButton(i,'cancel','Cancel','danger'));if(i.state==='Rejected'&&i.approval)b.push(commandButton(i,'start','Restart approval'));if(i.audited)b.push(`<button onclick="showAudit('${esc(i.id)}')" class="border px-3 py-2 text-xs">Audits</button>`);return b.join('')}
-function renderWorkflow(d){current=d;document.getElementById('workflowTitle').textContent=d.name||'My workflow';document.getElementById('workflowSummary').textContent=d.summary||'';const items=allItems(d.steps||[]),ready=items.filter(i=>['Available','Assigned','InProgress','Approval','Escalated'].includes(i.state));document.getElementById('taskList').innerHTML=ready.length?ready.map(i=>`<article class="card p-4"><div class="flex justify-between gap-3"><div><span class="state">WI · ${esc(i.id)}</span><p class="font-semibold mt-2">${esc(i.name)}</p><p class="text-xs text-gray-500 mt-1">WG · ${esc(i.groupName||'Workflow')} ${i.groupId?'('+esc(i.groupId)+')':''}</p><p class="text-xs text-gray-500 mt-1">${decor({audit:i.audited,approval:i.approval,escalation:i.escalation})}</p></div><span class="state">${esc(i.state)}</span></div><div class="flex flex-wrap gap-1 mt-3">${['Created','Available','Assigned','InProgress','Escalated','Approval','Completed','Rejected','Cancelled'].map(st=>`<span class="px-2 py-1 text-[10px] ${st===i.state?'primary':'bg-gray-100 text-gray-500'}">${st}</span>`).join('')}</div><div class="flex flex-wrap gap-2 mt-4">${actionButtons(i)}</div></article>`).join(''):'<p class="text-gray-500">All work is complete, or the engine has not released the next step.</p>';document.getElementById('workflowTree').textContent=inspectorText(d);document.getElementById('summaryDetails').innerHTML=`<p><b>${esc(d.summary||'')}</b></p><p class="mt-2">Items inside a work group are released together. The next workflow step is released after every item in that group completes.</p>`}
-function commandButton(i,c,t,style='primary'){return `<button onclick="runCommand('${esc(i.id)}','${c}')" class="${style} px-3 py-2 text-xs uppercase">${t}</button>`}async function refreshState(){try{const d=await api('/state',null,'GET');if(d.participants?.length){loadedParticipants=d.participants;renderPeople(loadedParticipants)}if(d.active)renderWorkflow(d)}catch(e){document.getElementById('taskList').textContent=e.message}}
-async function runCommand(id,command){try{renderWorkflow(await api('/command',{id,command}))}catch(e){alert(e.message)}}function chooseItem(id){activeItem=id;openAssignment()}
-function openAssignment(){if(!activeItem){const first=allItems(current?.steps||[]).find(i=>i.state==='Available');if(!first)return alert('Select an available work item first.');activeItem=first.id}const i=allItems(current?.steps||[]).find(x=>x.id===activeItem);if(!i)return;document.getElementById('assignItemName').textContent=i.name+' · '+i.state;document.getElementById('assignmentModal').classList.remove('hidden');const select=document.getElementById('manualParticipants');select.innerHTML=(loadedParticipants.length?loadedParticipants:current.participants||[]).map(p=>`<option value="${esc(p.id)}">${esc(p.name)} (${esc(p.id)} · ${esc(p.role||'')})</option>`).join('');const cf=document.getElementById('chainFields');cf.innerHTML='';if(i.approval)cf.innerHTML+=chainSelect('approval','Assign approval chain');if(i.escalation)cf.innerHTML+=chainSelect('escalation','Assign escalation chain');toggleAssignmentMethod()}
-function chainSelect(key,title){return `<label class="block text-xs uppercase">${title}</label><select multiple size="3" class="mt-2" id="chain-${key}">${(loadedParticipants.length?loadedParticipants:current.participants||[]).map(p=>`<option value="${esc(p.id)}">${esc(p.name)} (${esc(p.id)})</option>`).join('')}</select><p class="text-xs text-gray-500">Select in chain order (Command/Ctrl-click for multiple).</p>`}
-function toggleAssignmentMethod(){const strategy=document.getElementById('assignMethod').value==='strategy';document.getElementById('manualFields').classList.toggle('hidden',strategy);document.getElementById('strategyFields').classList.toggle('hidden',!strategy)}function closeAssignment(){document.getElementById('assignmentModal').classList.add('hidden');activeItem=null}
-async function submitAssignment(){const method=document.getElementById('assignMethod').value,selected=id=>[...document.querySelectorAll(id+' option:checked')].map(x=>x.value);let payload={id:activeItem,method,approval:selected('#chain-approval'),escalation:selected('#chain-escalation')};const active=allItems(current?.steps||[]).find(x=>x.id===activeItem);if(active?.approval&&!payload.approval.length)return document.getElementById('assignError').textContent='Choose at least one approver.';if(active?.escalation&&!payload.escalation.length)return document.getElementById('assignError').textContent='Choose at least one escalation handler.';if(method==='manual'){payload.participants=selected('#manualParticipants');if(!payload.participants.length)return document.getElementById('assignError').textContent='Choose at least one participant.'}else{payload.leastLoaded=document.getElementById('leastLoaded').checked;payload.role=document.getElementById('roleStrategy').checked?document.getElementById('roleFilter').value:'';payload.rule=document.getElementById('ruleStrategy').checked;if(!payload.leastLoaded&&!payload.role&&!payload.rule)return document.getElementById('assignError').textContent='Choose at least one strategy.';if(document.getElementById('roleStrategy').checked&&!payload.role)return document.getElementById('assignError').textContent='Enter the role to filter by.'}try{renderWorkflow(await api('/assign',payload));closeAssignment()}catch(e){document.getElementById('assignError').textContent=e.message}}
-async function showAudit(id){try{const d=await api('/audit/'+encodeURIComponent(id),null,'GET');document.getElementById('auditEntries').innerHTML=d.entries.length?d.entries.map(x=>`<p class="border-b py-2">${esc(x)}</p>`).join(''):'<p>No audit events recorded yet.</p>';document.getElementById('auditModal').classList.remove('hidden')}catch(e){alert(e.message)}}async function saveCurrent(){try{const d=await api('/save',current);alert('Saved to '+d.savedTo+' on the server. This replaces the previous saved workflow.')}catch(e){alert(e.message)}}async function openSaved(){try{renderWorkflow(await api('/load',{}));alert('Saved workflow opened. It starts from its initial state; run progress is not restored.')}catch(e){alert(e.message)}}
-// On reload the engine reports process state; participant records must be re-imported if the server restarted.
-refreshState();
-</script></body></html>
+  <main class="flex-grow w-full max-w-7xl mx-auto px-5 py-10 md:px-10">
+    <section id="page-home" class="page">
+      <div class="grid md:grid-cols-2 gap-12 items-center min-h-[55vh]">
+        <div>
+          <h1 class="text-5xl font-light leading-tight">Your workflow<br>Our system</h1>
+          <div class="w-12 h-px bg-black my-7"></div>
+          <p class="text-gray-600 text-lg leading-relaxed max-w-lg">Build practical workflows and run them through the C++ engine. Import your team, choose a template or design a workflow and track every state.</p>
+          <button onclick="navigate('templates')" class="mt-8 border border-black px-8 py-3 text-sm uppercase tracking-widest">Explore templates</button>
+        </div>
+        <section class="engine-roadmap" aria-label="From idea to delivery in five stages">
+          <div class="roadmap-kicker">TIVIDY</div>
+          <h2>From idea to delivery in five stages.</h2>
+          <div class="roadmap-track">
+            <article class="roadmap-stage" tabindex="0">
+              <span class="stage-node">01</span>
+              <h3>Define</h3>
+              <p class="stage-description">Name the workflow and identify the participants and roles that will carry it out.</p>
+            </article>
+            <article class="roadmap-stage" tabindex="0">
+              <span class="stage-node">02</span>
+              <h3>Compose</h3>
+              <p class="stage-description">Arrange work items into a sequence, with groups for work that can happen together.</p>
+            </article>
+            <article class="roadmap-stage" tabindex="0">
+              <span class="stage-node">03</span>
+              <h3>Decorate</h3>
+              <p class="stage-description">Add audit history, approval chains, and escalation paths where the work needs them.</p>
+            </article>
+            <article class="roadmap-stage" tabindex="0">
+              <span class="stage-node">04</span>
+              <h3>Assign</h3>
+              <p class="stage-description">Choose people directly or use workload, role, and rule strategies to assign each item.</p>
+            </article>
+            <article class="roadmap-stage" tabindex="0">
+              <span class="stage-node">05</span>
+              <h3>Execute</h3>
+              <p class="stage-description">Move work through engine states, review the command history, and track progress.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="page-templates" class="page hidden py-5">
+      <h1 class="text-3xl font-light">Templates</h1>
+      <div class="w-12 h-px bg-black my-5"></div>
+      <p class="text-gray-500 mb-8">Choose a predefined workflow, then add your participants.</p>
+      <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
+        <article id="template-card-incident" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Power Outage Response</h2>
+          <p class="text-gray-500 mt-2">Coordinate dispatch, investigation, containment, repair, and restoration.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('incident')">Use template</button>
+        </article>
+        <article id="template-card-hiring" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Job Application</h2>
+          <p class="text-gray-500 mt-2">Coordinate screening, interviews, references, and the final decision.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('hiring')">Use template</button>
+        </article>
+        <article id="template-card-bank-fraud" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Bank Fraud</h2>
+          <p class="text-gray-500 mt-2">Triage alerts, investigate transactions, approve recovery, and close the case.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('bank-fraud')">Use template</button>
+        </article>
+        <article id="template-card-construction-site" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Construction Site</h2>
+          <p class="text-gray-500 mt-2">Manage mobilisation, safe execution, inspections, and site handover.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('construction-site')">Use template</button>
+        </article>
+        <article id="template-card-healthcare-admission" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Healthcare Admission</h2>
+          <p class="text-gray-500 mt-2">Complete pre-admission checks, clinical assessment, placement, and handoff.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('healthcare-admission')">Use template</button>
+        </article>
+        <article id="template-card-insurance-claim" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Insurance Claim</h2>
+          <p class="text-gray-500 mt-2">Register evidence, assess coverage and damage, approve, and settle a claim.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('insurance-claim')">Use template</button>
+        </article>
+        <article id="template-card-it-security" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">IT Security</h2>
+          <p class="text-gray-500 mt-2">Triage and contain an incident, restore services, and record lessons.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('it-security')">Use template</button>
+        </article>
+        <article id="template-card-logistic-shipment" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Logistic Shipment</h2>
+          <p class="text-gray-500 mt-2">Prepare dispatch, track transport, confirm delivery, and reconcile records.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('logistic-shipment')">Use template</button>
+        </article>
+        <article id="template-card-retail-stock-receiving" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Retail Stock Receiving</h2>
+          <p class="text-gray-500 mt-2">Check in deliveries, verify stock, record exceptions, and release inventory.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('retail-stock-receiving')">Use template</button>
+        </article>
+        <article id="template-card-agriculture" class="card template-card p-6">
+          <h2 class="text-xl font-semibold">Agriculture</h2>
+          <p class="text-gray-500 mt-2">Coordinate crop planning, field operations, harvest, and storage records.</p>
+          <button class="primary px-5 py-3 mt-6 text-xs tracking-widest uppercase" onclick="selectTemplate('agriculture')">Use template</button>
+        </article>
+      </div>
+
+      <div id="template-people" class="card p-6 mt-7 hidden">
+        <div class="flex flex-wrap justify-between items-center gap-3">
+          <div>
+            <p class="text-xs tracking-widest uppercase text-gray-500">Selected workflow</p>
+            <h2 id="selectedTemplateName" class="text-xl font-semibold mt-1"></h2>
+          </div>
+          <button onclick="useDifferentTemplate()" class="border border-gray-400 px-4 py-2 text-xs uppercase tracking-widest">Use a different template</button>
+        </div>
+        <h3 class="text-lg font-semibold mt-7">Participants</h3>
+        <div class="grid md:grid-cols-2 gap-6 mt-4">
+          <div>
+            <p class="text-sm text-gray-600 mb-2">Import .txt (one per line: <code>id, name, role</code>)</p>
+            <input type="file" id="participantFile" accept=".txt,text/plain">
+            <button onclick="importFile()" class="primary px-4 py-2 mt-3 text-xs uppercase tracking-widest">Import file</button>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600 mb-2">Or enter participants</p>
+            <div id="participantRows" class="space-y-2"></div>
+            <button onclick="addParticipantRow()" class="border border-gray-400 px-4 py-2 mt-2 text-xs uppercase">+ Add participant</button>
+            <button onclick="saveManualParticipants()" class="primary px-4 py-2 mt-2 ml-2 text-xs uppercase tracking-widest">Load participants</button>
+          </div>
+        </div>
+        <div id="participantStatus" class="text-sm mt-4 text-gray-600"></div>
+        <div id="loadedPeople" class="mt-3"></div>
+        <button id="launchTemplate" onclick="launchSelectedTemplate()" class="primary px-5 py-3 mt-5 text-xs uppercase tracking-widest hidden">Continue to my workflow</button>
+      </div>
+    </section>
+
+    <section id="page-build" class="page hidden py-5">
+      <h1 class="text-3xl font-light">Build your own workflow</h1>
+      <div class="w-12 h-px bg-black my-5"></div>
+      <div class="card p-6">
+        <label class="text-xs uppercase tracking-wider">Workflow name</label>
+        <input id="workflowName" placeholder="  e.g. Equipment approval" class="mt-2 max-w-xl">
+        <div class="mt-6 flex gap-3">
+          <button onclick="beginGroup()" class="primary px-5 py-3 text-xs uppercase tracking-widest">Add group</button>
+          <button onclick="beginStandalone()" class="border border-[#08086b] text-[#08086b] px-5 py-3 text-xs uppercase tracking-widest">Add item</button>
+        </div>
+        <div id="builderPanel" class="mt-6 hidden border-t pt-5"></div>
+        <div id="draftPreview" class="mt-5 space-y-3"></div>
+        <div class="mt-7 border-t pt-5">
+          <h2 class="font-semibold">Add participants</h2>
+          <p class="text-sm text-gray-600 mt-1">After defining your groups and items, add participants here or import the same id, name, role text file.</p>
+          <div class="grid md:grid-cols-2 gap-6 mt-4">
+            <div>
+              <input type="file" id="builderParticipantFile" accept=".txt,text/plain">
+              <button onclick="importBuilderFile()" class="primary px-4 py-2 mt-3 text-xs uppercase tracking-widest">Import file</button>
+            </div>
+            <div>
+              <div id="builderParticipantRows" class="space-y-2"></div>
+              <button onclick="addBuilderParticipantRow()" class="border px-3 py-2 mt-2 text-xs uppercase">+ Add participant</button>
+              <button onclick="saveBuilderParticipants()" class="primary px-4 py-2 mt-2 ml-2 text-xs uppercase tracking-widest">Load participants</button>
+            </div>
+          </div>
+          <div id="builderPeopleStatus" class="text-sm mt-3"></div>
+          <div id="builderPeopleList" class="mt-2"></div>
+          <button onclick="finishCustomWorkflow()" class="primary px-5 py-3 mt-5 text-xs uppercase tracking-widest">Done · go to my workflow</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-my-workflow" class="page hidden py-5 ordinary-workflow">
+      <div class="flex justify-between items-start gap-5 flex-wrap">
+        <div>
+          <h1 id="workflowTitle" class="text-3xl font-light">My workflow</h1>
+          <p id="workflowSummary" class="text-gray-500 mt-2"></p>
+        </div>
+      </div>
+      <details class="ordinary-help mt-6 px-1">
+        <summary>Workflow guide (which action should I use?)</summary>
+        <div class="pb-4 grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+          <p><b>Assign → Start:</b> choose a participant while an item is Available, then start it to enter InProgress.</p>
+          <p><b>Regular item:</b> Complete moves it to Completed and releases the next step.</p>
+          <p><b>Escalation:</b> Start escalation enters Escalated. Next escalation level advances the chain. Resolve escalation finishes escalation; if approval is also required, the item then enters Approval.</p>
+          <p><b>Approval:</b> Begin approval starts an approval-only chain. In Approval, Approve / next approver advances one person at a time; the final approval completes the item.</p>
+          <p><b>Groups:</b> items in one work group run together. Finish every item in the group before the next workflow step is released.</p>
+          <p><b>Reject / Cancel:</b> these stop the item. A rejection from an approval chain can be restarted with Restart approval.</p>
+        </div>
+      </details>
+
+      <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-5 mt-7">
+        <section class="card p-5">
+          <div class="flex justify-between items-center border-b-2 border-[#08086b] pb-3 mb-4">
+            <h2 class="font-extrabold text-[#08086b] tracking-wide">MY ASSIGNED TASK QUEUE</h2>
+            <span class="state">LIVE ENGINE</span>
+          </div>
+          <div id="taskList" class="space-y-3"></div>
+        </section>
+        <section class="card p-5">
+          <div class="flex justify-between items-center border-b-2 border-[#08086b] pb-3 mb-4">
+            <h2 class="font-extrabold text-[#08086b] tracking-wide">WORKFLOW STRUCTURE INSPECTOR</h2>
+            <span class="state">COMPOSITE VIEW</span>
+          </div>
+          <div id="workflowTree" class="workflow-tree"></div>
+        </section>
+      </div>
+
+      <section class="card p-5 mt-5">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h2 class="font-extrabold text-[#08086b]">COMMAND HISTORY</h2>
+          <button id="undoButton" onclick="undoLast()" class="primary px-5 py-3 text-xs uppercase tracking-widest">Undo</button>
+        </div>
+        <p id="undoStatus" class="text-xs text-gray-500 mt-3">Undo uses the C++ command history. The engine can refuse when affected work has moved on from its recorded state.</p>
+        <ol id="commandHistory" class="mt-4 space-y-2 text-sm text-gray-700 list-decimal pl-5"></ol>
+      </section>
+
+      <section class="card p-5 mt-5">
+        <h2 class="font-extrabold text-[#08086b] border-b pb-3">PROGRESS REPORT</h2>
+        <div id="summaryDetails" class="mt-4 text-sm text-gray-700"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="w-full px-6 py-7 border-t border-gray-100 text-center text-xs text-gray-400 tracking-widest uppercase mt-auto">
+    © <span id="year"></span> Power Rangers
+  </footer>
+
+  <div id="assignmentModal" class="modal hidden">
+    <div class="bg-white w-full max-w-2xl p-6 shadow-xl">
+      <div class="flex justify-between">
+        <h2 class="text-xl font-semibold">Assign work item</h2>
+        <button onclick="closeAssignment()" aria-label="Close">✕</button>
+      </div>
+      <p id="assignItemName" class="text-gray-500 mt-1"></p>
+      <label class="block text-xs uppercase mt-5">Assignment method</label>
+      <select id="assignMethod" onchange="toggleAssignmentMethod()" class="mt-2">
+        <option value="manual">Manual assignment</option>
+        <option value="strategy">Following assignment strategy</option>
+      </select>
+      <div id="manualFields" class="mt-4">
+        <label class="text-xs uppercase">Choose participants</label>
+        <select id="manualParticipants" multiple size="4" class="mt-2"></select>
+        <p class="text-xs text-gray-500 mt-1">Use Command/Ctrl to select more than one.</p>
+      </div>
+      <div id="strategyFields" class="hidden mt-4 space-y-3">
+        <label for="numAssignees" class="block text-xs uppercase tracking-wider">Number of participants needed</label>
+        <input id="numAssignees" type="number" min="1" step="1" value="1" class="max-w-xs">
+        <p class="text-xs text-gray-500">The engine applies each selected strategy to the imported participant pool in this order.</p>
+        <label class="flex gap-2">
+          <input type="checkbox" id="leastLoaded" class="w-4">Least loaded · prefer participants with the lowest active workload
+        </label>
+        <label class="flex gap-2">
+          <input type="checkbox" id="roleStrategy" class="w-4">Filter by role
+        </label>
+        <select id="roleFilter" onchange="updateRoleCount()">
+          <option value="">Choose a role from imported participants</option>
+        </select>
+        <p id="roleCount" class="text-xs text-gray-500">Choose a role to see how many participants match.</p>
+        <label class="flex gap-2">
+          <input type="checkbox" id="ruleStrategy" class="w-4">Rule · randomly select from the remaining participants (runs last)
+        </label>
+        <p class="text-xs text-gray-500">The role filter narrows candidates. Least loaded orders by workload; if Rule is also selected, its random selection determines the final assignees.</p>
+      </div>
+      <div id="chainFields" class="mt-5 space-y-4"></div>
+      <button onclick="submitAssignment()" class="primary px-6 py-3 mt-6 text-xs uppercase tracking-widest">Done</button>
+      <p id="assignError" class="text-red-700 text-sm mt-3"></p>
+    </div>
+  </div>
+
+  <div class="chat-dog">
+    <div id="chatPanel" class="chat-panel hidden p-4 rounded">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-gray-500">Workflow helper</p>
+          <h2 class="font-semibold">Pick a question 🐶</h2>
+        </div>
+        <button onclick="toggleChat()" aria-label="Close help" class="text-xl">×</button>
+      </div>
+      <p id="chatIntro" class="text-sm text-gray-600 mt-2"></p>
+      <div id="chatQuestions" class="mt-3"></div>
+      <p id="chatAnswer" class="text-sm mt-3 text-gray-700"></p>
+    </div>
+    <button onclick="toggleChat()" aria-label="Open page help chatbot" title="Page help" class="w-14 h-14 rounded-full bg-white border-2 border-[#08086b] shadow-lg text-3xl">🐶</button>
+  </div>
+
+  <div id="auditModal" class="modal hidden">
+    <div class="bg-white w-full max-w-lg p-6">
+      <div class="flex justify-between">
+        <h2 class="text-xl font-semibold">Audit history</h2>
+        <button onclick="document.getElementById('auditModal').classList.add('hidden')">✕</button>
+      </div>
+      <div id="auditEntries" class="mt-4 space-y-2 text-sm"></div>
+      <div class="mt-5 border-t pt-4">
+        <label for="auditNewEntry" class="text-xs uppercase tracking-widest">Add diary entry</label>
+        <textarea id="auditNewEntry" class="mt-2" rows="3" placeholder="Write an audit note"></textarea>
+        <button onclick="addAuditEntry()" class="primary px-4 py-2 mt-2 text-xs uppercase tracking-widest">Add entry</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.protocol === 'file:' ? 'http://localhost:8080/api' : '/api';
+    let selectedTemplate = '', currentPage = 'home', loadedParticipants = [], current = null, draft = [], groupDraft = null, activeItem = null;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function navigate(id) {
+      currentPage = id;
+      document.querySelectorAll('.page').forEach(x => x.classList.add('hidden'));
+      document.getElementById('page-' + id).classList.remove('hidden');
+      document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active'));
+      let link = document.getElementById('nav-' + id);
+      if (link) link.classList.add('active');
+      if (['my-workflow', 'build', 'templates'].includes(id)) refreshState();
+      if (!document.getElementById('chatPanel').classList.contains('hidden')) renderChat().then(() => {
+        if (id === 'build') renderBuilderPeople();
+        if (id === 'templates') renderPeople(loadedParticipants);
+      });
+    }
+
+    async function api(path, body, method = 'POST') {
+      let r;
+      try {
+        r = await fetch(API + path, {
+          method,
+          headers: body && typeof body === 'object' ? { 'Content-Type': 'application/json' } : {},
+          body: body ? (typeof body === 'string' ? body : JSON.stringify(body)) : undefined
+        });
+      } catch (e) {
+        throw Error('Cannot reach Crow at ' + API + '. Start/rebuild the C++ server, then reload this page.');
+      }
+      let d = await r.json().catch(() => ({ error: 'Server returned an invalid response' }));
+      if (!r.ok) throw Error(d.error || d.message || 'Engine request failed');
+      return d;
+    }
+
+    function selectTemplate(t) {
+      selectedTemplate = t;
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('template-card-' + t).classList.add('selected');
+      document.getElementById('selectedTemplateName').textContent = ({
+        incident: 'Power Outage Response',
+        hiring: 'Job Application',
+        'bank-fraud': 'Bank Fraud',
+        'construction-site': 'Construction Site',
+        'healthcare-admission': 'Healthcare Admission',
+        'insurance-claim': 'Insurance Claim',
+        'it-security': 'IT Security',
+        'logistic-shipment': 'Logistic Shipment',
+        'retail-stock-receiving': 'Retail Stock Receiving',
+        agriculture: 'Agriculture'
+      })[t];
+      document.getElementById('template-people').classList.remove('hidden');
+      document.getElementById('launchTemplate').classList.toggle('hidden', !loadedParticipants.length);
+      if (!document.querySelector('#participantRows input')) addParticipantRow();
+    }
+
+    function useDifferentTemplate() {
+      selectedTemplate = '';
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('template-people').classList.add('hidden');
+    }
+
+    function addParticipantRow(p = {}, target = 'participantRows') {
+      const row = document.createElement('div');
+      row.className = 'grid grid-cols-[.7fr_1.3fr_1fr_auto] gap-2';
+      row.innerHTML = `<input placeholder="ID" value="${esc(p.id || '')}"><input placeholder="Name" value="${esc(p.name || '')}"><input placeholder="Role" value="${esc(p.role || '')}"><button class="text-red-700 px-2" onclick="this.parentElement.remove()">×</button>`;
+      document.getElementById(target).append(row);
+    }
+
+    async function importFile() {
+      const file = document.getElementById('participantFile').files[0];
+      if (!file) return status('Choose a text file first');
+      try {
+        const d = await api('/participants/import', await file.text());
+        loadedParticipants = [];
+        document.getElementById('participantStatus').textContent = `Imported ${d.count} participants through the C++ engine.`;
+        await refreshState();
+        renderPeople(loadedParticipants);
+        document.getElementById('launchTemplate').classList.remove('hidden');
+      } catch (e) {
+        status(e.message);
+      }
+    }
+
+    async function saveManualParticipants() {
+      const rows = [...document.querySelectorAll('#participantRows>div')].map(r => {
+        const x = r.querySelectorAll('input');
+        return { id: x[0].value.trim(), name: x[1].value.trim(), role: x[2].value.trim() };
+      });
+      try {
+        const d = await api('/participants', { participants: rows });
+        loadedParticipants = rows;
+        document.getElementById('participantStatus').textContent = `${d.count} participants loaded into the C++ engine.`;
+        renderPeople(rows);
+        document.getElementById('launchTemplate').classList.remove('hidden');
+      } catch (e) {
+        status(e.message);
+      }
+    }
+
+    function addBuilderParticipantRow(p = {}) {
+      addParticipantRow(p, 'builderParticipantRows');
+    }
+
+    function participantRowsFrom(id) {
+      return [...document.querySelectorAll('#' + id + '>div')].map(r => {
+        const x = r.querySelectorAll('input');
+        return { id: x[0].value.trim(), name: x[1].value.trim(), role: x[2].value.trim() };
+      });
+    }
+
+    function renderBuilderPeople() {
+      document.getElementById('builderPeopleList').innerHTML = loadedParticipants.map(p => `<span class=\"inline-block bg-gray-100 px-2 py-1 text-xs mr-2 mt-2\">${esc(p.id)} · ${esc(p.name)} · ${esc(p.role)}</span>`).join('');
+    }
+
+    async function importBuilderFile() {
+      const f = document.getElementById('builderParticipantFile').files[0];
+      if (!f) return document.getElementById('builderPeopleStatus').textContent = 'Choose a .txt file first.';
+      try {
+        const d = await api('/participants/import', await f.text());
+        await refreshState();
+        document.getElementById('builderPeopleStatus').textContent = `Imported ${d.count} participants through the C++ engine.`;
+        renderBuilderPeople();
+      } catch (e) {
+        document.getElementById('builderPeopleStatus').textContent = e.message;
+      }
+    }
+
+    async function saveBuilderParticipants() {
+      try {
+        const rows = participantRowsFrom('builderParticipantRows');
+        const d = await api('/participants', { participants: rows });
+        loadedParticipants = rows;
+        document.getElementById('builderPeopleStatus').textContent = `${d.count} participants loaded into the C++ engine.`;
+        renderBuilderPeople();
+      } catch (e) {
+        document.getElementById('builderPeopleStatus').textContent = e.message;
+      }
+    }
+
+    function status(s) {
+      document.getElementById('participantStatus').textContent = s;
+    }
+
+    function renderPeople(ps) {
+      document.getElementById('loadedPeople').innerHTML = ps.map(p => `<span class="inline-block bg-gray-100 px-2 py-1 text-xs mr-2 mt-2">${esc(p.id)} · ${esc(p.name)} · ${esc(p.role)}</span>`).join('');
+    }
+
+    async function launchSelectedTemplate() {
+      try {
+        await api('/workflow/init', { type: selectedTemplate });
+        navigate('my-workflow');
+      } catch (e) {
+        status(e.message);
+      }
+    }
+
+    function beginGroup() {
+      groupDraft = { id: 'G' + Date.now().toString().slice(-6), name: '', items: [] };
+      document.getElementById('builderPanel').classList.remove('hidden');
+      renderGroupEditor();
+    }
+
+    function renderGroupEditor() {
+      const p = document.getElementById('builderPanel');
+      p.innerHTML = `<div class="flex justify-between items-center"><h3 class="font-semibold">New group</h3><button onclick="cancelEditor()" class="border px-3 py-2 text-xs uppercase">Cancel group</button></div><div class="grid md:grid-cols-2 gap-2 mt-3"><input id="groupId" value="${esc(groupDraft.id)}" placeholder="Group ID"><input id="groupName" placeholder="Group name" value="${esc(groupDraft.name)}"></div><div id="groupItems" class="mt-4 space-y-2">${groupDraft.items.map(itemEditor).join('')}</div><button onclick="addGroupItem()" class="border px-3 py-2 mt-3 text-xs uppercase">+ Add item to group</button><button onclick="finishGroup()" class="primary px-4 py-2 mt-3 ml-2 text-xs uppercase">Done with this group</button>`;
+    }
+
+    function itemEditor(x = {}, i = -1) {
+      return `<div class="grid md:grid-cols-[.6fr_1fr_1.5fr_auto] gap-2 border p-3 items-center"><input data-key="id" placeholder="Item ID" value="${esc(x.id || '')}" id="${i < 0 ? 'new' : ''}"><input data-key="name" placeholder="Work item name" value="${esc(x.name || '')}"><div class="flex flex-wrap gap-x-3 text-xs items-center"><label><input data-key="audit" type="checkbox" class="w-4" ${x.audit ? 'checked' : ''}> Audit</label><label><input data-key="approval" type="checkbox" class="w-4" ${x.approval ? 'checked' : ''}> Approval</label><label><input data-key="escalation" type="checkbox" class="w-4" ${x.escalation ? 'checked' : ''}> Escalation</label></div>${i >= 0 ? `<button onclick="removeGroupItem(${i})" class="border px-2 py-2 text-xs uppercase">Cancel</button>` : ''}</div>`;
+    }
+
+    function addGroupItem() {
+      collectGroup();
+      groupDraft.items.push({ id: 'W' + Date.now().toString().slice(-6), name: '', audit: false, approval: false, escalation: false });
+      renderGroupEditor();
+    }
+
+    function removeGroupItem(i) {
+      collectGroup();
+      groupDraft.items.splice(i, 1);
+      renderGroupEditor();
+    }
+
+    function cancelEditor() {
+      groupDraft = null;
+      document.getElementById('builderPanel').classList.add('hidden');
+    }
+
+    function collectGroup() {
+      groupDraft.id = document.getElementById('groupId').value.trim();
+      groupDraft.name = document.getElementById('groupName').value.trim();
+      groupDraft.items = [...document.querySelectorAll('#groupItems>div')].map(r => {
+        const v = r.querySelectorAll('[data-key]');
+        return { id: v[0].value.trim(), name: v[1].value.trim(), audit: v[2].checked, approval: v[3].checked, escalation: v[4].checked };
+      });
+    }
+
+    function finishGroup() {
+      collectGroup();
+      if (!groupDraft.name || !groupDraft.items.length || groupDraft.items.some(x => !x.id || !x.name)) return alert('Give the group and each item an ID and name, and add at least one item.');
+      draft.push({ type: 'group', ...groupDraft });
+      groupDraft = null;
+      document.getElementById('builderPanel').classList.add('hidden');
+      renderDraft();
+    }
+
+    function beginStandalone() {
+      const id = 'W' + Date.now().toString().slice(-6);
+      document.getElementById('builderPanel').classList.remove('hidden');
+      document.getElementById('builderPanel').innerHTML = `<h3 class="font-semibold mb-3">New standalone item</h3>${itemEditor({ id, name: '', audit: false, approval: false, escalation: false })}<div class="flex gap-2 mt-3"><button onclick="finishStandalone()" class="primary px-4 py-2 text-xs uppercase">Add item</button><button onclick="cancelEditor()" class="border px-4 py-2 text-xs uppercase">Cancel</button></div>`;
+    }
+
+    function finishStandalone() {
+      const v = [...document.querySelectorAll('#builderPanel [data-key]')], x = { type: 'item', id: v[0].value.trim(), name: v[1].value.trim(), audit: v[2].checked, approval: v[3].checked, escalation: v[4].checked };
+      if (!x.id || !x.name) return alert('Enter an item ID and name.');
+      draft.push(x);
+      document.getElementById('builderPanel').classList.add('hidden');
+      renderDraft();
+    }
+
+    function renderDraft() {
+      document.getElementById('draftPreview').innerHTML = draft.map((x, index) => `<div class="card p-3 flex justify-between gap-3"><div><b>${esc(x.type === 'group' ? 'WG' : 'WI')} · ${esc(x.name)}</b>${x.items ? `<div class="pl-5 mt-2">${x.items.map(i => `<div>WI · ${esc(i.name)} ${decor(i)}</div>`).join('')}</div>` : ` <span class="text-gray-500">${decor(x)}</span>`}</div><button onclick="removeDraft(${index})" class="border px-3 py-2 self-start text-xs uppercase">Cancel</button></div>`).join('');
+    }
+
+    function removeDraft(i) {
+      draft.splice(i, 1);
+      renderDraft();
+    }
+
+    async function finishCustomWorkflow() {
+      if (groupDraft) {
+        collectGroup();
+        if (!groupDraft.name || !groupDraft.items.length || groupDraft.items.some(x => !x.id || !x.name)) return alert('Finish the open group and give each item an ID and name.');
+        draft.push({ type: 'group', ...groupDraft });
+        groupDraft = null;
+      }
+      if (!draft.length) return alert('Add at least one group or item.');
+      if (!loadedParticipants.length) return alert('Import or add participants in this section first.');
+      try {
+        await api('/workflow/init', { type: 'custom', name: document.getElementById('workflowName').value, steps: draft });
+        navigate('my-workflow');
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    function decor(x) {
+      return [x.audit ? '· audited' : '', x.approval ? '· approval' : '', x.escalation ? '· escalation' : ''].filter(Boolean).join(' ');
+    }
+
+    function esc(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function allItems(nodes) {
+      return nodes.flatMap(n => n.children && n.children.length ? allItems(n.children) : [n]);
+    }
+
+    function engineStateName(s) {
+      return ({ Created: 'CreatedState', Available: 'AvailableState', Assigned: 'AssignedState', InProgress: 'InProgressState', Escalated: 'EscalatedState', Approval: 'ApprovalState', Completed: 'CompletedState', Rejected: 'RejectedState', Cancelled: 'CancelledState' })[s] || s;
+    }
+
+    function inspectorText(d) {
+      let out = `[WorkflowInstance: ${d.name}]`;
+      function walk(nodes, prefix) {
+        nodes.forEach((n, i) => {
+          const last = i === nodes.length - 1, branch = last ? '└── ' : '├── ';
+          if (n.group) {
+            out += '\n' + prefix + branch + '[WorkGroup: ' + n.name + ']';
+            walk(n.children || [], prefix + (last ? '    ' : '│   '));
+          } else {
+            out += '\n' + prefix + branch + '[WorkItem: ' + n.name + ' - State: ' + engineStateName(n.state) + ']';
+          }
+        });
+      }
+      walk(d.steps || [], '');
+      return out;
+    }
+
+    function actionButtons(i) {
+      const b = [];
+      if (i.state === 'Available') b.push(`<button onclick="chooseItem('${esc(i.id)}')" class="primary px-5 py-3 text-xs font-bold uppercase tracking-widest">Assign</button>`);
+      if (i.state === 'Assigned') b.push(commandButton(i, 'start', 'Start'), commandButton(i, 'cancel', 'Cancel', 'danger'));
+      if (i.state === 'InProgress') {
+        if (i.escalation) b.push(commandButton(i, 'escalate', 'Start escalation'));
+        else if (i.approval) b.push(commandButton(i, 'approve', 'Begin approval'));
+        else b.push(commandButton(i, 'complete', 'Complete'));
+        b.push(commandButton(i, 'reject', 'Reject', 'danger'), commandButton(i, 'cancel', 'Cancel', 'danger'));
+      }
+      if (i.state === 'Escalated') b.push(commandButton(i, 'escalate', 'Next escalation level'), commandButton(i, 'complete', 'Resolve escalation'), commandButton(i, 'reject', 'Reject', 'danger'), commandButton(i, 'cancel', 'Cancel', 'danger'));
+      if (i.state === 'Approval') b.push(commandButton(i, 'approve', 'Approve / next approver'), commandButton(i, 'reject', 'Reject', 'danger'), commandButton(i, 'cancel', 'Cancel', 'danger'));
+      if (i.state === 'Rejected' && i.approval) b.push(commandButton(i, 'start', 'Restart approval'));
+      if (i.audited) b.push(`<button onclick="showAudit('${esc(i.id)}')" class="border px-3 py-2 text-xs">Audits</button>`);
+      return b.join('');
+    }
+
+    function renderWorkflow(d) {
+      current = d;
+      document.getElementById('workflowTitle').textContent = d.name || 'My workflow';
+      document.getElementById('workflowSummary').textContent = d.summary || '';
+      const items = allItems(d.steps || []), ready = items.filter(i => ['Available', 'Assigned', 'InProgress', 'Approval', 'Escalated'].includes(i.state) || (i.state === 'Rejected' && i.approval));
+      document.getElementById('taskList').innerHTML = ready.length ? ready.map(i => `<article class="card p-4"><div class="flex justify-between gap-3"><div><span class="state">WI · ${esc(i.id)}</span><p class="font-semibold mt-2">${esc(i.name)}</p><p class="text-xs text-gray-500 mt-1">WG · ${esc(i.groupName || 'Workflow')} ${i.groupId ? '(' + esc(i.groupId) + ')' : ''}</p><p class="text-xs text-gray-500 mt-1">${decor({ audit: i.audited, approval: i.approval, escalation: i.escalation })}</p><p class="text-xs text-gray-600 mt-2"><b>Assigned to:</b> ${(i.assignees || []).length ? i.assignees.map(p => esc(p.name) + ' (' + esc(p.id) + ')').join(', ') : 'Not assigned'}</p>${i.approvalSequence?.length ? '<p class="text-xs text-gray-600 mt-1"><b>Approval sequence:</b> ' + i.approvalSequence.map((p, n) => (n + 1) + '. ' + esc(p.name)).join(' → ') + '</p>' : ''}${i.escalationSequence?.length ? '<p class="text-xs text-gray-600 mt-1"><b>Escalation sequence:</b> ' + i.escalationSequence.map((p, n) => (n + 1) + '. ' + esc(p.name)).join(' → ') + '</p>' : ''}${i.approvalContact ? '<p class="text-xs text-gray-600 mt-1">Current approver: ' + esc(i.approvalContact) + '</p>' : ''}${i.escalationContact ? '<p class="text-xs text-gray-600 mt-1">Current escalation handler: ' + esc(i.escalationContact) + '</p>' : ''}${i.state === 'Rejected' && i.approval ? '<p class="text-xs mt-2">Rejected during approval · restart returns this item to InProgress.</p>' : ''}</div><span class="state">${esc(i.state)}</span></div><div class="flex flex-wrap gap-1 mt-3">${['Created', 'Available', 'Assigned', 'InProgress', 'Escalated', 'Approval', 'Completed', 'Rejected', 'Cancelled'].map(st => `<span class="px-2 py-1 text-[10px] ${st === i.state ? 'primary' : 'bg-gray-100 text-gray-500'}">${st}</span>`).join('')}</div><div class="flex flex-wrap gap-2 mt-4">${actionButtons(i)}</div></article>`).join('') : '<p class="text-gray-500">All work is complete, or the engine has not released the next step.</p>';
+      document.getElementById('workflowTree').textContent = inspectorText(d);
+      document.getElementById('summaryDetails').innerHTML = `<p><b>${esc(d.summary || '')}</b></p><p class="mt-2">Items inside a work group are released together. The next workflow step is released after every item in that group completes.</p>`;
+      const history = d.history || [];
+      document.getElementById('commandHistory').innerHTML = history.length ? history.map(x => `<li>${esc(x)}</li>`).join('') : '<li class="list-none text-gray-500">No commands recorded yet.</li>';
+      const undoButton = document.getElementById('undoButton');
+      undoButton.disabled = !history.length;
+      undoButton.classList.toggle('opacity-40', !history.length);
+      document.getElementById('undoStatus').textContent = history.length ? 'Undo checks the C++ engine state; the engine may refuse if affected work has moved on.' : 'There is no command to undo.';
+    }
+
+    function commandButton(i, c, t, style = 'primary') {
+      return `<button onclick="runCommand('${esc(i.id)}','${c}')" class="${style} px-3 py-2 text-xs uppercase">${t}</button>`;
+    }
+
+    async function refreshState() {
+      try {
+        const d = await api('/state', null, 'GET');
+        if (d.participants?.length) {
+          loadedParticipants = d.participants;
+          renderPeople(loadedParticipants);
+          populateStrategyRoles();
+        }
+        if (d.active) renderWorkflow(d);
+      } catch (e) {
+        document.getElementById('taskList').textContent = e.message;
+      }
+    }
+
+    async function runCommand(id, command) {
+      try {
+        renderWorkflow(await api('/command', { id, command }));
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function undoLast() {
+      try {
+        const d = await api('/undo', {});
+        renderWorkflow(d);
+        document.getElementById('undoStatus').textContent = d.undoMessage || 'Undo completed.';
+      } catch (e) {
+        document.getElementById('undoStatus').textContent = e.message;
+      }
+    }
+
+    function chooseItem(id) {
+      activeItem = id;
+      openAssignment();
+    }
+
+    function openAssignment() {
+      if (!activeItem) {
+        const first = allItems(current?.steps || []).find(i => i.state === 'Available');
+        if (!first) return alert('Select an available work item first.');
+        activeItem = first.id;
+      }
+      const i = allItems(current?.steps || []).find(x => x.id === activeItem);
+      if (!i) return;
+      document.getElementById('assignItemName').textContent = i.name + ' · ' + i.state;
+      document.getElementById('assignmentModal').classList.remove('hidden');
+      const select = document.getElementById('manualParticipants');
+      select.innerHTML = (loadedParticipants.length ? loadedParticipants : current.participants || []).map(p => `<option value="${esc(p.id)}">${esc(p.name)} (${esc(p.id)} · ${esc(p.role || '')})</option>`).join('');
+      populateStrategyRoles();
+      const cf = document.getElementById('chainFields');
+      cf.innerHTML = '';
+      if (i.approval) cf.innerHTML += chainSelect('approval', 'Assign approval chain');
+      if (i.escalation) cf.innerHTML += chainSelect('escalation', 'Assign escalation chain');
+      toggleAssignmentMethod();
+    }
+
+    function chainSelect(key, title) {
+      return `<div><label class="block text-xs uppercase">${title}</label><p class="text-xs text-gray-500 mt-1">Choose one participant per row. Use the arrows to set the sequence.</p><div id="chain-${key}-rows" class="mt-2 space-y-2">${chainRow(key)}</div><button onclick="addChainRow('${key}')" class="border px-3 py-2 mt-2 text-xs uppercase">+ Add ${key === 'approval' ? 'approver' : 'handler'}</button></div>`;
+    }
+
+    function chainRow(key) {
+      return `<div class="chain-row flex gap-2 items-center"><select class="chain-person"><option value="">Choose participant</option>${(loadedParticipants.length ? loadedParticipants : current.participants || []).map(p => `<option value="${esc(p.id)}">${esc(p.name)} (${esc(p.id)})</option>`).join('')}</select><button onclick="moveChainRow(this,-1)" aria-label="Move up" class="border px-3 py-2">↑</button><button onclick="moveChainRow(this,1)" aria-label="Move down" class="border px-3 py-2">↓</button><button onclick="this.closest('.chain-row').remove()" aria-label="Remove participant" class="border px-3 py-2">×</button></div>`;
+    }
+
+    function addChainRow(key) {
+      document.getElementById('chain-' + key + '-rows').insertAdjacentHTML('beforeend', chainRow(key));
+    }
+
+    function moveChainRow(button, delta) {
+      const row = button.closest('.chain-row'), parent = row.parentElement;
+      if (delta < 0 && row.previousElementSibling) parent.insertBefore(row, row.previousElementSibling);
+      if (delta > 0 && row.nextElementSibling) parent.insertBefore(row.nextElementSibling, row);
+    }
+
+    function collectChain(key) {
+      const root = document.getElementById('chain-' + key + '-rows');
+      return root ? [...root.querySelectorAll('select')].map(x => x.value).filter(Boolean) : [];
+    }
+
+    function toggleAssignmentMethod() {
+      const strategy = document.getElementById('assignMethod').value === 'strategy';
+      document.getElementById('manualFields').classList.toggle('hidden', strategy);
+      document.getElementById('strategyFields').classList.toggle('hidden', !strategy);
+    }
+
+    function closeAssignment() {
+      document.getElementById('assignmentModal').classList.add('hidden');
+      activeItem = null;
+    }
+
+    async function submitAssignment() {
+      const method = document.getElementById('assignMethod').value, selected = id => [...document.querySelectorAll(id + ' option:checked')].map(x => x.value);
+      let payload = { id: activeItem, method, approval: collectChain('approval'), escalation: collectChain('escalation') };
+      const active = allItems(current?.steps || []).find(x => x.id === activeItem);
+      if (active?.approval && !payload.approval.length) return document.getElementById('assignError').textContent = 'Choose at least one approver.';
+      if (active?.escalation && !payload.escalation.length) return document.getElementById('assignError').textContent = 'Choose at least one escalation handler.';
+      if (method === 'manual') {
+        payload.participants = selected('#manualParticipants');
+        if (!payload.participants.length) return document.getElementById('assignError').textContent = 'Choose at least one participant.';
+      } else {
+        payload.numAssignees = parseInt(document.getElementById('numAssignees').value, 10);
+        if (!Number.isInteger(payload.numAssignees) || payload.numAssignees < 1) return document.getElementById('assignError').textContent = 'Enter a positive whole number of participants.';
+        payload.leastLoaded = document.getElementById('leastLoaded').checked;
+        payload.role = document.getElementById('roleStrategy').checked ? document.getElementById('roleFilter').value : '';
+        payload.rule = document.getElementById('ruleStrategy').checked;
+        if (!payload.leastLoaded && !payload.role && !payload.rule) return document.getElementById('assignError').textContent = 'Choose at least one strategy.';
+        if (document.getElementById('roleStrategy').checked && !payload.role) return document.getElementById('assignError').textContent = 'Choose a role from the imported participants.';
+      }
+      try {
+        renderWorkflow(await api('/assign', payload));
+        closeAssignment();
+      } catch (e) {
+        document.getElementById('assignError').textContent = e.message;
+      }
+    }
+
+    let auditItem = null;
+
+    async function showAudit(id) {
+      auditItem = id;
+      try {
+        await refreshAudit();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function refreshAudit() {
+      const d = await api('/audit/' + encodeURIComponent(auditItem), null, 'GET');
+      document.getElementById('auditEntries').innerHTML = d.entries.length ? d.entries.map((x, i) => `<div class="border-b py-2 flex gap-3 items-start"><p class="flex-1 whitespace-pre-wrap">${esc(x)}</p><button onclick="editAuditEntry(${i})" class="border px-2 py-1 text-xs">Edit</button><button onclick="deleteAuditEntry(${i})" class="border px-2 py-1 text-xs">Delete</button></div>`).join('') : '<p>No diary entries yet.</p>';
+      document.getElementById('auditModal').classList.remove('hidden');
+    }
+
+    async function addAuditEntry() {
+      const box = document.getElementById('auditNewEntry'), entry = box.value.trim();
+      if (!entry) return;
+      try {
+        await api('/audit/' + encodeURIComponent(auditItem), { action: 'add', entry });
+        box.value = '';
+        await refreshAudit();
+        renderWorkflow(await api('/state', null, 'GET'));
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function editAuditEntry(index) {
+      const entry = prompt('Edit diary entry:');
+      if (entry === null) return;
+      try {
+        await api('/audit/' + encodeURIComponent(auditItem), { action: 'edit', index, entry });
+        await refreshAudit();
+        renderWorkflow(await api('/state', null, 'GET'));
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    async function deleteAuditEntry(index) {
+      if (!confirm('Delete this diary entry?')) return;
+      try {
+        await api('/audit/' + encodeURIComponent(auditItem), { action: 'delete', index });
+        await refreshAudit();
+        renderWorkflow(await api('/state', null, 'GET'));
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    function populateStrategyRoles() {
+      const select = document.getElementById('roleFilter');
+      if (!select) return;
+      const previous = select.value, people = loadedParticipants.length ? loadedParticipants : (current?.participants || []), roles = [...new Set(people.map(p => String(p.role || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      select.innerHTML = '<option value="">Choose a role from imported participants</option>' + roles.map(role => `<option value="${esc(role)}">${esc(role)}</option>`).join('');
+      if (roles.includes(previous)) select.value = previous;
+    }
+
+    async function updateRoleCount() {
+      const role = document.getElementById('roleFilter').value.trim(), label = document.getElementById('roleCount');
+      if (!role) {
+        label.textContent = 'Choose a role to see how many participants match.';
+        return;
+      }
+      try {
+        const d = await api('/assignment/role-count', { role });
+        label.textContent = `${d.count} participant${d.count === 1 ? '' : 's'} have the “${role}” role.`;
+      } catch (e) {
+        label.textContent = 'Could not check role count.';
+      }
+    }
+
+    const pageFaq = {
+      home: {
+        intro: 'Questions about getting started?',
+        items: [
+          ['How do I begin?', 'Choose Templates for a predefined flow or Build your own workflow to define groups and items.'],
+          ['What is this app?', 'It is a workflow UI connected to the Crow server and C++ engine.']
+        ]
+      },
+      templates: {
+        intro: 'Need help choosing a template?',
+        items: [
+          ['Can I change my choice?', 'Yes. Use “Use a different template” above the participant form, then choose another workflow.'],
+          ['How do I add people?', 'Import a text file with one id, name, role per line, or enter participants manually.'],
+          ['What happens next?', 'After participants are loaded, continue to My Workflow.']
+        ]
+      },
+      build: {
+        intro: 'Questions about building a flow?',
+        items: [
+          ['What is a group?', 'Items inside a group are released together. The next step waits until all group items complete.'],
+          ['How do I remove a draft?', 'Use Cancel on a draft group or item.'],
+          ['How do participants work?', 'Add participants after defining the workflow, then choose Done to open it.']
+        ]
+      },
+      'my-workflow': {
+        intro: 'Need help with workflow actions?',
+        items: [
+          ['Which action starts work?', 'Assign an Available item, then click Start.'],
+          ['When do I use Escalate?', 'For escalation-decorated work, start escalation, advance levels if needed, then resolve escalation.'],
+          ['How does approval work?', 'Begin approval for approval-decorated work, then approve each approver in order.'],
+          ['When does the next group show?', 'After every item in the current group is complete.']
+        ]
+      }
+    };
+
+    function renderChat() {
+      const faq = pageFaq[currentPage] || pageFaq.home;
+      document.getElementById('chatIntro').textContent = faq.intro;
+      document.getElementById('chatQuestions').innerHTML = faq.items.map((x, i) => `<button class="chat-question" onclick="answerChat(${i})">${x[0]}</button>`).join('');
+      document.getElementById('chatAnswer').textContent = '';
+    }
+
+    function toggleChat() {
+      const panel = document.getElementById('chatPanel');
+      panel.classList.toggle('hidden');
+      if (!panel.classList.contains('hidden')) renderChat();
+    }
+
+    function answerChat(i) {
+      document.getElementById('chatAnswer').textContent = (pageFaq[currentPage] || pageFaq.home).items[i][1];
+    }
+
+    // On reload the engine reports process state; participant records must be re-imported if the server restarted.
+    refreshState();
+  </script>
+</body>
+</html>
