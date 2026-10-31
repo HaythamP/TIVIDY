@@ -29,3 +29,21 @@ TEST_BINS       := $(patsubst $(TEST_DIR)/Test%.cpp, $(BIN_DIR)/Test%, $(TEST_SR
 INTEGRATION_BINS := $(filter $(BIN_DIR)/TestIntegration%, $(TEST_BINS))
 E2E_BINS         := $(filter $(BIN_DIR)/TestE2E% $(BIN_DIR)/TestScenario%, $(TEST_BINS))
 UNIT_BINS        := $(filter-out $(INTEGRATION_BINS) $(E2E_BINS), $(TEST_BINS))
+
+# Default target: builds main binary and test suite
+all: $(MAIN_BIN) test-build
+
+$(BUILD_DIR) $(BIN_DIR):
+	@mkdir -p $@
+
+# Compile rule for individual source objects
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(wildcard $(INC_DIR)/*.h) | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Rule to compile and link the main application (LIB_OBJS is now properly expanded)
+$(MAIN_BIN): $(SRC_DIR)/main.cpp $(LIB_OBJS) | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< $(LIB_OBJS) -o $@
+
+# Run the main program
+run: $(MAIN_BIN)
+	./$(MAIN_BIN)
