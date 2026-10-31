@@ -18,9 +18,8 @@ VALGRIND_FLAGS  := --leak-check=full --show-leak-kinds=all --track-origins=yes -
 
 # Gather all .cpp files in src except main.cpp
 # Compile all src/*.cpp files into build/*.o (excluding main.cpp for tests)
-LIB_SRCS := $(filter-out $(SRC_DIR)/server_main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
+LIB_SRCS := $(filter-out $(SRC_DIR)/main.cpp $(SRC_DIR)/server_main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
 LIB_OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(LIB_SRCS))
-
 # Discovers whatever tests exist in testing/ (TestExceptions, TestSanity, etc.)
 TEST_SRCS       := $(wildcard $(TEST_DIR)/Test*.cpp)
 TEST_BINS       := $(patsubst $(TEST_DIR)/Test%.cpp, $(BIN_DIR)/Test%, $(TEST_SRCS))
