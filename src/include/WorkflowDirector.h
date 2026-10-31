@@ -32,6 +32,15 @@ public:
      */
     void constructJobApplicationWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
 
+    void constructBankFraudWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+    void constructConstructionSiteWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+    void constructHealthcareAdmissionWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+    void constructInsuranceClaimWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+    void constructITSecurityWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+    void constructLogisticShipmentWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+    void constructRetailStockReceivingWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+    void constructAgricultureWorkflow(Builder<T>& builder, const std::vector<T>& ids) const;
+
 private:
     WorkflowDirector(const WorkflowDirector&) = delete;
     WorkflowDirector& operator=(const WorkflowDirector&) = delete;
