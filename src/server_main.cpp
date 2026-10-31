@@ -216,8 +216,7 @@ int main() {
                 if (id.empty() || name.empty() || role.empty() || next.count(id)) {
                     throw std::runtime_error("Participant id, name and role are required; ids must be unique");
                 }
-                owned.emplace_back(new Participant<std::string>(id, name));
-                owned.back()->addRole(role);
+                owned.emplace_back(new Participant<std::string>(id, name, std::vector<std::string>(1, role)));
                 next[id] = owned.back().get();
                 roles[id] = role;
             }
@@ -283,8 +282,7 @@ int main() {
                 if (id.empty() || name.empty() || role.empty() || next.count(id)) {
                     throw std::runtime_error("Participant fields must be non-empty and ids unique");
                 }
-                owned.emplace_back(new Participant<std::string>(id, name));
-                owned.back()->addRole(role);
+                owned.emplace_back(new Participant<std::string>(id, name, std::vector<std::string>(1, role)));
                 next[id] = owned.back().get();
                 roles[id] = role;
             }
