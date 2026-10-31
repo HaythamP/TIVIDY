@@ -1,20 +1,50 @@
-01, Zainab Al-Fassi, Driver
-02, Lucas Meyer, Dispatcher
-03, Palesa Mocumi, Warehouse Worker
-04, Dmitri Volkov, Forklift Operator
-05, Imani Juma, Loader
-06, Wesley Snipes, Courier
-07, Thandi Modise, Supervisor
-08, Arjun Rampal, Customer Service Agent
-09, Freya Lindqvist, Planner
-10, Sibusiso Vilakazi, Clerk
-11, Leila Brahimi, Mechanic
-12, Connor MacLeod, Security Guard
-13, Mpho Phalatse, Administrator
-14, Ines de Castro, Accountant
-15, Vusi Pikoli, Inspector
-16, Nadia Comaneci, Team Leader
-17, Felix Hoffmann, Fleet Manager
-18, Refilwe Ledwaba, Operations Manager
-19, Omar Khan, Director
-20, Rayhaan Ahmed, CEO
+01, Rayhaan Ahmed, Logistics Coordinator
+02, Avery Chen, Logistics Coordinator
+03, Jordan Patel, Logistics Coordinator
+04, Morgan Lewis, Logistics Coordinator
+05, Riley Okafor, Logistics Coordinator
+06, Casey Williams, Logistics Coordinator
+07, Taylor Singh, Logistics Coordinator
+08, Jamie Nkosi, Logistics Coordinator
+09, Cameron Reed, Logistics Coordinator
+10, Quinn Jacobs, Logistics Coordinator
+11, Haytham Phillips, Warehouse Dispatcher
+12, Drew Mokoena, Warehouse Dispatcher
+13, Skyler Adams, Warehouse Dispatcher
+14, Rowan Brown, Warehouse Dispatcher
+15, Emerson Davis, Warehouse Dispatcher
+16, Finley Garcia, Warehouse Dispatcher
+17, Parker Johnson, Warehouse Dispatcher
+18, Hayden Kim, Warehouse Dispatcher
+19, Reese Martin, Warehouse Dispatcher
+20, Dakota Nelson, Warehouse Dispatcher
+21, Oratile Rabotapi, Transport Planner
+22, Sage Ortiz, Transport Planner
+23, Kendall Price, Transport Planner
+24, Alex Rivera, Transport Planner
+25, Robin Smith, Transport Planner
+26, Charlie Taylor, Transport Planner
+27, Elliot Usman, Transport Planner
+28, Remy Van der Merwe, Transport Planner
+29, Blake Wilson, Transport Planner
+30, Cory Xu, Transport Planner
+31, Kyle Naicker, Shipment Tracking Agent
+32, Shiloh Young, Shipment Tracking Agent
+33, Ari Zulu, Shipment Tracking Agent
+34, Micah Brown, Shipment Tracking Agent
+35, Noah Carter, Shipment Tracking Agent
+36, Sasha Dlamini, Shipment Tracking Agent
+37, Lee Edwards, Shipment Tracking Agent
+38, Milan Fischer, Shipment Tracking Agent
+39, Nico Green, Shipment Tracking Agent
+40, Harper Hall, Shipment Tracking Agent
+41, Tashil Haripersad, Delivery Reconciliation Approver
+42, River Ibrahim, Delivery Reconciliation Approver
+43, Ellis Jones, Delivery Reconciliation Approver
+44, Kai Khan, Delivery Reconciliation Approver
+45, Remi Lopez, Delivery Reconciliation Approver
+46, Mark Botros, Delivery Reconciliation Approver
+47, Inge Odendaal, Delivery Reconciliation Approver
+48, Gilles Teuwen, Delivery Reconciliation Approver
+49, Michael Horwitz, Delivery Reconciliation Approver
+50, Vincent Feistel, Delivery Reconciliation Approver
