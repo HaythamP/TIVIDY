@@ -1,20 +1,50 @@
-01, Olivia Smith, Builder
-02, Patrick O'Connor, Bricklayer
-03, Rachel Green, Carpenter
-04, Steven Walker, Electrician
-05, Tanya Jacobs, Plumber
-06, Ursula Vogel, Painter
-07, Vincent Feistel, Welder
-08, Wendy Williams, Crane Operator
-09, Yolanda Adams, Truck Driver
-10, Zeke Muller, Labourer
-11, Abel Makhensa, Foreman
-12, Bianca du Plessis, Site Supervisor
-13, Craig Harris, Safety Officer
-14, Denise Taylor, Surveyor
-15, Evan Wright, Engineer
-16, Farida Patel, Architect
-17, Glen Thompson, Storeman
-18, Heidi Botha, Project Manager
-19, Ivan Jordaan, Director
-20, Jade Zulu, CEO
+01, Rayhaan Ahmed, Site Project Manager
+02, Avery Chen, Site Project Manager
+03, Jordan Patel, Site Project Manager
+04, Morgan Lewis, Site Project Manager
+05, Riley Okafor, Site Project Manager
+06, Casey Williams, Site Project Manager
+07, Taylor Singh, Site Project Manager
+08, Jamie Nkosi, Site Project Manager
+09, Cameron Reed, Site Project Manager
+10, Quinn Jacobs, Site Project Manager
+11, Haytham Phillips, Construction Site Supervisor
+12, Drew Mokoena, Construction Site Supervisor
+13, Skyler Adams, Construction Site Supervisor
+14, Rowan Brown, Construction Site Supervisor
+15, Emerson Davis, Construction Site Supervisor
+16, Finley Garcia, Construction Site Supervisor
+17, Parker Johnson, Construction Site Supervisor
+18, Hayden Kim, Construction Site Supervisor
+19, Reese Martin, Construction Site Supervisor
+20, Dakota Nelson, Construction Site Supervisor
+21, Oratile Rabotapi, Safety Officer
+22, Sage Ortiz, Safety Officer
+23, Kendall Price, Safety Officer
+24, Alex Rivera, Safety Officer
+25, Robin Smith, Safety Officer
+26, Charlie Taylor, Safety Officer
+27, Elliot Usman, Safety Officer
+28, Remy Van der Merwe, Safety Officer
+29, Blake Wilson, Safety Officer
+30, Cory Xu, Safety Officer
+31, Kyle Naicker, Civil / Structural Engineer
+32, Shiloh Young, Civil / Structural Engineer
+33, Ari Zulu, Civil / Structural Engineer
+34, Micah Brown, Civil / Structural Engineer
+35, Noah Carter, Civil / Structural Engineer
+36, Sasha Dlamini, Civil / Structural Engineer
+37, Lee Edwards, Civil / Structural Engineer
+38, Milan Fischer, Civil / Structural Engineer
+39, Nico Green, Civil / Structural Engineer
+40, Harper Hall, Civil / Structural Engineer
+41, Tashil Haripersad, Quality and Handover Inspector
+42, River Ibrahim, Quality and Handover Inspector
+43, Ellis Jones, Quality and Handover Inspector
+44, Kai Khan, Quality and Handover Inspector
+45, Remi Lopez, Quality and Handover Inspector
+46, Mark Botros, Quality and Handover Inspector
+47, Inge Odendaal, Quality and Handover Inspector
+48, Gilles Teuwen, Quality and Handover Inspector
+49, Michael Horwitz, Quality and Handover Inspector
+50, Vincent Feistel, Quality and Handover Inspector
