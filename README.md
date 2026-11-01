@@ -71,10 +71,10 @@ cd TIVIDY
 git checkout main
 
 # Build the Docker Image
-docker build -t tividy-ci:latest .
+docker build -t tividy:latest .
 
 # Launch the GUI
-docker run --rm -p 8080:8080 --name tividy-gui tividy-ci:latest
+docker run --rm -p 8080:8080 --name tividy-gui tividy:latest
 
 Open  http://localhost:8080 in a browser
 Press Ctrl + C in the terminal to stop the server
@@ -82,22 +82,22 @@ Press Ctrl + C in the terminal to stop the server
 # Commands for the Test Suites and Main:
 
 # Run Unit Tests
-docker run --rm tividy-ci:latest make test-unit
+docker run --rm tividy:latest make test-unit
 
 # Run Integration Tests
-docker run --rm tividy-ci:latest make test-integration
+docker run --rm tividy:latest make test-integration
 
 # Run End to End Tests
-docker run --rm tividy-ci:latest make test-e2e
+docker run --rm tividy:latest make test-e2e
 
 # Run Valgrind
-docker run --rm tividy-ci:latest make valgrind
+docker run --rm tividy:latest make valgrind
 
 # Run main.cpp
-docker run --rm tividy-ci:latest make run
+docker run --rm tividy:latest make run
 
-# (Optional) rmi tividy-ci:latest
-docker rmi tividy-ci:latest
+# (Optional) rmi tividy:latest
+docker rmi tividy:latest
 ```
 
 ## Alternatively inside any terminal 
@@ -105,10 +105,17 @@ docker rmi tividy-ci:latest
 ```bash
 # Docker must be installed and running
 
-docker run --rm -p 8080:8080 ghcr.io/haythamp/tividy-ci:latest
+# Windows and Linux Users
+docker run --rm -p 8080:8080 ghcr.io/haythamp/tividy:latest
+
+Or
+
+# Mac users
+docker run --platform linux/amd64 --rm -p 8080:8080 ghcr.io/haythamp/tividy:latest
 
 Open  http://localhost:8080 in a browser
-Press Ctrl + C in the terminal to stop the server
+
+Press Ctrl + c in the terminal to stop the server
 
 # Any commands from before still apply
 ```
