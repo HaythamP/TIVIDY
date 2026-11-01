@@ -1,0 +1,50 @@
+01, Rayhaan Ahmed, Claims Handler
+02, Avery Chen, Claims Handler
+03, Jordan Patel, Claims Handler
+04, Morgan Lewis, Claims Handler
+05, Riley Okafor, Claims Handler
+06, Casey Williams, Claims Handler
+07, Taylor Singh, Claims Handler
+08, Jamie Nkosi, Claims Handler
+09, Cameron Reed, Claims Handler
+10, Quinn Jacobs, Claims Handler
+11, Haytham Phillips, Loss Adjuster
+12, Drew Mokoena, Loss Adjuster
+13, Skyler Adams, Loss Adjuster
+14, Rowan Brown, Loss Adjuster
+15, Emerson Davis, Loss Adjuster
+16, Finley Garcia, Loss Adjuster
+17, Parker Johnson, Loss Adjuster
+18, Hayden Kim, Loss Adjuster
+19, Reese Martin, Loss Adjuster
+20, Dakota Nelson, Loss Adjuster
+21, Oratile Rabotapi, Evidence and Documentation Reviewer
+22, Sage Ortiz, Evidence and Documentation Reviewer
+23, Kendall Price, Evidence and Documentation Reviewer
+24, Alex Rivera, Evidence and Documentation Reviewer
+25, Robin Smith, Evidence and Documentation Reviewer
+26, Charlie Taylor, Evidence and Documentation Reviewer
+27, Elliot Usman, Evidence and Documentation Reviewer
+28, Remy Van der Merwe, Evidence and Documentation Reviewer
+29, Blake Wilson, Evidence and Documentation Reviewer
+30, Cory Xu, Evidence and Documentation Reviewer
+31, Kyle Naicker, Policy Coverage Specialist
+32, Shiloh Young, Policy Coverage Specialist
+33, Ari Zulu, Policy Coverage Specialist
+34, Micah Brown, Policy Coverage Specialist
+35, Noah Carter, Policy Coverage Specialist
+36, Sasha Dlamini, Policy Coverage Specialist
+37, Lee Edwards, Policy Coverage Specialist
+38, Milan Fischer, Policy Coverage Specialist
+39, Nico Green, Policy Coverage Specialist
+40, Harper Hall, Policy Coverage Specialist
+41, Tashil Haripersad, Settlement Approver
+42, River Ibrahim, Settlement Approver
+43, Ellis Jones, Settlement Approver
+44, Kai Khan, Settlement Approver
+45, Remi Lopez, Settlement Approver
+46, Mark Botros, Settlement Approver
+47, Inge Odendaal, Settlement Approver
+48, Gilles Teuwen, Settlement Approver
+49, Michael Horwitz, Settlement Approver
+50, Vincent Feistel, Settlement Approver

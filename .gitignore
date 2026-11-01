@@ -1,0 +1,6 @@
+*.o
+*.obj
+*.d
+*.exe
+.vscode/
+.DS_Store
