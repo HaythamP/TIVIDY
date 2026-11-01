@@ -9,7 +9,7 @@ The engine natively demonstrates two distinct industry pipelines:
 ---
 ## Quick Links 
 
-View the Final [Report]()
+View the Final [Report]()  
 View the Final [UML Class Diagram](diagrams/class_diagram_v2)  
 View [All Diagrams](diagrams)  
 View the [src](src) Folder  
